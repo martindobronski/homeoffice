@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.1)
+## Anwesenheits-Dashboard (Version 1.2)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -18,7 +18,7 @@ Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Bro
 
 Das Fenster ist in vier Bereiche gegliedert:
 
-- **Kopfzeile:** Überschrift mit Jahr, Zeitraum (Start und Ende) mit Schnellwahl des Zeitraumbeginns.
+- **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert und prozentualem **Fortschrittsring**.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
 - **Fußzeile:** Urlaubskontingent, Backup-Buttons, Legende mit Zählern, Versionsinfo.
@@ -29,10 +29,10 @@ Die Darstellung passt sich der Fensterbreite an (4 / 2 / 1 Spalten).
 
 ## 3. Zeitraum wählen
 
-In der Kopfzeile steht: `Zeitraum [Start] – [Ende]`.
+Der Anzeigezeitraum umfasst immer ein ganzes Jahr (12 Monate). Er beginnt mit dem gewählten Startmonat und endet automatisch 12 Monate später (Start + 12 Monate – 1 Tag). Ein eigenes Enddatum gibt es nicht.
 
-- **Startdatum ändern:** Wird ein neues Startdatum gewählt, wird das Enddatum automatisch auf **Start + 12 Monate – 1 Tag** gesetzt. Danach kann das Enddatum auch einzeln geändert werden.
-- **Schnellwahl:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile + **Übernehmen** springst du direkt zu einem bestimmten Startmonat.
+- **Startmonat wählen:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile + **Übernehmen** legst du den Startmonat des Jahreszeitraums fest. Beispiel: Startmonat `September` und Jahr `2026` ergibt den Zeitraum **September 2026 – August 2027**.
+- **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einschließlich **2030**. Liegen Einträge in späteren Jahren vor, wird die Auswahl automatisch erweitert.
 - Die Auswahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ---
@@ -54,7 +54,7 @@ Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„�
 
 Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 4 Spalten). Jede Karte zeigt:
 
-- **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`).
+- **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`). Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt, z. B. `September 2026` und `August 2027`.
 - Einen schmalen **Fortschrittsbalken** für den Anteil der erfüllten Büropflichttage.
 - Den Wochenkalender in kleinerer Darstellung.
 
@@ -192,7 +192,7 @@ Die Datei enthält alle Tages-Einträge sowie den aktuell eingestellten Zeitraum
 
 Klick auf **Backup importieren** öffnet den Dateidialog. Unterstützt werden:
 
-- **JSON-Dateien** (wie exportiert) – übernehmen zusätzlich den Zeitraum.
+- **JSON-Dateien** (wie exportiert) – übernehmen den Startmonat des Zeitraums. Das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
 
 Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
 
@@ -202,7 +202,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.1 vom 11.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.2 vom 11.08.2026`.
 
 ---
 
@@ -211,8 +211,8 @@ Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.1 v
 **Warum zeigt die Quote „–"?**
 Weil noch kein vollständiger Monat (alle Werktage erfasst) im gewählten Zeitraum liegt.
 
-**Warum ändert sich das Enddatum von selbst?**
-Das Enddatum folgt dem Startdatum: Start + 12 Monate – 1 Tag. Es kann danach einzeln angepasst werden.
+**Warum gibt es kein Enddatum?**
+Der Zeitraum umfasst immer genau 12 Monate ab dem gewählten Startmonat (Start + 12 Monate – 1 Tag). Ein eigenes Enddatum ist deshalb nicht erforderlich.
 
 **Wo werden meine Daten gespeichert?**
 Im Browser (localStorage). Andere Browser, Computer oder das Löschen der Browserdaten löschen auch die Einträge – deshalb regelmäßig exportieren.

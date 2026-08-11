@@ -32,8 +32,6 @@ let periodEnd;
 let dialogOrigDate = null;
 let activeFilter = null;
 
-const startPicker = document.getElementById('startPicker');
-const endPicker = document.getElementById('endPicker');
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
 const applyButton = document.getElementById('applyButton');
@@ -103,25 +101,72 @@ function saveDays() {
     storeSet(DAYS_KEY, JSON.stringify(days));
 }
 
-function loadPeriod() {
-    let s = null;
-    let e = null;
-    try {
-        const p = JSON.parse(storeGet(PERIOD_KEY));
-        s = p.start;
-        e = p.end;
-    } catch (err) {
-        // ignore
-    }
-    const defaultStart = fmt(new Date(new Date().getFullYear(), 0, 1));
-    if (!s || !e || s > e) {
-        periodStart = defaultStart;
-        periodEnd = add12mMinusDay(defaultStart);
-    } else {
-        periodStart = s;
-        periodEnd = e;
-    }
+
+function isValidISODate(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return false;
+  }
+
+  const date = parseISO(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return false;
+  }
+
+  // Verhindert, dass z. B. 2026-02-31 als gültiges Datum
+  // interpretiert und automatisch auf März verschoben wird.
+  return fmt(date) === value;
 }
+
+function getDefaultPeriod() {
+  const now = new Date();
+
+  const start = fmt(new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    1
+  ));
+
+  return {
+    start: start,
+    end: add12mMinusDay(start)
+  };
+}
+
+
+
+
+function loadPeriod() {
+  let storedStart = null;
+
+  try {
+    const raw = storeGet(PERIOD_KEY);
+    const saved = raw ? JSON.parse(raw) : null;
+
+    if (saved && typeof saved === 'object') {
+      storedStart = saved.start;
+    }
+  } catch (err) {
+    // Beschädigte localStorage-Daten werden ignoriert.
+  }
+
+  if (isValidISODate(storedStart)) {
+    periodStart = storedStart;
+    periodEnd = add12mMinusDay(periodStart);
+    return;
+  }
+
+  // Fallback: erster Tag des aktuellen Monats
+  // bis 12 Monate minus 1 Tag später.
+  const defaultPeriod = getDefaultPeriod();
+
+  periodStart = defaultPeriod.start;
+  periodEnd = defaultPeriod.end;
+
+  // Reparierte Werte direkt wieder speichern.
+  savePeriod();
+}
+
 
 function savePeriod() {
     storeSet(PERIOD_KEY, JSON.stringify({ start: periodStart, end: periodEnd }));
@@ -213,14 +258,13 @@ function handleImportFile(file) {
         try {
             const data = parseBackupText(reader.result);
             days = data.days;
-            if (data.period && data.period.start && data.period.end) {
+            if (data.period && data.period.start && isValidISODate(data.period.start)) {
                 periodStart = data.period.start;
-                periodEnd = data.period.end;
+                periodEnd = add12mMinusDay(periodStart);
                 savePeriod();
             }
             saveDays();
             populateQuick();
-            syncPickers();
             render();
             alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
         } catch (e) {
@@ -307,7 +351,7 @@ function periodQuota(fromIso, toIso) {
 function populateQuick() {
     const now = new Date();
     let minYear = now.getFullYear() - 5;
-    let maxYear = now.getFullYear() + 1;
+    let maxYear = now.getFullYear() + 4;
     for (const iso of Object.keys(days)) {
         const y = parseISO(iso).getFullYear();
         minYear = Math.min(minYear, y);
@@ -343,36 +387,6 @@ function applyQuickSelection() {
     }
     periodStart = fmt(new Date(y, m - 1, 1));
     periodEnd = add12mMinusDay(periodStart);
-    syncPickers();
-    savePeriod();
-    render();
-}
-
-function syncPickers() {
-    startPicker.value = periodStart;
-    endPicker.value = periodEnd;
-}
-
-function onStartChange() {
-    if (!startPicker.value) {
-        return;
-    }
-    periodStart = startPicker.value;
-    periodEnd = add12mMinusDay(periodStart);
-    endPicker.value = periodEnd;
-    savePeriod();
-    render();
-}
-
-function onEndChange() {
-    if (!endPicker.value) {
-        return;
-    }
-    periodEnd = endPicker.value;
-    if (periodEnd < periodStart) {
-        periodStart = periodEnd;
-        startPicker.value = periodStart;
-    }
     savePeriod();
     render();
 }
@@ -509,12 +523,12 @@ function heroHTML(year, month) {
         + renderCalGrid(year, month);
 }
 
-function cardHTML(year, month) {
+function cardHTML(year, month, showYear) {
     const st = monthStat(year, month);
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
     return '<div class="month-card">'
         + '<div class="m-head">'
-        + '<h4>' + monthName(year, month) + '</h4>'
+        + '<h4>' + monthName(year, month) + (showYear ? ' ' + year : '') + '</h4>'
         + '<span>' + st.office + '/' + st.pflicht + '</span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
@@ -530,6 +544,7 @@ function renderMonths() {
     const curAnchor = new Date(now.getFullYear(), now.getMonth(), 1);
     const inRange = curAnchor >= new Date(start.getFullYear(), start.getMonth(), 1)
         && curAnchor <= endAnchor;
+    const showYear = start.getFullYear() !== endAnchor.getFullYear();
     let y = start.getFullYear();
     let m = start.getMonth() + 1;
     let heroShown = false;
@@ -540,7 +555,7 @@ function renderMonths() {
             heroEl.innerHTML = heroHTML(y, m);
             heroShown = true;
         } else {
-            cards += cardHTML(y, m);
+            cards += cardHTML(y, m, showYear);
         }
         m++;
         if (m === 13) {
@@ -711,7 +726,9 @@ legendEl.addEventListener('click', function (e) {
 // ---------- Initialisierung ----------
 
 function render() {
-    dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + parseISO(periodStart).getFullYear();
+    const startYear = parseISO(periodStart).getFullYear();
+    const endYear = parseISO(periodEnd).getFullYear();
+    dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + (startYear === endYear ? startYear : startYear + '/' + endYear);
     syncQuickSelection();
     renderKpis();
     renderMonths();
@@ -725,10 +742,7 @@ function init() {
     document.getElementById('urlaubInput').value = urlaubTotal;
     populateQuick();
     fillTypeSelect();
-    syncPickers();
     applyButton.addEventListener('click', applyQuickSelection);
-    startPicker.addEventListener('change', onStartChange);
-    endPicker.addEventListener('change', onEndChange);
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
     render();
