@@ -8,22 +8,7 @@ Die App erfasst für jeden Werktag, ob du im **Büro**, im **Homeoffice** oder i
 
 ## 1. Starten der App
 
-Die App läuft im Browser. Sie wird über einen lokalen Server ausgeliefert.
-
-**Voraussetzung:** Python 3 ist installiert.
-
-**Start im Terminal:**
-
-```bash
-cd /Users/martin/dev/HTML/homeoffice
-python3 -m http.server 8000 --directory .
-```
-
-Danach im Browser öffnen:
-
-```
-http://localhost:8000
-```
+Die App läuft im Browser. Zum Starten genügt es, die Datei `index.html` im Browser zu öffnen (z. B. per Doppelklick auf die Datei). Es ist kein Webserver erforderlich.
 
 Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Browser und Computer verwendest, bleiben alle Einträge erhalten.
 
