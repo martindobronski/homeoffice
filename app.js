@@ -76,23 +76,39 @@ function add12mMinusDay(isoStr) {
 
 // ---------- Speicher ----------
 
+function storeGet(key) {
+    try {
+        return localStorage.getItem(key);
+    } catch (e) {
+        return null;
+    }
+}
+
+function storeSet(key, value) {
+    try {
+        localStorage.setItem(key, value);
+    } catch (e) {
+        // Speicherung nicht möglich (z. B. file:// in Safari) - Seite funktioniert trotzdem
+    }
+}
+
 function loadDays() {
     try {
-        days = JSON.parse(localStorage.getItem(DAYS_KEY)) || {};
+        days = JSON.parse(storeGet(DAYS_KEY)) || {};
     } catch (e) {
         days = {};
     }
 }
 
 function saveDays() {
-    localStorage.setItem(DAYS_KEY, JSON.stringify(days));
+    storeSet(DAYS_KEY, JSON.stringify(days));
 }
 
 function loadPeriod() {
     let s = null;
     let e = null;
     try {
-        const p = JSON.parse(localStorage.getItem(PERIOD_KEY));
+        const p = JSON.parse(storeGet(PERIOD_KEY));
         s = p.start;
         e = p.end;
     } catch (err) {
@@ -109,16 +125,16 @@ function loadPeriod() {
 }
 
 function savePeriod() {
-    localStorage.setItem(PERIOD_KEY, JSON.stringify({ start: periodStart, end: periodEnd }));
+    storeSet(PERIOD_KEY, JSON.stringify({ start: periodStart, end: periodEnd }));
 }
 
 function loadUrlaub() {
-    const v = parseInt(localStorage.getItem(URLAUB_KEY), 10);
+    const v = parseInt(storeGet(URLAUB_KEY), 10);
     urlaubTotal = (Number.isFinite(v) && v >= 0) ? v : 30;
 }
 
 function saveUrlaub() {
-    localStorage.setItem(URLAUB_KEY, String(urlaubTotal));
+    storeSet(URLAUB_KEY, String(urlaubTotal));
 }
 
 // ---------- Export / Import ----------
