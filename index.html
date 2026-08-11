@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Büro – Anwesenheitsübersicht</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="topbar">
+        <span class="heading">Anwesenheit im Zeitraum:</span>
+        <input type="date" id="startPicker">
+        <span class="dash">–</span>
+        <input type="date" id="endPicker">
+        <span class="separator"></span>
+        <span class="quick-label">Schnellwahl Zeitraumbeginn:</span>
+        <select id="monthBox"></select>
+        <select id="yearBox"></select>
+        <button id="applyButton">Übernehmen</button>
+        <div id="quoteLabel" class="quote"></div>
+    </header>
+
+    <main id="months"></main>
+
+    <footer>
+        <div class="backup-actions">
+            <button id="exportButton" title="Aktuelle Daten als Backup-Datei herunterladen">Backup exportieren</button>
+            <button id="importButton" title="Backup-Datei importieren (überschreibt aktuelle Daten)">Backup importieren</button>
+            <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
+        </div>
+        <div id="legend" class="legend"></div>
+        <div id="version" class="version">Version 0.1 vom 10.08.2026</div>
+    </footer>
+
+    <div id="modalOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3 id="dialogTitle">Eintrag hinzufügen</h3>
+            <div class="dialog-fields">
+                <label for="dialogDate">Datum:</label>
+                <input type="date" id="dialogDate">
+                <label for="dialogType">Art:</label>
+                <select id="dialogType"></select>
+            </div>
+            <div class="dialog-buttons">
+                <button id="dialogDelete" class="hidden">Löschen</button>
+                <button id="dialogOk">OK</button>
+                <button id="dialogCancel">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
