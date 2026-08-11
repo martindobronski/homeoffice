@@ -381,7 +381,8 @@ function renderMonths() {
     let y = start.getFullYear();
     let m = start.getMonth() + 1;
     while (new Date(y, m - 1, 1) <= endAnchor) {
-        monthsEl.appendChild(buildMonthPanel(y, m, now));
+        const focus = y === now.getFullYear() && m === now.getMonth() + 1;
+        monthsEl.appendChild(buildMonthPanel(y, m, focus));
         m++;
         if (m === 13) {
             m = 1;
@@ -390,15 +391,14 @@ function renderMonths() {
     }
 }
 
-function buildMonthPanel(year, month, now) {
+function buildMonthPanel(year, month, focus) {
     const st = monthStat(year, month);
-    const current = year === now.getFullYear() && month === now.getMonth() + 1;
 
     const panel = document.createElement('div');
-    panel.className = 'month-panel' + (current ? ' current' : '');
+    panel.className = 'month-panel ' + (focus ? 'focus' : 'mini');
 
     const title = document.createElement('div');
-    title.className = 'month-title' + (current ? ' current' : '');
+    title.className = 'month-title' + (focus ? ' focus' : '');
     const monat = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long' });
     title.textContent = monat + ' ' + year + ' (' + st.workdays + ' Werktage - '
         + st.office + ' von ' + st.pflicht + ' Büropflichttagen)';

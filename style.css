@@ -75,8 +75,10 @@ main {
     border: 1px solid #000;
 }
 
-.month-panel.current {
+.month-panel.focus {
+    grid-column: 1 / -1;
     border: 3px solid #4CAF50;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
 .month-title {
@@ -87,9 +89,47 @@ main {
     border-bottom: 1px solid #000;
 }
 
-.month-title.current {
+.month-title.focus {
     background: #4CAF50;
     color: #fff;
+    font-size: 17px;
+    padding: 10px 8px;
+}
+
+.month-panel.mini .month-title {
+    font-size: 12px;
+}
+
+.month-panel.mini .weekday-row {
+    font-size: 9px;
+    padding: 4px 0;
+}
+
+.month-panel.mini .day-grid {
+    gap: 2px;
+    padding: 2px;
+    margin: 2px;
+}
+
+.month-panel.mini .cell {
+    height: 20px;
+    font-size: 10px;
+}
+
+.month-panel.focus .weekday-row {
+    font-size: 12px;
+    padding: 8px 0;
+}
+
+.month-panel.focus .day-grid {
+    gap: 4px;
+    padding: 6px;
+    margin: 6px;
+}
+
+.month-panel.focus .cell {
+    height: 44px;
+    font-size: 16px;
 }
 
 .weekday-row {
