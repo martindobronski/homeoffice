@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Büro – Anwesenheitsübersicht (Version 1.0)
+## Anwesenheits-Dashboard (Version 1.1)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -18,38 +18,55 @@ Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Bro
 
 Das Fenster ist in vier Bereiche gegliedert:
 
-- **Kopfzeile:** Zeitraum (Start und Ende) und Schnellwahl des Zeitraumbeginns.
-- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand mit großen Zahlen und Fortschrittsbalken.
-- **Mitte:** Kalenderblätter für alle Monate des gewählten Zeitraums (aktueller Monat als große Fokus-Karte).
-- **Fußzeile:** Backup-Buttons (links), Urlaubskontingent (links), Legende mit Zählern (Mitte), Versionsinfo (rechts unten).
+- **Kopfzeile:** Überschrift mit Jahr, Zeitraum (Start und Ende) mit Schnellwahl des Zeitraumbeginns.
+- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert und prozentualem **Fortschrittsring**.
+- **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
+- **Fußzeile:** Urlaubskontingent, Backup-Buttons, Legende mit Zählern, Versionsinfo.
 
-Alle Elemente werden auf 90 % Größe dargestellt (wie eine Browser-Zoomstufe von 90 %).
+Die Darstellung passt sich der Fensterbreite an (4 / 2 / 1 Spalten).
 
 ---
 
 ## 3. Zeitraum wählen
 
-In der Kopfzeile steht: `Anwesenheit im Zeitraum: [Start] – [Ende]`.
+In der Kopfzeile steht: `Zeitraum [Start] – [Ende]`.
 
 - **Startdatum ändern:** Wird ein neues Startdatum gewählt, wird das Enddatum automatisch auf **Start + 12 Monate – 1 Tag** gesetzt. Danach kann das Enddatum auch einzeln geändert werden.
-- **Schnellwahl:** Über `Schnellwahl Zeitraumbeginn: [Monat] [Jahr]` + **Übernehmen** springst du direkt zu einem bestimmten Startmonat.
+- **Schnellwahl:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile + **Übernehmen** springst du direkt zu einem bestimmten Startmonat.
 - Die Auswahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ---
 
-## 4. Die Monatskalender
+## 4. Die Monatsansicht
 
-Für jeden Monat des Zeitraums erscheint ein Kalenderblatt mit folgendem Aufbau:
+Die Mitte der Seite besteht aus zwei Bereichen:
 
-- **Monatstitel:** z. B. `September 2026 (22 Werktage - 13 von 13 Büropflichttagen)`
-  - *Werktage:* Anzahl der Arbeitstage (Montag bis Freitag) im Monat.
-  - *Büropflichttage:* So viele Bürotage sind im Monat mindestens erforderlich (siehe Kapitel 6).
-- **Wochentagskopf:** Mo – Di – Mi – Do – Fr.
-- **Tageszellen:** Jeder Werktag ist ein Feld. Leere Felder am Anfang der ersten Woche füllen den Kalender aus. Wochenenden werden nicht dargestellt.
+### 4.1 Hero-Karte (aktueller Monat)
 
-**Aktueller Monat:** Der Monat mit dem heutigen Datum wird als große Fokus-Karte ganz oben dargestellt (grüner Rahmen, grüne Überschrift, größere Tageszellen). Die übrigen Monate erscheinen darunter als kompaktere Mini-Kalender. Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, werden alle Monate als Mini-Kalender dargestellt.
+Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„● Läuft gerade"** dargestellt. Sie enthält:
 
-**Icons in den Zellen:** Neben der Tageszahl zeigt jede erfasste Zelle ein Symbol, das die Art auch ohne Farberkennung deutlich macht (z. B. 🏢 Bürotag, 🏠 Homeoffice, ⚕️ Krankheit, 🏖️ Urlaub, ✈️ Dienstreise).
+- **Monatsname und Jahr**, z. B. `August 2026`.
+- **Werktage:** Anzahl der Arbeitstage (Montag bis Freitag) im Monat.
+- **Bürotage (Soll):** erfasste Bürotage im Verhältnis zu den Pflichttagen, z. B. `1 / 12`, mit **Fortschrittsbalken**.
+- Den Wochenkalender (Mo – Di – Mi – Do – Fr) mit größeren Tageszellen.
+
+### 4.2 Jahresübersicht
+
+Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 4 Spalten). Jede Karte zeigt:
+
+- **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`).
+- Einen schmalen **Fortschrittsbalken** für den Anteil der erfüllten Büropflichttage.
+- Den Wochenkalender in kleinerer Darstellung.
+
+Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Karte ausgeblendet und alle Monate erscheinen als Mini-Karten.
+
+### 4.3 Tageszellen
+
+- Jeder Werktag ist ein Feld; Wochenenden werden nicht dargestellt. Leere Felder am Anfang der ersten Woche füllen den Kalender aus.
+- **Erfasste Tage** haben die Farbe ihrer Art (siehe Kapitel 6). Bürotage tragen zusätzlich einen kleinen Punkt oben rechts.
+- **Unerfasste Tage in der Vergangenheit** bleiben weiß.
+- **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
+- Die **Legende** unterhalb der Jahresübersicht erklärt die Farben und Zähler (siehe Kapitel 6).
 
 ---
 
@@ -69,6 +86,7 @@ Hinweise:
 
 - Für ein Datum kann immer nur **ein** Eintrag existieren. Verschiebst du einen Eintrag auf ein Datum, das bereits belegt ist, erscheint eine Warnung.
 - Ein weißes Feld bedeutet: für diesen Tag wurde noch nichts erfasst.
+- Ein gestrichelt umrandetes Feld bedeutet: dieser zukünftige Tag ist noch nicht erfasst.
 - Ein Klick auf das leere Fenster neben dem Dialog schließt ihn ebenfalls.
 
 ---
@@ -78,14 +96,21 @@ Hinweise:
 | Farbe     | Art        | Bedeutung                                        |
 |-----------|------------|--------------------------------------------------|
 | Grün      | Bürotag    | Vor Ort im Büro gearbeitet                       |
-| Beige     | Homeoffice | Im Homeoffice gearbeitet (fast neutral)          |
+| Beige     | Homeoffice | Im Homeoffice gearbeitet                         |
 | Ocker     | Freizeittag| Freizeittag                                      |
-| Blau      | Dienstreise| Dienstreise                                      |
-| Türkis    | Feiertag   | Feiertag                                         |
+| Violett   | Dienstreise| Dienstreise                                      |
+| Blau      | Feiertag   | Feiertag                                         |
 | Rot       | Krankheit  | Krank (Krankschreibung)                          |
-| Violett   | Urlaub     | Urlaub (siehe Zähler in der Legende)             |
+| Grau      | Urlaub     | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** in der Fußzeile zeigt für jede Art die Anzahl im gewählten Zeitraum, z. B. `Bürotag (13)`.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`.
+
+Die Legendeneinträge sind **klickbar und fungieren als Filter**:
+
+- Ein Klick auf eine Art (z. B. `Krankheit`) blendet alle anderen Tage aus – nur noch diese Art wird im Kalender hervorgehoben (dunkler Rahmen, Rest stark abgeblendet).
+- Der aktive Filter ist grün umrandet; die übrigen Einträge sind abgeblendet.
+- Ein erneuter Klick auf die aktive Art hebt den Filter wieder auf (alle Tage werden normal angezeigt).
+- Per Tooltip (Maus darüberhalten) wird die Funktion des jeweiligen Eintrags angezeigt.
 
 Für Urlaub wird zusätzlich angezeigt:
 
@@ -115,14 +140,14 @@ Büropflichttage = (Werktage – Neutrale Tage) × 0,6  (abgerundet)
 
 Beispiel bei 22 Werktagen und keinen neutralen Tagen: `22 × 0,6 = 13,2` → **13 Pflichttage**. Bei 21 Werktagen: `21 × 0,6 = 12,6` → **12 Pflichttage**.
 
-Die Darstellung im Monatstitel zeigt den Ist- und Sollwert, z. B. `13 von 13 Büropflichttagen`.
+Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/13` (Bürotage/Pflichttage).
 
 ### 7.2 Verhältnis Büro/Homeoffice (KPI-Karten)
 
-Unter der Kopfzeile zeigen vier **KPI-Karten** die wichtigsten Kennzahlen auf einen Blick:
+Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick:
 
-- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen (Soll 60 %) mit Fortschrittsbalken.
-- **Homeofficequote:** Anteil der Homeoffice-Tage (Soll 40 %) mit Fortschrittsbalken.
+- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen (Soll 60 %).
+- **Homeofficequote:** Anteil der Homeoffice-Tage (Soll 40 %).
 - **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats.
 - **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent.
 
@@ -131,7 +156,6 @@ Regeln:
 - **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Teilweise erfasste Monate werden nicht mitgezählt.
 - Die Prozentwerte werden ganzzahlig gerundet.
 - Sind keine vollständigen Monate vorhanden, zeigen Büro- und Homeofficequote **„–"**.
-- Unter den Karten steht der Hinweis: *„Büro- und Homeofficequote: nur vollständige Monate (alle Werktage erfasst)"*.
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 
@@ -178,7 +202,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten rechts wird die aktuelle Version angezeigt, z. B. `Version 1.0 vom 11.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.1 vom 11.08.2026`.
 
 ---
 

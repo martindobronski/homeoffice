@@ -3,25 +3,23 @@
 let urlaubTotal = 30;
 
 const WORK_TYPES = [
-    { key: 'BUEROTAG', label: 'Bürotag', color: '#5B9E64' },
-    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#F2F0E9' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#D9A96F' },
-    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#8FA8C9' },
-    { key: 'FEIERTAG', label: 'Feiertag', color: '#93C5C0' },
-    { key: 'KRANKHEIT', label: 'Krankheit', color: '#C0392B' },
-    { key: 'URLAUB', label: 'Urlaub', color: '#9B7FBB' }
+    { key: 'BUEROTAG', label: 'Bürotag', color: '#2D6A4F' },
+    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#8A8471' },
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#B9791E' },
+    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#6B5CA5' },
+    { key: 'FEIERTAG', label: 'Feiertag', color: '#4C7EA8' },
+    { key: 'KRANKHEIT', label: 'Krankheit', color: '#B23A48' },
+    { key: 'URLAUB', label: 'Urlaub', color: '#867F70' }
 ];
 
-const COLOR = Object.fromEntries(WORK_TYPES.map(t => [t.key, t.color]));
-const GRAY = '#B0B0B0';
-const TYPE_ICONS = {
-    BUEROTAG: '🏢',
-    HOMEOFFICE: '🏠',
-    FREIZEITTAG: '🏃',
-    DIENSTREISE: '✈️',
-    FEIERTAG: '🎉',
-    KRANKHEIT: '⚕️',
-    URLAUB: '🏖️'
+const TYPE_CLASS = {
+    BUEROTAG: 'office',
+    HOMEOFFICE: 'ho',
+    FREIZEITTAG: 'free',
+    DIENSTREISE: 'travel',
+    FEIERTAG: 'holiday',
+    KRANKHEIT: 'sick',
+    URLAUB: 'vacation'
 };
 
 const DAYS_KEY = 'homeoffice.days';
@@ -32,13 +30,19 @@ let days = {};
 let periodStart;
 let periodEnd;
 let dialogOrigDate = null;
+let activeFilter = null;
 
-const monthsEl = document.getElementById('months');
 const startPicker = document.getElementById('startPicker');
 const endPicker = document.getElementById('endPicker');
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
 const applyButton = document.getElementById('applyButton');
+
+const heroEl = document.getElementById('hero');
+const heroTitleEl = document.getElementById('heroTitle');
+const yearGridEl = document.getElementById('yearGrid');
+const legendEl = document.getElementById('legend');
+const dashboardTitle = document.getElementById('dashboardTitle');
 
 const overlay = document.getElementById('modalOverlay');
 const dialogTitle = document.getElementById('dialogTitle');
@@ -62,11 +66,6 @@ function parseISO(s) {
 function isWeekend(d) {
     const w = d.getDay();
     return w === 0 || w === 6;
-}
-
-function weekdayIndex(d) {
-    const w = d.getDay();
-    return w === 0 ? 6 : w - 1;
 }
 
 function add12mMinusDay(isoStr) {
@@ -378,164 +377,185 @@ function onEndChange() {
     render();
 }
 
+// ---------- KPI-Karten ----------
+
 function kpiCard(label, value, sub, pct, color) {
-    const card = document.createElement('div');
-    card.className = 'kpi-card';
-    const l = document.createElement('div');
-    l.className = 'kpi-label';
-    l.textContent = label;
-    const v = document.createElement('div');
-    v.className = 'kpi-value';
-    v.textContent = value;
-    const bar = document.createElement('div');
-    bar.className = 'kpi-bar';
-    const fill = document.createElement('div');
-    fill.className = 'kpi-bar-fill';
-    fill.style.background = color || '#5B9E64';
-    fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
-    bar.appendChild(fill);
-    const s = document.createElement('div');
-    s.className = 'kpi-sub';
-    s.textContent = sub;
-    card.appendChild(l);
-    card.appendChild(v);
-    card.appendChild(bar);
-    card.appendChild(s);
-    return card;
+    return '<div class="kpi-card">'
+        + '<div class="ring-wrap">'
+        + '<div class="ring" style="--pct:' + pct + ';--ring-color:' + color + '"></div>'
+        + '<div class="ring-pct" style="color:' + color + '">' + pct + '%</div>'
+        + '</div>'
+        + '<div class="kpi-text">'
+        + '<div class="kpi-value">' + value + '</div>'
+        + '<div class="kpi-label">' + label + '</div>'
+        + '<div class="kpi-label" style="color:var(--text-faint)">' + sub + '</div>'
+        + '</div>'
+        + '</div>';
 }
 
 function renderKpis() {
-    const kpis = document.getElementById('kpis');
-    kpis.innerHTML = '';
+    const strip = document.getElementById('kpiStrip');
     const q = periodQuota(periodStart, periodEnd);
     const basis = q.office + q.homeoffice;
+    let html = '';
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-        kpis.appendChild(kpiCard('Büroquote', officePct + ' %', 'Soll 60 %',
-            officePct / 60 * 100, '#5B9E64'));
-        kpis.appendChild(kpiCard('Homeofficequote', homeofficePct + ' %', 'Soll 40 %',
-            homeofficePct / 40 * 100, '#D9A96F'));
+        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#2D6A4F');
+        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#8A8471');
     } else {
-        kpis.appendChild(kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#5B9E64'));
-        kpis.appendChild(kpiCard('Homeofficequote', '–', 'keine vollständigen Monate', 0, '#D9A96F'));
+        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#2D6A4F');
+        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#8A8471');
     }
     const now = new Date();
     const st = monthStat(now.getFullYear(), now.getMonth() + 1);
     const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
-    const pflichtPct = st.pflicht > 0 ? st.office / st.pflicht * 100 : 0;
-    kpis.appendChild(kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#5B9E64'));
+    const pflichtPct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
+        'Bürotage erfasst', pflichtPct, '#2D6A4F');
     let urlaubYear = 0;
     for (const iso of Object.keys(days)) {
         if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
             urlaubYear++;
         }
     }
-    const urlaubPct = urlaubTotal > 0 ? urlaubYear / urlaubTotal * 100 : 0;
-    kpis.appendChild(kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
-        'Kontingent', urlaubPct, '#9B7FBB'));
+    const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
+    html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
+        'Kontingent verbraucht', urlaubPct, '#867F70');
+    strip.innerHTML = html;
 }
 
 // ---------- Monatskalender ----------
 
+function buildMonthCells(year, month) {
+    const daysInMonth = new Date(year, month, 0).getDate();
+    const cells = [];
+    let row = 0;
+    let prevCol = -1;
+    for (let d = 1; d <= daysInMonth; d++) {
+        const wd = new Date(year, month - 1, d).getDay();
+        if (wd === 0 || wd === 6) {
+            continue;
+        }
+        const col = wd - 1;
+        if (col <= prevCol) {
+            row++;
+        }
+        prevCol = col;
+        cells.push({ row: row, col: col, day: d, iso: fmt(new Date(year, month - 1, d)), type: days[fmt(new Date(year, month - 1, d))] });
+    }
+    return { cells: cells, rows: row + 1, workdays: cells.length };
+}
+
+function renderCalGrid(year, month) {
+    const { cells, rows } = buildMonthCells(year, month);
+    const todayIso = fmt(new Date());
+    let html = '<div class="cal-grid" style="grid-template-rows:auto repeat(' + rows + ',1fr)">';
+    for (const wd of ['Mo', 'Di', 'Mi', 'Do', 'Fr']) {
+        html += '<div class="cal-head">' + wd + '</div>';
+    }
+    const grid = Array.from({ length: rows }, function () { return Array(5).fill(null); });
+    for (const c of cells) {
+        grid[c.row][c.col] = c;
+    }
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < 5; c++) {
+            const cell = grid[r][c];
+            if (!cell) {
+                html += '<div class="day empty"></div>';
+                continue;
+            }
+            const cls = TYPE_CLASS[cell.type];
+            const future = !cls && cell.iso > todayIso;
+            const filter = activeFilter
+                ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
+                : '';
+            const dayTitle = parseISO(cell.iso).toLocaleDateString('de-DE',
+                { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + '"'
+                + ' data-date="' + cell.iso + '"'
+                + ' title="' + dayTitle + '">'
+                + cell.day + '</div>';
+        }
+    }
+    html += '</div>';
+    return html;
+}
+
+function monthName(year, month) {
+    return new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long' });
+}
+
+function heroHTML(year, month) {
+    const st = monthStat(year, month);
+    const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    return '<div class="hero-head">'
+        + '<div>'
+        + '<div class="badge">● Läuft gerade</div>'
+        + '<h3>' + monthName(year, month) + ' ' + year + '</h3>'
+        + '</div>'
+        + '<div class="hero-stats">'
+        + '<div class="hero-stat">'
+        + '<div class="n">' + st.workdays + '</div>'
+        + '<div class="l">Werktage</div>'
+        + '</div>'
+        + '<div class="hero-stat">'
+        + '<div class="n">' + st.office + ' / ' + st.pflicht + '</div>'
+        + '<div class="l">Bürotage (Soll)</div>'
+        + '<div class="progress-bar" style="width:120px"><div style="width:' + pct + '%"></div></div>'
+        + '</div>'
+        + '</div>'
+        + '</div>'
+        + renderCalGrid(year, month);
+}
+
+function cardHTML(year, month) {
+    const st = monthStat(year, month);
+    const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    return '<div class="month-card">'
+        + '<div class="m-head">'
+        + '<h4>' + monthName(year, month) + '</h4>'
+        + '<span>' + st.office + '/' + st.pflicht + '</span>'
+        + '</div>'
+        + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
+        + renderCalGrid(year, month)
+        + '</div>';
+}
+
 function renderMonths() {
-    monthsEl.innerHTML = '';
     const start = parseISO(periodStart);
     const end = parseISO(periodEnd);
     const endAnchor = new Date(end.getFullYear(), end.getMonth(), 1);
     const now = new Date();
+    const curAnchor = new Date(now.getFullYear(), now.getMonth(), 1);
+    const inRange = curAnchor >= new Date(start.getFullYear(), start.getMonth(), 1)
+        && curAnchor <= endAnchor;
     let y = start.getFullYear();
     let m = start.getMonth() + 1;
+    let heroShown = false;
+    let cards = '';
     while (new Date(y, m - 1, 1) <= endAnchor) {
-        const focus = y === now.getFullYear() && m === now.getMonth() + 1;
-        monthsEl.appendChild(buildMonthPanel(y, m, focus));
+        const isCurrent = y === now.getFullYear() && m === now.getMonth() + 1;
+        if (isCurrent && inRange) {
+            heroEl.innerHTML = heroHTML(y, m);
+            heroShown = true;
+        } else {
+            cards += cardHTML(y, m);
+        }
         m++;
         if (m === 13) {
             m = 1;
             y++;
         }
     }
-}
-
-function buildMonthPanel(year, month, focus) {
-    const st = monthStat(year, month);
-
-    const panel = document.createElement('div');
-    panel.className = 'month-panel ' + (focus ? 'focus' : 'mini');
-
-    const title = document.createElement('div');
-    title.className = 'month-title' + (focus ? ' focus' : '');
-    const monat = new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long' });
-    title.textContent = monat + ' ' + year + ' (' + st.workdays + ' Werktage - '
-        + st.office + ' von ' + st.pflicht + ' Büropflichttagen)';
-    panel.appendChild(title);
-
-    const week = document.createElement('div');
-    week.className = 'weekday-row';
-    for (const wd of ['Mo', 'Di', 'Mi', 'Do', 'Fr']) {
-        const c = document.createElement('div');
-        c.textContent = wd;
-        week.appendChild(c);
-    }
-    panel.appendChild(week);
-
-    const grid = document.createElement('div');
-    grid.className = 'day-grid';
-    let lead = weekdayIndex(new Date(year, month - 1, 1));
-    if (lead >= 5) {
-        lead = 0;
-    }
-    for (let i = 0; i < lead; i++) {
-        grid.appendChild(emptyCell());
-    }
-    const dim = new Date(year, month, 0).getDate();
-    for (let day = 1; day <= dim; day++) {
-        const d = new Date(year, month - 1, day);
-        if (isWeekend(d)) {
-            continue;
-        }
-        grid.appendChild(buildDayCell(d));
-    }
-    panel.appendChild(grid);
-    return panel;
-}
-
-function emptyCell() {
-    const c = document.createElement('div');
-    c.className = 'cell empty';
-    return c;
-}
-
-function buildDayCell(d) {
-    const iso = fmt(d);
-    const type = days[iso];
-    const c = document.createElement('div');
-    c.className = 'cell';
-    const num = document.createElement('span');
-    num.className = 'cell-day';
-    num.textContent = d.getDate();
-    c.appendChild(num);
-    if (type && TYPE_ICONS[type]) {
-        const icon = document.createElement('span');
-        icon.className = 'cell-icon';
-        icon.textContent = TYPE_ICONS[type];
-        c.appendChild(icon);
-    }
-    c.style.background = type ? (COLOR[type] || GRAY) : '#FFFFFF';
-    c.title = d.toLocaleDateString('de-DE',
-        { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
-    c.addEventListener('click', function () {
-        openDialog(iso);
-    });
-    return c;
+    yearGridEl.innerHTML = cards;
+    heroEl.classList.toggle('hidden', !heroShown);
+    heroTitleEl.classList.toggle('hidden', !heroShown);
 }
 
 // ---------- Legende ----------
 
 function renderLegend() {
-    const legend = document.getElementById('legend');
-    legend.innerHTML = '';
     const start = parseISO(periodStart);
     const end = parseISO(periodEnd);
     const counts = {};
@@ -544,12 +564,10 @@ function renderLegend() {
         if (d < start || d > end) {
             continue;
         }
-        const t = days[iso];
-        counts[t] = (counts[t] || 0) + 1;
+        counts[days[iso]] = (counts[days[iso]] || 0) + 1;
     }
     const now = new Date();
     const today = fmt(now);
-    let urlaubYear = 0;
     let urlaubGenommen = 0;
     let urlaubGeplant = 0;
     for (const iso of Object.keys(days)) {
@@ -559,29 +577,28 @@ function renderLegend() {
         if (days[iso] !== 'URLAUB') {
             continue;
         }
-        urlaubYear++;
         if (iso < today) {
             urlaubGenommen++;
         } else if (iso > today) {
             urlaubGeplant++;
         }
     }
-    const ungeplant = Math.max(0, urlaubTotal - urlaubYear);
-    for (const t of WORK_TYPES) {
-        const item = document.createElement('span');
-        item.className = 'legend-item';
-        const swatch = document.createElement('span');
-        swatch.className = 'swatch';
-        swatch.style.background = t.color;
-        const label = document.createElement('span');
-        label.textContent = t.key === 'URLAUB'
-            ? 'Urlaub (genommen ' + urlaubGenommen + ' / geplant ' + urlaubGeplant
-                + ' / ungeplant ' + ungeplant + ')'
-            : t.label + ' (' + (counts[t.key] || 0) + ')';
-        item.appendChild(swatch);
-        item.appendChild(label);
-        legend.appendChild(item);
-    }
+    const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
+    legendEl.innerHTML = WORK_TYPES.map(function (t) {
+        const label = t.key === 'URLAUB'
+            ? 'Urlaub <b>' + urlaubGenommen + '</b> genommen · <b>' + urlaubGeplant + '</b> geplant · <b>' + ungeplant + '</b> ungeplant'
+            : t.label + ' <b>' + (counts[t.key] || 0) + '</b>';
+        const active = activeFilter === t.key ? ' active' : (activeFilter ? ' dimmed' : '');
+        const title = activeFilter === t.key
+            ? 'Filter aufheben (alle anzeigen)'
+            : 'Nur „' + t.label + '“ anzeigen';
+        return '<button type="button" class="chip' + active + '"'
+            + ' data-filter="' + t.key + '"'
+            + ' title="' + title + '">'
+            + '<span class="sw" style="background:' + t.color + '"></span>'
+            + label
+            + '</button>';
+    }).join('');
 }
 
 // ---------- Dialog ----------
@@ -671,9 +688,30 @@ document.getElementById('urlaubApply').addEventListener('click', function () {
     render();
 });
 
+// ---------- Ereignis-Delegation ----------
+
+function gridClick(e) {
+    const cell = e.target.closest('.day[data-date]');
+    if (cell) {
+        openDialog(cell.getAttribute('data-date'));
+    }
+}
+
+legendEl.addEventListener('click', function (e) {
+    const chip = e.target.closest('.chip[data-filter]');
+    if (!chip) {
+        return;
+    }
+    const key = chip.getAttribute('data-filter');
+    activeFilter = activeFilter === key ? null : key;
+    renderMonths();
+    renderLegend();
+});
+
 // ---------- Initialisierung ----------
 
 function render() {
+    dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + parseISO(periodStart).getFullYear();
     syncQuickSelection();
     renderKpis();
     renderMonths();
@@ -691,6 +729,8 @@ function init() {
     applyButton.addEventListener('click', applyQuickSelection);
     startPicker.addEventListener('change', onStartChange);
     endPicker.addEventListener('change', onEndChange);
+    heroEl.addEventListener('click', gridClick);
+    yearGridEl.addEventListener('click', gridClick);
     render();
 }
 
