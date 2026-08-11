@@ -191,6 +191,14 @@ footer {
     color: #888;
 }
 
+.manual-link {
+    position: absolute;
+    right: 8px;
+    bottom: 16px;
+    font-size: 10px;
+    color: #444;
+}
+
 .overlay {
     position: fixed;
     inset: 0;
