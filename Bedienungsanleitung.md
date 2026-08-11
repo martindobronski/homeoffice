@@ -16,11 +16,12 @@ Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Bro
 
 ## 2. Aufbau der Oberfläche
 
-Das Fenster ist in drei Bereiche gegliedert:
+Das Fenster ist in vier Bereiche gegliedert:
 
-- **Kopfzeile:** Zeitraum (Start und Ende), Schnellwahl des Zeitraumbeginns und die Büro/Homeoffice-Quote rechts oben.
-- **Mitte:** Kalenderblätter für alle Monate des gewählten Zeitraums.
-- **Fußzeile:** Backup-Buttons (links), Legende mit Zählern (Mitte), Versionsinfo (rechts unten).
+- **Kopfzeile:** Zeitraum (Start und Ende) und Schnellwahl des Zeitraumbeginns.
+- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand mit großen Zahlen und Fortschrittsbalken.
+- **Mitte:** Kalenderblätter für alle Monate des gewählten Zeitraums (aktueller Monat als große Fokus-Karte).
+- **Fußzeile:** Backup-Buttons (links), Urlaubskontingent (links), Legende mit Zählern (Mitte), Versionsinfo (rechts unten).
 
 Alle Elemente werden auf 90 % Größe dargestellt (wie eine Browser-Zoomstufe von 90 %).
 
@@ -46,7 +47,9 @@ Für jeden Monat des Zeitraums erscheint ein Kalenderblatt mit folgendem Aufbau:
 - **Wochentagskopf:** Mo – Di – Mi – Do – Fr.
 - **Tageszellen:** Jeder Werktag ist ein Feld. Leere Felder am Anfang der ersten Woche füllen den Kalender aus. Wochenenden werden nicht dargestellt.
 
-**Aktueller Monat:** Der Monat mit dem heutigen Datum wird mit einem grünen Balken in der Überschrift und einem grünen Rahmen hervorgehoben.
+**Aktueller Monat:** Der Monat mit dem heutigen Datum wird als große Fokus-Karte ganz oben dargestellt (grüner Rahmen, grüne Überschrift, größere Tageszellen). Die übrigen Monate erscheinen darunter als kompaktere Mini-Kalender. Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, werden alle Monate als Mini-Kalender dargestellt.
+
+**Icons in den Zellen:** Neben der Tageszahl zeigt jede erfasste Zelle ein Symbol, das die Art auch ohne Farberkennung deutlich macht (z. B. 🏢 Bürotag, 🏠 Homeoffice, ⚕️ Krankheit, 🏖️ Urlaub, ✈️ Dienstreise).
 
 ---
 
@@ -75,12 +78,12 @@ Hinweise:
 | Farbe     | Art        | Bedeutung                                        |
 |-----------|------------|--------------------------------------------------|
 | Grün      | Bürotag    | Vor Ort im Büro gearbeitet                       |
-| Gelb      | Homeoffice | Im Homeoffice gearbeitet                         |
-| Orange    | Freizeittag| Freizeittag                                      |
+| Beige     | Homeoffice | Im Homeoffice gearbeitet (fast neutral)          |
+| Ocker     | Freizeittag| Freizeittag                                      |
 | Blau      | Dienstreise| Dienstreise                                      |
-| Cyan      | Feiertag   | Feiertag                                         |
+| Türkis    | Feiertag   | Feiertag                                         |
 | Rot       | Krankheit  | Krank (Krankschreibung)                          |
-| Grau      | Urlaub     | Urlaub (siehe Zähler in der Legende)             |
+| Violett   | Urlaub     | Urlaub (siehe Zähler in der Legende)             |
 
 Die **Legende** in der Fußzeile zeigt für jede Art die Anzahl im gewählten Zeitraum, z. B. `Bürotag (13)`.
 
@@ -114,19 +117,21 @@ Beispiel bei 22 Werktagen und keinen neutralen Tagen: `22 × 0,6 = 13,2` → **1
 
 Die Darstellung im Monatstitel zeigt den Ist- und Sollwert, z. B. `13 von 13 Büropflichttagen`.
 
-### 7.2 Verhältnis Büro/Homeoffice (Quote)
+### 7.2 Verhältnis Büro/Homeoffice (KPI-Karten)
 
-Rechts oben in der Kopfzeile steht:
+Unter der Kopfzeile zeigen vier **KPI-Karten** die wichtigsten Kennzahlen auf einen Blick:
 
-```
-Büro: X/B (p %) · Homeoffice: Y/B (p %)
-```
+- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen (Soll 60 %) mit Fortschrittsbalken.
+- **Homeofficequote:** Anteil der Homeoffice-Tage (Soll 40 %) mit Fortschrittsbalken.
+- **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats.
+- **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent.
 
-- **X** = Bürotage, **Y** = Homeoffice-Tage, **B** = Büro + Homeoffice insgesamt.
+Regeln:
+
 - **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Teilweise erfasste Monate werden nicht mitgezählt.
 - Die Prozentwerte werden ganzzahlig gerundet.
-- Sind keine vollständigen Monate vorhanden, wird **„–"** angezeigt.
-- Ein Mauszeiger über der Quote zeigt den Hinweis: *„Verhältnis Büro zu Homeoffice - nur vollständige Monate (alle Werktage erfasst)"*.
+- Sind keine vollständigen Monate vorhanden, zeigen Büro- und Homeofficequote **„–"**.
+- Unter den Karten steht der Hinweis: *„Büro- und Homeofficequote: nur vollständige Monate (alle Werktage erfasst)"*.
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 

@@ -44,12 +44,62 @@ body {
     background: #999;
 }
 
-.quote {
-    margin-left: auto;
+.kpi-area {
+    padding: 10px 14px 0;
+}
+
+.kpi-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.kpi-card {
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    min-width: 150px;
+    background: #fafafa;
+    text-align: center;
+}
+
+.kpi-label {
+    font-size: 11px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-value {
+    font-size: 26px;
     font-weight: bold;
-    font-size: 13px;
-    white-space: nowrap;
-    padding-left: 12px;
+    margin: 4px 0;
+}
+
+.kpi-bar {
+    height: 6px;
+    background: #e0e0e0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.kpi-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.kpi-sub {
+    font-size: 10px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.kpi-note {
+    text-align: center;
+    font-size: 10px;
+    color: #999;
+    padding-top: 6px;
 }
 
 main {
@@ -112,7 +162,11 @@ main {
 }
 
 .month-panel.mini .cell {
-    height: 20px;
+    height: 24px;
+    font-size: 10px;
+}
+
+.month-panel.mini .cell-icon {
     font-size: 10px;
 }
 
@@ -128,8 +182,12 @@ main {
 }
 
 .month-panel.focus .cell {
-    height: 44px;
+    height: 46px;
     font-size: 16px;
+}
+
+.month-panel.focus .cell-icon {
+    font-size: 20px;
 }
 
 .weekday-row {
@@ -155,11 +213,22 @@ main {
 .cell {
     height: 24px;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    line-height: 1.1;
     font-size: 11px;
     cursor: pointer;
     border: 1px solid #999;
+}
+
+.cell-day {
+    line-height: 1.1;
+}
+
+.cell-icon {
+    line-height: 1;
+    font-size: 12px;
 }
 
 .cell.empty {

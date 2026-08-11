@@ -14,6 +14,15 @@ const WORK_TYPES = [
 
 const COLOR = Object.fromEntries(WORK_TYPES.map(t => [t.key, t.color]));
 const GRAY = '#B0B0B0';
+const TYPE_ICONS = {
+    BUEROTAG: '🏢',
+    HOMEOFFICE: '🏠',
+    FREIZEITTAG: '🏃',
+    DIENSTREISE: '✈️',
+    FEIERTAG: '🎉',
+    KRANKHEIT: '⚕️',
+    URLAUB: '🏖️'
+};
 
 const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
@@ -25,7 +34,6 @@ let periodEnd;
 let dialogOrigDate = null;
 
 const monthsEl = document.getElementById('months');
-const quoteEl = document.getElementById('quoteLabel');
 const startPicker = document.getElementById('startPicker');
 const endPicker = document.getElementById('endPicker');
 const monthBox = document.getElementById('monthBox');
@@ -354,20 +362,63 @@ function onEndChange() {
     render();
 }
 
-function renderQuote() {
+function kpiCard(label, value, sub, pct, color) {
+    const card = document.createElement('div');
+    card.className = 'kpi-card';
+    const l = document.createElement('div');
+    l.className = 'kpi-label';
+    l.textContent = label;
+    const v = document.createElement('div');
+    v.className = 'kpi-value';
+    v.textContent = value;
+    const bar = document.createElement('div');
+    bar.className = 'kpi-bar';
+    const fill = document.createElement('div');
+    fill.className = 'kpi-bar-fill';
+    fill.style.background = color || '#5B9E64';
+    fill.style.width = Math.max(0, Math.min(100, pct)) + '%';
+    bar.appendChild(fill);
+    const s = document.createElement('div');
+    s.className = 'kpi-sub';
+    s.textContent = sub;
+    card.appendChild(l);
+    card.appendChild(v);
+    card.appendChild(bar);
+    card.appendChild(s);
+    return card;
+}
+
+function renderKpis() {
+    const kpis = document.getElementById('kpis');
+    kpis.innerHTML = '';
     const q = periodQuota(periodStart, periodEnd);
     const basis = q.office + q.homeoffice;
-    const tooltip = 'Verhältnis Büro zu Homeoffice - nur vollständige Monate (alle Werktage erfasst)';
-    if (basis <= 0) {
-        quoteEl.textContent = '–';
-        quoteEl.title = tooltip;
-        return;
+    if (basis > 0) {
+        const officePct = Math.round(q.office * 100 / basis);
+        const homeofficePct = Math.round(q.homeoffice * 100 / basis);
+        kpis.appendChild(kpiCard('Büroquote', officePct + ' %', 'Soll 60 %',
+            officePct / 60 * 100, '#5B9E64'));
+        kpis.appendChild(kpiCard('Homeofficequote', homeofficePct + ' %', 'Soll 40 %',
+            homeofficePct / 40 * 100, '#D9A96F'));
+    } else {
+        kpis.appendChild(kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#5B9E64'));
+        kpis.appendChild(kpiCard('Homeofficequote', '–', 'keine vollständigen Monate', 0, '#D9A96F'));
     }
-    const officePct = Math.round(q.office * 100 / basis);
-    const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-    quoteEl.textContent = 'Büro: ' + q.office + '/' + basis + ' (' + officePct + ' %) · Homeoffice: '
-        + q.homeoffice + '/' + basis + ' (' + homeofficePct + ' %)';
-    quoteEl.title = tooltip;
+    const now = new Date();
+    const st = monthStat(now.getFullYear(), now.getMonth() + 1);
+    const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
+    const pflichtPct = st.pflicht > 0 ? st.office / st.pflicht * 100 : 0;
+    kpis.appendChild(kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
+        'Bürotage erfasst', pflichtPct, '#5B9E64'));
+    let urlaubYear = 0;
+    for (const iso of Object.keys(days)) {
+        if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
+            urlaubYear++;
+        }
+    }
+    const urlaubPct = urlaubTotal > 0 ? urlaubYear / urlaubTotal * 100 : 0;
+    kpis.appendChild(kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
+        'Kontingent', urlaubPct, '#9B7FBB'));
 }
 
 // ---------- Monatskalender ----------
@@ -445,7 +496,16 @@ function buildDayCell(d) {
     const type = days[iso];
     const c = document.createElement('div');
     c.className = 'cell';
-    c.textContent = d.getDate();
+    const num = document.createElement('span');
+    num.className = 'cell-day';
+    num.textContent = d.getDate();
+    c.appendChild(num);
+    if (type && TYPE_ICONS[type]) {
+        const icon = document.createElement('span');
+        icon.className = 'cell-icon';
+        icon.textContent = TYPE_ICONS[type];
+        c.appendChild(icon);
+    }
     c.style.background = type ? (COLOR[type] || GRAY) : '#FFFFFF';
     c.title = d.toLocaleDateString('de-DE',
         { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -599,7 +659,7 @@ document.getElementById('urlaubApply').addEventListener('click', function () {
 
 function render() {
     syncQuickSelection();
-    renderQuote();
+    renderKpis();
     renderMonths();
     renderLegend();
 }
