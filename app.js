@@ -3,13 +3,13 @@
 let urlaubTotal = 30;
 
 const WORK_TYPES = [
-    { key: 'BUEROTAG', label: 'Bürotag', color: '#4CAF50' },
-    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#FFE066' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#FF9800' },
-    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#64B5F6' },
-    { key: 'FEIERTAG', label: 'Feiertag', color: '#4DD0E1' },
-    { key: 'KRANKHEIT', label: 'Krankheit', color: '#E53935' },
-    { key: 'URLAUB', label: 'Urlaub', color: '#B0B0B0' }
+    { key: 'BUEROTAG', label: 'Bürotag', color: '#5B9E64' },
+    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#F2F0E9' },
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#D9A96F' },
+    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#8FA8C9' },
+    { key: 'FEIERTAG', label: 'Feiertag', color: '#93C5C0' },
+    { key: 'KRANKHEIT', label: 'Krankheit', color: '#C0392B' },
+    { key: 'URLAUB', label: 'Urlaub', color: '#9B7FBB' }
 ];
 
 const COLOR = Object.fromEntries(WORK_TYPES.map(t => [t.key, t.color]));

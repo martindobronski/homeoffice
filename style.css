@@ -77,7 +77,7 @@ main {
 
 .month-panel.focus {
     grid-column: 1 / -1;
-    border: 3px solid #4CAF50;
+    border: 3px solid #5B9E64;
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
 }
 
@@ -90,7 +90,7 @@ main {
 }
 
 .month-title.focus {
-    background: #4CAF50;
+    background: #5B9E64;
     color: #fff;
     font-size: 17px;
     padding: 10px 8px;
