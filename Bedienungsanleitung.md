@@ -2,7 +2,7 @@
 
 ## Büro – Anwesenheitsübersicht (Version 1.0)
 
-Die App erfasst für jeden Werktag, ob du im **Büro**, im **Homeoffice** oder in einer Sonderform (z. B. Urlaub, Krankheit) gearbeitet hast. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
+Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
 ---
 
