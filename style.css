@@ -147,6 +147,20 @@ footer {
     font-size: 11px;
 }
 
+.urlaub-setting {
+    position: absolute;
+    left: 8px;
+    bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+}
+
+.urlaub-setting input {
+    width: 56px;
+}
+
 .legend {
     display: flex;
     gap: 18px;

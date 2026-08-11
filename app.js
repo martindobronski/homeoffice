@@ -1,6 +1,6 @@
 'use strict';
 
-const TOTAL_URLAUB_DAYS = 30;
+let urlaubTotal = 30;
 
 const WORK_TYPES = [
     { key: 'BUEROTAG', label: 'Bürotag', color: '#4CAF50' },
@@ -17,6 +17,7 @@ const GRAY = '#B0B0B0';
 
 const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
+const URLAUB_KEY = 'homeoffice.urlaub';
 
 let days = {};
 let periodStart;
@@ -101,6 +102,15 @@ function loadPeriod() {
 
 function savePeriod() {
     localStorage.setItem(PERIOD_KEY, JSON.stringify({ start: periodStart, end: periodEnd }));
+}
+
+function loadUrlaub() {
+    const v = parseInt(localStorage.getItem(URLAUB_KEY), 10);
+    urlaubTotal = (Number.isFinite(v) && v >= 0) ? v : 30;
+}
+
+function saveUrlaub() {
+    localStorage.setItem(URLAUB_KEY, String(urlaubTotal));
 }
 
 // ---------- Export / Import ----------
@@ -480,7 +490,7 @@ function renderLegend() {
             urlaubGeplant++;
         }
     }
-    const ungeplant = Math.max(0, TOTAL_URLAUB_DAYS - urlaubYear);
+    const ungeplant = Math.max(0, urlaubTotal - urlaubYear);
     for (const t of WORK_TYPES) {
         const item = document.createElement('span');
         item.className = 'legend-item';
@@ -574,6 +584,17 @@ document.getElementById('importFile').addEventListener('change', function (e) {
     e.target.value = '';
 });
 
+document.getElementById('urlaubApply').addEventListener('click', function () {
+    const v = parseInt(document.getElementById('urlaubInput').value, 10);
+    if (!Number.isFinite(v) || v < 0) {
+        alert('Bitte eine gültige Anzahl Urlaubstage eingeben.');
+        return;
+    }
+    urlaubTotal = v;
+    saveUrlaub();
+    render();
+});
+
 // ---------- Initialisierung ----------
 
 function render() {
@@ -586,6 +607,8 @@ function render() {
 function init() {
     loadDays();
     loadPeriod();
+    loadUrlaub();
+    document.getElementById('urlaubInput').value = urlaubTotal;
     populateQuick();
     fillTypeSelect();
     syncPickers();

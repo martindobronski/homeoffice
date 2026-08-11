@@ -28,6 +28,12 @@
             <button id="importButton" title="Backup-Datei importieren (überschreibt aktuelle Daten)">Backup importieren</button>
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
         </div>
+        <div class="urlaub-setting">
+            <label for="urlaubInput">Urlaubskontingent:</label>
+            <input type="number" id="urlaubInput" min="0" max="365" step="1">
+            <span>Tage</span>
+            <button id="urlaubApply">OK</button>
+        </div>
         <div id="legend" class="legend"></div>
         <div id="version" class="version">Version 1.0 vom 11.08.2026</div>
     </footer>
