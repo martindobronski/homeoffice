@@ -164,7 +164,6 @@ Die Datei enthält alle Tages-Einträge sowie den aktuell eingestellten Zeitraum
 Klick auf **Backup importieren** öffnet den Dateidialog. Unterstützt werden:
 
 - **JSON-Dateien** (wie exportiert) – übernehmen zusätzlich den Zeitraum.
-- **CSV-Dateien** (z. B. aus der Java-Version), eine Zeile pro Eintrag im Format `JJJJ-MM-TT,ART`, z. B. `2026-09-01,BUEROTAG`.
 
 Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
 
