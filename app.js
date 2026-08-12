@@ -979,7 +979,7 @@ function quickOnOver(e) {
     quickTimer = setTimeout(function () {
         quickTimer = null;
         quickShow(iso, cell.getBoundingClientRect());
-    }, 500);
+    }, 900);
 }
 
 function quickOnOut(e) {
