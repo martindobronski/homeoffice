@@ -3,13 +3,13 @@
 let urlaubTotal = 30;
 
 const WORK_TYPES = [
-    { key: 'BUEROTAG', label: 'Bürotag', color: '#2D6A4F' },
-    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#8A8471' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#B9791E' },
-    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#6B5CA5' },
-    { key: 'FEIERTAG', label: 'Feiertag', color: '#4C7EA8' },
-    { key: 'KRANKHEIT', label: 'Krankheit', color: '#B23A48' },
-    { key: 'URLAUB', label: 'Urlaub', color: '#867F70' }
+    { key: 'BUEROTAG', label: 'Bürotag', color: '#3B6D11' },
+    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#5F5E5A' },
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#854F0B' },
+    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#534AB7' },
+    { key: 'FEIERTAG', label: 'Feiertag', color: '#185FA5' },
+    { key: 'KRANKHEIT', label: 'Krankheit', color: '#A32D2D' },
+    { key: 'URLAUB', label: 'Urlaub', color: '#993C1D' }
 ];
 
 const TYPE_CLASS = {
@@ -22,11 +22,25 @@ const TYPE_CLASS = {
     URLAUB: 'vacation'
 };
 
+const TYPE_ICONS = {
+    BUEROTAG: '🏢',
+    HOMEOFFICE: '🏠',
+    FREIZEITTAG: '🏃',
+    DIENSTREISE: '✈️',
+    FEIERTAG: '🎉',
+    KRANKHEIT: '🤒',
+    URLAUB: '🏖️'
+};
+
+const TYPE_LABEL = Object.fromEntries(WORK_TYPES.map(function (t) { return [t.key, t.label]; }));
+
 const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
 const URLAUB_KEY = 'homeoffice.urlaub';
+const GEBUCHT_KEY = 'homeoffice.gebucht';
 
 let days = {};
+let gebucht = {};
 let periodStart;
 let periodEnd;
 let dialogOrigDate = null;
@@ -49,6 +63,7 @@ const dialogDate = document.getElementById('dialogDate');
 const dialogEndDate = document.getElementById('dialogEndDate');
 const dialogType = document.getElementById('dialogType');
 const dialogDelete = document.getElementById('dialogDelete');
+const dialogGebucht = document.getElementById('dialogGebucht');
 
 const confirmOverlay = document.getElementById('confirmOverlay');
 const confirmText = document.getElementById('confirmText');
@@ -106,6 +121,18 @@ function loadDays() {
 
 function saveDays() {
     storeSet(DAYS_KEY, JSON.stringify(days));
+}
+
+function loadGebucht() {
+    try {
+        gebucht = JSON.parse(storeGet(GEBUCHT_KEY)) || {};
+    } catch (e) {
+        gebucht = {};
+    }
+}
+
+function saveGebucht() {
+    storeSet(GEBUCHT_KEY, JSON.stringify(gebucht));
 }
 
 
@@ -239,15 +266,16 @@ function parseBackupText(text) {
                 throw new Error('ungültiger Eintrag');
             }
         }
-        return { days: data.days, period: data.period };
+        return { days: data.days, period: data.period, gebucht: data.gebucht };
     }
-    return { days: csvToDays(text), period: null };
+    return { days: csvToDays(text), period: null, gebucht: {} };
 }
 
 function exportBackup() {
     const data = {
         days: days,
-        period: { start: periodStart, end: periodEnd }
+        period: { start: periodStart, end: periodEnd },
+        gebucht: gebucht
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
@@ -265,12 +293,14 @@ function handleImportFile(file) {
         try {
             const data = parseBackupText(reader.result);
             days = data.days;
+            gebucht = data.gebucht && typeof data.gebucht === 'object' ? data.gebucht : {};
             if (data.period && data.period.start && isValidISODate(data.period.start)) {
                 periodStart = data.period.start;
                 periodEnd = add12mMinusDay(periodStart);
                 savePeriod();
             }
             saveDays();
+            saveGebucht();
             populateQuick();
             render();
             alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
@@ -422,18 +452,18 @@ function renderKpis() {
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#2D6A4F');
-        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#8A8471');
+        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#3B6D11');
+        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#5F5E5A');
     } else {
-        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#2D6A4F');
-        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#8A8471');
+        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11');
+        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A');
     }
     const now = new Date();
     const st = monthStat(now.getFullYear(), now.getMonth() + 1);
     const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
     const pflichtPct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
     html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#2D6A4F');
+        'Bürotage erfasst', pflichtPct, '#3B6D11');
     let urlaubYear = 0;
     for (const iso of Object.keys(days)) {
         if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
@@ -442,7 +472,7 @@ function renderKpis() {
     }
     const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
-        'Kontingent verbraucht', urlaubPct, '#867F70');
+        'Kontingent verbraucht', urlaubPct, '#993C1D');
     strip.innerHTML = html;
 }
 
@@ -491,12 +521,19 @@ function renderCalGrid(year, month) {
             const filter = activeFilter
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
-            const dayTitle = parseISO(cell.iso).toLocaleDateString('de-DE',
+            const tipDate = parseISO(cell.iso).toLocaleDateString('de-DE',
                 { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+            const tip = cell.type
+                ? tipDate + '\n' + (TYPE_LABEL[cell.type] || cell.type)
+                : tipDate;
+            const icon = cls ? '<span class="cell-icon">' + TYPE_ICONS[cell.type] + '</span>' : '';
+            const check = gebucht[cell.iso]
+                ? '<span class="check" aria-label="gebucht">✓</span>'
+                : '';
             html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + '"'
                 + ' data-date="' + cell.iso + '"'
-                + ' title="' + dayTitle + '">'
-                + cell.day + '</div>';
+                + ' data-tip="' + tip + '">'
+                + cell.day + icon + check + '</div>';
         }
     }
     html += '</div>';
@@ -618,6 +655,7 @@ function renderLegend() {
             + ' data-filter="' + t.key + '"'
             + ' title="' + title + '">'
             + '<span class="sw" style="background:' + t.color + '"></span>'
+            + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
             + label
             + '</button>';
     }).join('');
@@ -642,6 +680,7 @@ function openDialog(iso) {
     dialogDate.value = iso;
     dialogEndDate.value = iso;
     dialogType.value = existing || 'BUEROTAG';
+    dialogGebucht.checked = !!gebucht[iso];
     dialogDelete.classList.toggle('hidden', !existing);
     overlay.classList.remove('hidden');
 }
@@ -657,6 +696,14 @@ dialogDate.addEventListener('change', function () {
     }
 });
 
+function setGebuchtFlag(iso, checked) {
+    if (checked) {
+        gebucht[iso] = true;
+    } else {
+        delete gebucht[iso];
+    }
+}
+
 document.getElementById('dialogOk').addEventListener('click', function () {
     const newDate = dialogDate.value;
     const endDate = dialogEndDate.value;
@@ -670,6 +717,7 @@ document.getElementById('dialogOk').addEventListener('click', function () {
         const end = parseISO(endDate);
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
             days[fmt(d)] = type;
+            setGebuchtFlag(fmt(d), dialogGebucht.checked);
         }
     } else {
         if (dialogOrigDate !== newDate && days[newDate]) {
@@ -678,10 +726,13 @@ document.getElementById('dialogOk').addEventListener('click', function () {
         }
         if (dialogOrigDate !== newDate && days[dialogOrigDate]) {
             delete days[dialogOrigDate];
+            delete gebucht[dialogOrigDate];
         }
         days[newDate] = type;
+        setGebuchtFlag(newDate, dialogGebucht.checked);
     }
     saveDays();
+    saveGebucht();
     closeDialog();
     render();
 });
@@ -710,9 +761,11 @@ confirmDelete.addEventListener('click', function () {
     }
     for (let d = new Date(pendingDelete.start); d <= pendingDelete.end; d.setDate(d.getDate() + 1)) {
         delete days[fmt(d)];
+        delete gebucht[fmt(d)];
     }
     pendingDelete = null;
     saveDays();
+    saveGebucht();
     closeDialog();
     confirmOverlay.classList.add('hidden');
     render();
@@ -734,6 +787,17 @@ document.getElementById('dialogCancel').addEventListener('click', closeDialog);
 overlay.addEventListener('click', function (e) {
     if (e.target === overlay) {
         closeDialog();
+    }
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') {
+        return;
+    }
+    closeDialog();
+    if (!confirmOverlay.classList.contains('hidden')) {
+        pendingDelete = null;
+        confirmOverlay.classList.add('hidden');
     }
 });
 
@@ -781,10 +845,12 @@ function gridContext(e) {
     const iso = cell.getAttribute('data-date');
     if (days[iso] === 'HOMEOFFICE') {
         delete days[iso];
+        delete gebucht[iso];
     } else {
         days[iso] = 'HOMEOFFICE';
     }
     saveDays();
+    saveGebucht();
     render();
 }
 
@@ -815,6 +881,7 @@ function init() {
     loadDays();
     loadPeriod();
     loadUrlaub();
+    loadGebucht();
     document.getElementById('urlaubInput').value = urlaubTotal;
     populateQuick();
     fillTypeSelect();

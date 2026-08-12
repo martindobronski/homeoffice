@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.10">
+    <link rel="stylesheet" href="style.css?v=1.24">
 </head>
 <body>
 
@@ -54,12 +54,22 @@
         <div class="dialog">
             <h3 id="dialogTitle">Eintrag hinzufügen</h3>
             <div class="dialog-fields">
-                <label for="dialogDate">Startdatum:</label>
-                <input type="date" id="dialogDate">
-                <label for="dialogEndDate">Enddatum:</label>
-                <input type="date" id="dialogEndDate">
-                <label for="dialogType">Art:</label>
-                <select id="dialogType"></select>
+                <div class="field-group">
+                    <label for="dialogDate">Startdatum:</label>
+                    <input type="date" id="dialogDate">
+                    <label class="dialog-check">
+                        <input type="checkbox" id="dialogGebucht">
+                        gebucht
+                    </label>
+                </div>
+                <div class="field-group">
+                    <label for="dialogEndDate">Enddatum:</label>
+                    <input type="date" id="dialogEndDate">
+                </div>
+                <div class="field-group">
+                    <label for="dialogType">Art:</label>
+                    <select id="dialogType"></select>
+                </div>
             </div>
             <div class="dialog-buttons">
                 <button id="dialogDelete" class="btn btn-danger hidden">Löschen</button>
@@ -80,6 +90,6 @@
         </div>
     </div>
 
-    <script src="app.js?v=1.10"></script>
+    <script src="app.js?v=1.24"></script>
 </body>
 </html>

@@ -7,38 +7,38 @@
     --text-faint: #9CA3AF;
     --border: #E6E7EB;
 
-    --office: #2D6A4F;
-    --office-soft: #E3EFE8;
-    --office-line: #BFDACB;
+    --office: #27500A;
+    --office-soft: #EAF3DE;
+    --office-line: #3B6D11;
 
-    --ho-text: #8A8471;
-    --ho-soft: #F3F0E6;
-    --ho-line: #E7E1D0;
+    --ho-text: #444441;
+    --ho-soft: #F1EFE8;
+    --ho-line: #5F5E5A;
 
-    --holiday: #4C7EA8;
-    --holiday-soft: #E4EDF4;
-    --holiday-line: #C7DBEA;
+    --holiday: #0C447C;
+    --holiday-soft: #E6F1FB;
+    --holiday-line: #185FA5;
 
-    --sick: #B23A48;
-    --sick-soft: #F7E6E8;
-    --sick-line: #EBC1C6;
+    --sick: #791F1F;
+    --sick-soft: #FCEBEB;
+    --sick-line: #A32D2D;
 
-    --vacation: #867F70;
-    --vacation-soft: #ECEAE3;
-    --vacation-line: #DAD5C8;
+    --vacation: #712B13;
+    --vacation-soft: #FAECE7;
+    --vacation-line: #993C1D;
 
-    --free: #B9791E;
-    --free-soft: #F6ECD9;
-    --free-line: #E9D2A4;
+    --free: #633806;
+    --free-soft: #FAEEDA;
+    --free-line: #854F0B;
 
-    --travel: #6B5CA5;
-    --travel-soft: #EFECF6;
-    --travel-line: #D8D2EA;
+    --travel: #3C3489;
+    --travel-soft: #EEEDFE;
+    --travel-line: #534AB7;
 
     --future: #FFFFFF;
     --future-line: #E9EAED;
 
-    --accent: #2D6A4F;
+    --accent: #3B6D11;
     --radius-lg: 18px;
     --radius-md: 12px;
     --radius-sm: 8px;
@@ -152,7 +152,7 @@ select {
 }
 
 .btn-primary:hover {
-    box-shadow: 0 4px 10px rgba(45, 106, 79, .28);
+    box-shadow: 0 4px 10px rgba(59, 109, 17, .28);
 }
 
 .btn-ghost {
@@ -203,7 +203,7 @@ select:focus-visible {
 
 .ring {
     --pct: 0;
-    --ring-color: #2D6A4F;
+    --ring-color: #3B6D11;
     width: 64px;
     height: 64px;
     border-radius: 50%;
@@ -273,7 +273,7 @@ select:focus-visible {
     border-radius: var(--radius-lg);
     padding: 24px 26px 26px;
     margin-bottom: 36px;
-    box-shadow: 0 6px 24px rgba(45, 106, 79, .06);
+    box-shadow: 0 6px 24px rgba(59, 109, 17, .06);
 }
 
 .hero-head {
@@ -337,7 +337,7 @@ select:focus-visible {
 
 .progress-bar > div {
     height: 100%;
-    background: var(--office);
+    background: var(--office-line);
     border-radius: 999px;
 }
 
@@ -362,6 +362,10 @@ select:focus-visible {
 .hero .cal-grid .day {
     aspect-ratio: 1.5 / 1;
     font-size: 14px;
+}
+
+.hero .cell-icon {
+    font-size: 42px;
 }
 
 .day {
@@ -395,15 +399,48 @@ select:focus-visible {
     font-weight: 700;
 }
 
-.day.office::after {
-    content: '';
+.cell-icon {
     position: absolute;
-    top: 4px;
+    top: 3px;
+    left: 4px;
+    line-height: 1;
+    font-size: 28px;
+    pointer-events: none;
+}
+
+.check {
+    position: absolute;
+    bottom: 2px;
     right: 4px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--office);
+    line-height: 1;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--office-line);
+    cursor: default;
+}
+
+.check::after {
+    content: 'gebucht';
+    position: absolute;
+    bottom: calc(100% + 4px);
+    right: 0;
+    background: var(--text);
+    color: #fff;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 4px 8px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .12s ease;
+    z-index: 5;
+}
+
+.check:hover::after {
+    opacity: 1;
 }
 
 .day.holiday {
@@ -444,6 +481,34 @@ select:focus-visible {
 
 .day.dimmed {
     opacity: 0.18;
+}
+
+.day[data-date]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--text);
+    color: #fff;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.5;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: pre-line;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .15s ease;
+    transition-delay: 0s;
+    z-index: 10;
+}
+
+.day[data-date]:hover::after {
+    opacity: 1;
+    transition-delay: 1s;
 }
 
 .day.highlighted {
@@ -499,6 +564,18 @@ select:focus-visible {
     border-radius: 5px;
 }
 
+.month-card .cell-icon {
+    font-size: 22px;
+    top: 1px;
+    left: 1px;
+}
+
+.month-card .check {
+    font-size: 14px;
+    bottom: 1px;
+    right: 1px;
+}
+
 .month-card .cal-head {
     font-size: 9px;
     padding-bottom: 2px;
@@ -542,6 +619,11 @@ select:focus-visible {
     height: 12px;
     border-radius: 4px;
     flex: none;
+}
+
+.chip-icon {
+    line-height: 1;
+    font-size: 13px;
 }
 
 .chip b {
@@ -644,12 +726,18 @@ select:focus-visible {
 
 .dialog-fields {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 14px;
     flex-wrap: wrap;
 }
 
-.dialog-fields label {
+.field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.field-group > label {
     font-size: 12.5px;
     color: var(--text-soft);
 }
@@ -659,6 +747,15 @@ select:focus-visible {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 18px;
+}
+
+.dialog-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    color: var(--text-soft);
+    cursor: pointer;
 }
 
 /* ---------- Responsive ---------- */
