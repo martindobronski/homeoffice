@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.3">
+    <link rel="stylesheet" href="style.css?v=1.10">
 </head>
 <body>
 
@@ -54,8 +54,10 @@
         <div class="dialog">
             <h3 id="dialogTitle">Eintrag hinzufügen</h3>
             <div class="dialog-fields">
-                <label for="dialogDate">Datum:</label>
+                <label for="dialogDate">Startdatum:</label>
                 <input type="date" id="dialogDate">
+                <label for="dialogEndDate">Enddatum:</label>
+                <input type="date" id="dialogEndDate">
                 <label for="dialogType">Art:</label>
                 <select id="dialogType"></select>
             </div>
@@ -67,6 +69,17 @@
         </div>
     </div>
 
-    <script src="app.js?v=1.3"></script>
+    <div id="confirmOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3>Einträge löschen</h3>
+            <div class="dialog-fields" id="confirmText"></div>
+            <div class="dialog-buttons">
+                <button id="confirmDelete" class="btn btn-danger">Löschen</button>
+                <button id="confirmCancel" class="btn btn-ghost">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=1.10"></script>
 </body>
 </html>

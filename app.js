@@ -30,6 +30,7 @@ let days = {};
 let periodStart;
 let periodEnd;
 let dialogOrigDate = null;
+let pendingDelete = null;
 let activeFilter = null;
 
 const monthBox = document.getElementById('monthBox');
@@ -45,8 +46,14 @@ const dashboardTitle = document.getElementById('dashboardTitle');
 const overlay = document.getElementById('modalOverlay');
 const dialogTitle = document.getElementById('dialogTitle');
 const dialogDate = document.getElementById('dialogDate');
+const dialogEndDate = document.getElementById('dialogEndDate');
 const dialogType = document.getElementById('dialogType');
 const dialogDelete = document.getElementById('dialogDelete');
+
+const confirmOverlay = document.getElementById('confirmOverlay');
+const confirmText = document.getElementById('confirmText');
+const confirmDelete = document.getElementById('confirmDelete');
+const confirmCancel = document.getElementById('confirmCancel');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -633,7 +640,8 @@ function openDialog(iso) {
     const existing = days[iso];
     dialogTitle.textContent = existing ? 'Eintrag bearbeiten' : 'Eintrag hinzufügen';
     dialogDate.value = iso;
-    dialogType.value = existing || 'HOMEOFFICE';
+    dialogEndDate.value = iso;
+    dialogType.value = existing || 'BUEROTAG';
     dialogDelete.classList.toggle('hidden', !existing);
     overlay.classList.remove('hidden');
 }
@@ -643,34 +651,83 @@ function closeDialog() {
     dialogOrigDate = null;
 }
 
+dialogDate.addEventListener('change', function () {
+    if (dialogEndDate.value && dialogEndDate.value < dialogDate.value) {
+        dialogEndDate.value = dialogDate.value;
+    }
+});
+
 document.getElementById('dialogOk').addEventListener('click', function () {
     const newDate = dialogDate.value;
+    const endDate = dialogEndDate.value;
     const type = dialogType.value;
     if (!newDate) {
-        alert('Bitte ein Datum wählen.');
+        alert('Bitte ein Startdatum wählen.');
         return;
     }
-    if (dialogOrigDate !== newDate && days[newDate]) {
-        alert('Für dieses Datum existiert bereits ein Eintrag.');
-        return;
+    if (endDate && endDate > newDate) {
+        const start = parseISO(newDate);
+        const end = parseISO(endDate);
+        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+            days[fmt(d)] = type;
+        }
+    } else {
+        if (dialogOrigDate !== newDate && days[newDate]) {
+            alert('Für dieses Datum existiert bereits ein Eintrag.');
+            return;
+        }
+        if (dialogOrigDate !== newDate && days[dialogOrigDate]) {
+            delete days[dialogOrigDate];
+        }
+        days[newDate] = type;
     }
-    if (dialogOrigDate !== newDate && days[dialogOrigDate]) {
-        delete days[dialogOrigDate];
-    }
-    days[newDate] = type;
     saveDays();
     closeDialog();
     render();
 });
 
 dialogDelete.addEventListener('click', function () {
-    if (!confirm('Eintrag vom ' + dialogDate.value + ' löschen?')) {
+    const startIso = dialogDate.value;
+    const endIso = dialogEndDate.value && dialogEndDate.value > startIso ? dialogEndDate.value : startIso;
+    const start = parseISO(startIso);
+    const end = parseISO(endIso);
+    let count = 0;
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        if (days[fmt(d)]) {
+            count++;
+        }
+    }
+    confirmText.innerHTML = endIso === startIso
+        ? 'Eintrag vom <b>' + startIso + '</b> löschen?'
+        : 'Einträge von <b>' + startIso + '</b> bis <b>' + endIso + '</b> (' + count + ' Tag(e)) löschen?';
+    pendingDelete = { start: start, end: end };
+    confirmOverlay.classList.remove('hidden');
+});
+
+confirmDelete.addEventListener('click', function () {
+    if (!pendingDelete) {
         return;
     }
-    delete days[dialogOrigDate];
+    for (let d = new Date(pendingDelete.start); d <= pendingDelete.end; d.setDate(d.getDate() + 1)) {
+        delete days[fmt(d)];
+    }
+    pendingDelete = null;
     saveDays();
     closeDialog();
+    confirmOverlay.classList.add('hidden');
     render();
+});
+
+confirmCancel.addEventListener('click', function () {
+    pendingDelete = null;
+    confirmOverlay.classList.add('hidden');
+});
+
+confirmOverlay.addEventListener('click', function (e) {
+    if (e.target === confirmOverlay) {
+        pendingDelete = null;
+        confirmOverlay.classList.add('hidden');
+    }
 });
 
 document.getElementById('dialogCancel').addEventListener('click', closeDialog);
@@ -706,10 +763,29 @@ document.getElementById('urlaubApply').addEventListener('click', function () {
 // ---------- Ereignis-Delegation ----------
 
 function gridClick(e) {
+    if (e.button !== 0) {
+        return;
+    }
     const cell = e.target.closest('.day[data-date]');
     if (cell) {
         openDialog(cell.getAttribute('data-date'));
     }
+}
+
+function gridContext(e) {
+    e.preventDefault();
+    const cell = e.target.closest('.day[data-date]');
+    if (!cell) {
+        return;
+    }
+    const iso = cell.getAttribute('data-date');
+    if (days[iso] === 'HOMEOFFICE') {
+        delete days[iso];
+    } else {
+        days[iso] = 'HOMEOFFICE';
+    }
+    saveDays();
+    render();
 }
 
 legendEl.addEventListener('click', function (e) {
@@ -745,6 +821,8 @@ function init() {
     applyButton.addEventListener('click', applyQuickSelection);
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
+    yearGridEl.addEventListener('contextmenu', gridContext);
+    heroEl.addEventListener('contextmenu', gridContext);
     render();
 }
 
