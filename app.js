@@ -47,9 +47,9 @@ let activeFilter = null;
 
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
-const applyButton = document.getElementById('applyButton');
 const prevMonthButton = document.getElementById('prevMonthButton');
 const nextMonthButton = document.getElementById('nextMonthButton');
+const todayButton = document.getElementById('todayButton');
 
 const heroEl = document.getElementById('hero');
 const heroTitleEl = document.getElementById('heroTitle');
@@ -433,6 +433,14 @@ function applyQuickSelection() {
 function shiftPeriod(delta) {
     const d = parseISO(periodStart);
     periodStart = fmt(new Date(d.getFullYear(), d.getMonth() + delta, 1));
+    periodEnd = add12mMinusDay(periodStart);
+    savePeriod();
+    render();
+}
+
+function goToToday() {
+    const today = new Date();
+    periodStart = fmt(new Date(today.getFullYear(), today.getMonth(), 1));
     periodEnd = add12mMinusDay(periodStart);
     savePeriod();
     render();
@@ -1058,9 +1066,11 @@ function init() {
     document.getElementById('urlaubInput').value = urlaubTotal;
     populateQuick();
     fillTypeSelect();
-    applyButton.addEventListener('click', applyQuickSelection);
+    monthBox.addEventListener('change', applyQuickSelection);
+    yearBox.addEventListener('change', applyQuickSelection);
     prevMonthButton.addEventListener('click', function () { shiftPeriod(-1); });
     nextMonthButton.addEventListener('click', function () { shiftPeriod(1); });
+    todayButton.addEventListener('click', goToToday);
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
