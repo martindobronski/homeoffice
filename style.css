@@ -483,34 +483,6 @@ select:focus-visible {
     opacity: 0.18;
 }
 
-.day[data-date]::after {
-    content: attr(data-tip);
-    position: absolute;
-    bottom: calc(100% + 6px);
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--text);
-    color: #fff;
-    font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 1.5;
-    padding: 6px 10px;
-    border-radius: 6px;
-    white-space: pre-line;
-    text-align: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .15s ease;
-    transition-delay: 0s;
-    z-index: 10;
-}
-
-.day[data-date]:hover::after {
-    opacity: 1;
-    transition-delay: 1s;
-}
-
 .day.highlighted {
     box-shadow: 0 0 0 2px var(--text) inset;
 }
@@ -696,6 +668,109 @@ select:focus-visible {
 
 .version a {
     color: var(--text-soft);
+}
+
+/* ---------- Hover-Schnellmenü ---------- */
+
+.quick-menu {
+    position: fixed;
+    z-index: 30;
+    min-width: 190px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 32px rgba(20, 20, 30, .16);
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.qm-date {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-soft);
+    padding: 4px 8px 6px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+    white-space: nowrap;
+}
+
+.qm-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 6px 8px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.qm-item:hover {
+    background: var(--surface-muted);
+}
+
+.qm-item.qm-edit {
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.qm-item.qm-edit:hover {
+    background: var(--office-soft);
+}
+
+.qm-item.qm-booked {
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    border-radius: 0;
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+}
+
+.qm-item.qm-booked:hover {
+    background: var(--office-soft);
+}
+
+.qm-item.qm-del {
+    color: var(--sick);
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    margin-top: 4px;
+    padding-top: 8px;
+}
+
+.qm-item.qm-del:hover {
+    background: var(--sick-soft);
+}
+
+.qm-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 4px;
+    flex: none;
+}
+
+.qm-icon {
+    line-height: 1;
+    font-size: 14px;
+}
+
+.qm-active {
+    margin-left: auto;
+    color: var(--office-line);
+    font-weight: 700;
 }
 
 /* ---------- Dialog ---------- */

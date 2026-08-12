@@ -67,7 +67,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
-- **Tooltip:** Hältst du den Mauszeiger etwa eine Sekunde über einen Tag, erscheint eine Sprechblase mit Datum und Art, z. B. `Dienstag, 10.08.2026` / `Urlaub`.
+- **Schnellmenü:** Hältst du den Mauszeiger kurz (~½ Sekunde) über einen Tag, öffnet sich ein Menü mit dem Datum, **Details bearbeiten**, allen Arten, einem **gebucht**-Umschalter und **Löschen** (nur bei vorhandenem Eintrag). Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Details bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich, sobald die Maus es verlässt, per ESC oder bei einem Klick daneben.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
 ---
@@ -75,6 +75,8 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 ## 5. Einträge anlegen, bearbeiten und löschen
 
 **Tag anklicken:** Ein Klick auf einen Werktag öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten`.
+
+**Schnellbelegung per Hover:** Kurz über einen Tag hovern öffnet das Schnellmenü (siehe Kapitel 4.3), mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst.
 
 **Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag setzt sofort **Homeoffice** (ohne Dialog). Ist der Tag bereits Homeoffice, wird der Eintrag wieder entfernt. So lassen sich viele Homeoffice-Tage rasch erfassen.
 

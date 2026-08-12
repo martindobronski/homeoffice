@@ -32,8 +32,6 @@ const TYPE_ICONS = {
     URLAUB: '🏖️'
 };
 
-const TYPE_LABEL = Object.fromEntries(WORK_TYPES.map(function (t) { return [t.key, t.label]; }));
-
 const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
 const URLAUB_KEY = 'homeoffice.urlaub';
@@ -69,6 +67,8 @@ const confirmOverlay = document.getElementById('confirmOverlay');
 const confirmText = document.getElementById('confirmText');
 const confirmDelete = document.getElementById('confirmDelete');
 const confirmCancel = document.getElementById('confirmCancel');
+
+const quickMenu = document.getElementById('quickMenu');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -448,7 +448,20 @@ function renderKpis() {
     const strip = document.getElementById('kpiStrip');
     const q = periodQuota(periodStart, periodEnd);
     const basis = q.office + q.homeoffice;
+    const now = new Date();
+    const st = monthStat(now.getFullYear(), now.getMonth() + 1);
+    const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
+    const pflichtPct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    let urlaubYear = 0;
+    for (const iso of Object.keys(days)) {
+        if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
+            urlaubYear++;
+        }
+    }
+    const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
     let html = '';
+    html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
+        'Bürotage erfasst', pflichtPct, '#3B6D11');
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
@@ -458,19 +471,6 @@ function renderKpis() {
         html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11');
         html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A');
     }
-    const now = new Date();
-    const st = monthStat(now.getFullYear(), now.getMonth() + 1);
-    const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
-    const pflichtPct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
-    html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#3B6D11');
-    let urlaubYear = 0;
-    for (const iso of Object.keys(days)) {
-        if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
-            urlaubYear++;
-        }
-    }
-    const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
         'Kontingent verbraucht', urlaubPct, '#993C1D');
     strip.innerHTML = html;
@@ -521,18 +521,12 @@ function renderCalGrid(year, month) {
             const filter = activeFilter
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
-            const tipDate = parseISO(cell.iso).toLocaleDateString('de-DE',
-                { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
-            const tip = cell.type
-                ? tipDate + '\n' + (TYPE_LABEL[cell.type] || cell.type)
-                : tipDate;
             const icon = cls ? '<span class="cell-icon">' + TYPE_ICONS[cell.type] + '</span>' : '';
             const check = gebucht[cell.iso]
                 ? '<span class="check" aria-label="gebucht">✓</span>'
                 : '';
             html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + '"'
-                + ' data-date="' + cell.iso + '"'
-                + ' data-tip="' + tip + '">'
+                + ' data-date="' + cell.iso + '">'
                 + cell.day + icon + check + '</div>';
         }
     }
@@ -794,6 +788,7 @@ document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') {
         return;
     }
+    quickHide();
     closeDialog();
     if (!confirmOverlay.classList.contains('hidden')) {
         pendingDelete = null;
@@ -863,6 +858,159 @@ legendEl.addEventListener('click', function (e) {
     activeFilter = activeFilter === key ? null : key;
     renderMonths();
     renderLegend();
+});
+
+// ---------- Hover-Schnellmenü ----------
+
+let quickTimer = null;
+let quickHideTimer = null;
+let quickIso = null;
+let quickRect = null;
+
+function quickHide() {
+    if (quickTimer) {
+        clearTimeout(quickTimer);
+        quickTimer = null;
+    }
+    if (quickHideTimer) {
+        clearTimeout(quickHideTimer);
+        quickHideTimer = null;
+    }
+    quickMenu.classList.add('hidden');
+    quickIso = null;
+    quickRect = null;
+}
+
+function positionQuickMenu(rect) {
+    const menuW = quickMenu.offsetWidth;
+    const menuH = quickMenu.offsetHeight;
+    let left = rect.left + rect.width + 6;
+    let top = rect.top;
+    if (left + menuW > window.innerWidth - 8) {
+        left = rect.left - menuW - 6;
+    }
+    if (top + menuH > window.innerHeight - 8) {
+        top = window.innerHeight - menuH - 8;
+    }
+    quickMenu.style.left = Math.max(8, left) + 'px';
+    quickMenu.style.top = Math.max(8, top) + 'px';
+}
+
+function quickShow(iso, rect) {
+    quickIso = iso;
+    quickRect = rect;
+    const existing = days[iso];
+    const booked = !!gebucht[iso];
+    const tipDate = parseISO(iso).toLocaleDateString('de-DE',
+        { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+    let html = '<div class="qm-date">' + tipDate + '</div>';
+    html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
+        + '<span class="qm-icon">⚙️</span>Details bearbeiten</button>';
+    for (const t of WORK_TYPES) {
+        html += '<button type="button" class="qm-item" data-set="' + t.key + '">'
+            + '<span class="qm-swatch" style="background:' + t.color + '"></span>'
+            + '<span class="qm-icon">' + TYPE_ICONS[t.key] + '</span>'
+            + t.label
+            + (existing === t.key ? '<span class="qm-active">✓</span>' : '')
+            + '</button>';
+    }
+    html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
+        + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
+        + (booked ? '<span class="qm-active">✓</span>' : '')
+        + '</button>';
+    if (existing) {
+        html += '<button type="button" class="qm-item qm-del" data-set="__delete__">'
+            + '<span class="qm-icon">🗑</span>Löschen</button>';
+    }
+    quickMenu.innerHTML = html;
+    quickMenu.classList.remove('hidden');
+    positionQuickMenu(rect);
+}
+
+function quickOnOver(e) {
+    const cell = e.target.closest('.day[data-date]');
+    if (!cell) {
+        return;
+    }
+    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')) {
+        return;
+    }
+    const iso = cell.getAttribute('data-date');
+    if (quickHideTimer) {
+        clearTimeout(quickHideTimer);
+        quickHideTimer = null;
+    }
+    if (quickTimer) {
+        clearTimeout(quickTimer);
+    }
+    quickTimer = setTimeout(function () {
+        quickTimer = null;
+        quickShow(iso, cell.getBoundingClientRect());
+    }, 500);
+}
+
+function quickOnOut(e) {
+    const related = e.relatedTarget;
+    if (related && quickMenu.contains(related)) {
+        return;
+    }
+    if (!quickMenu.classList.contains('hidden') && !quickHideTimer) {
+        quickHideTimer = setTimeout(quickHide, 150);
+    }
+}
+
+quickMenu.addEventListener('click', function (e) {
+    const item = e.target.closest('.qm-item[data-set]');
+    if (!item || !quickIso) {
+        return;
+    }
+    const set = item.getAttribute('data-set');
+    const iso = quickIso;
+    if (set === '__delete__') {
+        delete days[iso];
+        delete gebucht[iso];
+        saveDays();
+        saveGebucht();
+        quickHide();
+        render();
+    } else if (set === '__edit__') {
+        quickHide();
+        openDialog(iso);
+    } else if (set === '__gebucht__') {
+        if (gebucht[iso]) {
+            delete gebucht[iso];
+        } else {
+            gebucht[iso] = true;
+        }
+        saveGebucht();
+        quickShow(iso, quickRect);
+        render();
+    } else {
+        days[iso] = set;
+        saveDays();
+        quickHide();
+        render();
+    }
+});
+
+quickMenu.addEventListener('mouseleave', quickHide);
+
+quickMenu.addEventListener('mouseover', function () {
+    if (quickHideTimer) {
+        clearTimeout(quickHideTimer);
+        quickHideTimer = null;
+    }
+});
+
+heroEl.addEventListener('mouseover', quickOnOver);
+yearGridEl.addEventListener('mouseover', quickOnOver);
+heroEl.addEventListener('mouseout', quickOnOut);
+yearGridEl.addEventListener('mouseout', quickOnOut);
+
+document.addEventListener('click', function (e) {
+    if (!quickMenu.classList.contains('hidden') && !quickMenu.contains(e.target)) {
+        quickHide();
+    }
 });
 
 // ---------- Initialisierung ----------
