@@ -39,6 +39,9 @@
     --future-line: #E9EAED;
 
     --accent: #3B6D11;
+
+    --today: #C026D3;
+    --today-glow: rgba(192, 38, 212, 0.22);
     --radius-lg: 18px;
     --radius-md: 12px;
     --radius-sm: 8px;
@@ -180,6 +183,20 @@ input:focus-visible,
 select:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
+}
+
+.btn-icon {
+    background: var(--surface-muted);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    font-size: 15px;
+    line-height: 1;
+    font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.btn-icon:hover {
+    background: #eef0ef;
 }
 
 /* ---------- KPI strip ---------- */
@@ -485,6 +502,15 @@ select:focus-visible {
 
 .day.highlighted {
     box-shadow: 0 0 0 2px var(--text) inset;
+}
+
+.day.today {
+    box-shadow: 0 0 0 2px var(--today), 0 0 0 5px var(--today-glow);
+    z-index: 1;
+}
+
+.day.today.highlighted {
+    box-shadow: 0 0 0 2px var(--text) inset, 0 0 0 2px var(--today), 0 0 0 5px var(--today-glow);
 }
 
 /* ---------- Year grid ---------- */

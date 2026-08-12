@@ -48,6 +48,8 @@ let activeFilter = null;
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
 const applyButton = document.getElementById('applyButton');
+const prevMonthButton = document.getElementById('prevMonthButton');
+const nextMonthButton = document.getElementById('nextMonthButton');
 
 const heroEl = document.getElementById('hero');
 const heroTitleEl = document.getElementById('heroTitle');
@@ -428,6 +430,14 @@ function applyQuickSelection() {
     render();
 }
 
+function shiftPeriod(delta) {
+    const d = parseISO(periodStart);
+    periodStart = fmt(new Date(d.getFullYear(), d.getMonth() + delta, 1));
+    periodEnd = add12mMinusDay(periodStart);
+    savePeriod();
+    render();
+}
+
 // ---------- KPI-Karten ----------
 
 function kpiCard(label, value, sub, pct, color) {
@@ -525,7 +535,8 @@ function renderCalGrid(year, month) {
             const check = gebucht[cell.iso]
                 ? '<span class="check" aria-label="gebucht">✓</span>'
                 : '';
-            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + '"'
+            const today = cell.iso === todayIso ? ' today' : '';
+            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + '"'
                 + ' data-date="' + cell.iso + '">'
                 + cell.day + icon + check + '</div>';
         }
@@ -796,6 +807,20 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+        return;
+    }
+    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')) {
+        return;
+    }
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+    }
+    shiftPeriod(e.key === 'ArrowLeft' ? -1 : 1);
+});
+
 document.getElementById('exportButton').addEventListener('click', exportBackup);
 document.getElementById('importButton').addEventListener('click', function () {
     document.getElementById('importFile').click();
@@ -1034,6 +1059,8 @@ function init() {
     populateQuick();
     fillTypeSelect();
     applyButton.addEventListener('click', applyQuickSelection);
+    prevMonthButton.addEventListener('click', function () { shiftPeriod(-1); });
+    nextMonthButton.addEventListener('click', function () { shiftPeriod(1); });
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
