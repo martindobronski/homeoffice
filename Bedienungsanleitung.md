@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.2)
+## Anwesenheits-Dashboard (Version 1.3 vom 12.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -63,10 +63,12 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 ### 4.3 Tageszellen
 
 - Jeder Werktag ist ein Feld; Wochenenden werden nicht dargestellt. Leere Felder am Anfang der ersten Woche füllen den Kalender aus.
-- **Erfasste Tage** haben die Farbe ihrer Art (siehe Kapitel 6). Bürotage tragen zusätzlich einen kleinen Punkt oben rechts.
+- **Erfasste Tage** haben die Farbe ihrer Art und ein **Icon** oben links (z. B. 🏢 Bürotag, 🏖️ Urlaub). Die Icons machen die Arten auch ohne Farbe unterscheidbar (z. B. bei Rot-Grün-Sehschwäche).
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
-- Die **Legende** unterhalb der Jahresübersicht erklärt die Farben und Zähler (siehe Kapitel 6).
+- Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
+- **Tooltip:** Hältst du den Mauszeiger etwa eine Sekunde über einen Tag, erscheint eine Sprechblase mit Datum und Art, z. B. `Dienstag, 10.08.2026` / `Urlaub`.
+- Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
 ---
 
@@ -74,12 +76,17 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 
 **Tag anklicken:** Ein Klick auf einen Werktag öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten`.
 
+**Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag setzt sofort **Homeoffice** (ohne Dialog). Ist der Tag bereits Homeoffice, wird der Eintrag wieder entfernt. So lassen sich viele Homeoffice-Tage rasch erfassen.
+
 Im Dialog kannst du:
 
-- **Datum** ändern,
-- **Art** aus der Liste wählen (siehe Farben unten),
+- **Startdatum** und **Enddatum** festlegen (das Enddatum ist mit dem Startdatum vorbelegt).
+  - Ist das **Enddatum größer als das Startdatum**, wird beim Speichern der **gesamte Bereich** von Start- bis Enddatum mit der gewählten Art belegt – praktisch für Urlaub, Krankheit oder Dienstreisen über mehrere Tage.
+  - Änderst du das Startdatum nachträglich, wird das Enddatum automatisch angepasst, falls es vor dem Startdatum läge.
+- **Art** aus der Liste wählen (siehe Farben unten).
+- **gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Bei belegten Tagen erscheint ein grüner **Haken** unten rechts; ein Hovertipp zeigt „gebucht".
 - über **OK** speichern,
-- über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen),
+- über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen). Bei einem Bereich (Enddatum > Startdatum) wird der **gesamte Bereich** gelöscht; vor dem Löschen erscheint ein Bestätigungsdialog.
 - über **Abbrechen** den Dialog schließen, ohne etwas zu ändern.
 
 Hinweise:
@@ -87,21 +94,23 @@ Hinweise:
 - Für ein Datum kann immer nur **ein** Eintrag existieren. Verschiebst du einen Eintrag auf ein Datum, das bereits belegt ist, erscheint eine Warnung.
 - Ein weißes Feld bedeutet: für diesen Tag wurde noch nichts erfasst.
 - Ein gestrichelt umrandetes Feld bedeutet: dieser zukünftige Tag ist noch nicht erfasst.
-- Ein Klick auf das leere Fenster neben dem Dialog schließt ihn ebenfalls.
+- **ESC** schließt den Dialog (und auch den Lösch-Bestätigungsdialog) ohne zu speichern. Ein Klick auf das leere Fenster neben dem Dialog schließt ihn ebenfalls.
 
 ---
 
 ## 6. Farben und Bedeutung
 
-| Farbe     | Art        | Bedeutung                                        |
-|-----------|------------|--------------------------------------------------|
-| Grün      | Bürotag    | Vor Ort im Büro gearbeitet                       |
-| Beige     | Homeoffice | Im Homeoffice gearbeitet                         |
-| Ocker     | Freizeittag| Freizeittag                                      |
-| Violett   | Dienstreise| Dienstreise                                      |
-| Blau      | Feiertag   | Feiertag                                         |
-| Rot       | Krankheit  | Krank (Krankschreibung)                          |
-| Grau      | Urlaub     | Urlaub (siehe Zähler in der Legende)             |
+| Farbe     | Art         | Bedeutung                                        |
+|-----------|-------------|--------------------------------------------------|
+| Grün      | Bürotag     | Vor Ort im Büro gearbeitet                       |
+| Beige/Grau| Homeoffice  | Im Homeoffice gearbeitet                         |
+| Ocker     | Freizeittag | Freizeittag                                      |
+| Violett   | Dienstreise | Dienstreise                                      |
+| Blau      | Feiertag    | Feiertag                                         |
+| Rot       | Krankheit   | Krank (Krankschreibung)                          |
+| Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
+
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
 Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`.
 
@@ -173,7 +182,7 @@ Klick auf **Backup exportieren** lädt eine JSON-Datei in den Download-Ordner de
 jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
 ```
 
-Die Datei enthält alle Tages-Einträge sowie den aktuell eingestellten Zeitraum. Beispiel:
+Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den aktuell eingestellten Zeitraum. Beispiel:
 
 ```json
 {
@@ -184,6 +193,9 @@ Die Datei enthält alle Tages-Einträge sowie den aktuell eingestellten Zeitraum
   "period": {
     "start": "2026-09-01",
     "end": "2027-08-31"
+  },
+  "gebucht": {
+    "2026-09-01": true
   }
 }
 ```
@@ -202,7 +214,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.2 vom 11.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.3 vom 12.08.2026`.
 
 ---
 
