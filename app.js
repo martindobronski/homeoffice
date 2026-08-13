@@ -5,11 +5,11 @@ let urlaubTotal = 30;
 const WORK_TYPES = [
     { key: 'BUEROTAG', label: 'Bürotag', color: '#3B6D11' },
     { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#5F5E5A' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#854F0B' },
     { key: 'DIENSTREISE', label: 'Dienstreise', color: '#534AB7' },
+    { key: 'URLAUB', label: 'Urlaub', color: '#993C1D' },
     { key: 'FEIERTAG', label: 'Feiertag', color: '#185FA5' },
     { key: 'KRANKHEIT', label: 'Krankheit', color: '#A32D2D' },
-    { key: 'URLAUB', label: 'Urlaub', color: '#993C1D' }
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#854F0B' }
 ];
 
 const TYPE_CLASS = {
@@ -585,7 +585,7 @@ function cardHTML(year, month, showYear) {
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
     return '<div class="month-card">'
         + '<div class="m-head">'
-        + '<h4>' + monthName(year, month) + (showYear ? ' ' + year : '') + '</h4>'
+        + '<h4>' + monthName(year, month) + (showYear ? ' <span class="m-year">' + year + '</span>' : '') + '</h4>'
         + '<span>' + st.office + '/' + st.pflicht + '</span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
@@ -939,7 +939,11 @@ function quickShow(iso, rect) {
     let html = '<div class="qm-date">' + tipDate + '</div>';
     html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
         + '<span class="qm-icon">⚙️</span>Details bearbeiten</button>';
-    for (const t of WORK_TYPES) {
+    for (let i = 0; i < WORK_TYPES.length; i++) {
+        const t = WORK_TYPES[i];
+        if (i === 3) {
+            html += '<div class="qm-divider"></div>';
+        }
         html += '<button type="button" class="qm-item" data-set="' + t.key + '">'
             + '<span class="qm-swatch" style="background:' + t.color + '"></span>'
             + '<span class="qm-icon">' + TYPE_ICONS[t.key] + '</span>'
