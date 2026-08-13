@@ -939,6 +939,11 @@ function quickShow(iso, rect) {
     let html = '<div class="qm-date">' + tipDate + '</div>';
     html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
         + '<span class="qm-icon">⚙️</span>Details bearbeiten</button>';
+    html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
+        + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
+        + (booked ? '<span class="qm-active">✓</span>' : '')
+        + '</button>';
+    html += '<div class="qm-divider"></div>';
     for (let i = 0; i < WORK_TYPES.length; i++) {
         const t = WORK_TYPES[i];
         if (i === 3) {
@@ -951,10 +956,6 @@ function quickShow(iso, rect) {
             + (existing === t.key ? '<span class="qm-active">✓</span>' : '')
             + '</button>';
     }
-    html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
-        + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
-        + (booked ? '<span class="qm-active">✓</span>' : '')
-        + '</button>';
     if (existing) {
         html += '<button type="button" class="qm-item qm-del" data-set="__delete__">'
             + '<span class="qm-icon">🗑</span>Löschen</button>';

@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.3 vom 12.08.2026)
+## Anwesenheits-Dashboard (Version 1.4 vom 13.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -23,7 +23,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
 - **Fußzeile:** Urlaubskontingent, Backup-Buttons, Legende mit Zählern, Versionsinfo.
 
-Die Darstellung passt sich der Fensterbreite an (4 / 2 / 1 Spalten).
+Die Darstellung passt sich der Fensterbreite an (3 / 2 / 1 Spalten).
 
 ---
 
@@ -31,7 +31,9 @@ Die Darstellung passt sich der Fensterbreite an (4 / 2 / 1 Spalten).
 
 Der Anzeigezeitraum umfasst immer ein ganzes Jahr (12 Monate). Er beginnt mit dem gewählten Startmonat und endet automatisch 12 Monate später (Start + 12 Monate – 1 Tag). Ein eigenes Enddatum gibt es nicht.
 
-- **Startmonat wählen:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile + **Übernehmen** legst du den Startmonat des Jahreszeitraums fest. Beispiel: Startmonat `September` und Jahr `2026` ergibt den Zeitraum **September 2026 – August 2027**.
+- **Startmonat wählen:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile legst du den Startmonat des Jahreszeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig. Beispiel: Startmonat `September` und Jahr `2026` ergibt den Zeitraum **September 2026 – August 2027**.
+- **Vor- und zurückblättern:** Mit den Pfeilen **‹** und **›** neben den Auswahlfeldern verschiebst du den Zeitraum um jeweils einen Monat. Dasselbe geht per Tastatur mit den **Pfeiltasten links/rechts**.
+- **Heute:** Der Button **Heute** setzt den Zeitraum direkt auf den aktuellen Monat zurück.
 - **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einschließlich **2030**. Liegen Einträge in späteren Jahren vor, wird die Auswahl automatisch erweitert.
 - Die Auswahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
@@ -52,7 +54,7 @@ Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„�
 
 ### 4.2 Jahresübersicht
 
-Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 4 Spalten). Jede Karte zeigt:
+Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 3 Spalten). Jede Karte zeigt:
 
 - **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`). Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt, z. B. `September 2026` und `August 2027`.
 - Einen schmalen **Fortschrittsbalken** für den Anteil der erfüllten Büropflichttage.
@@ -67,7 +69,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
-- **Schnellmenü:** Hältst du den Mauszeiger kurz (~½ Sekunde) über einen Tag, öffnet sich ein Menü mit dem Datum, **Details bearbeiten**, allen Arten, einem **gebucht**-Umschalter und **Löschen** (nur bei vorhandenem Eintrag). Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Details bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich, sobald die Maus es verlässt, per ESC oder bei einem Klick daneben.
+- **Schnellmenü:** Hältst du den Mauszeiger knapp eine Sekunde (~0,9 s) über einen Tag, öffnet sich ein Menü mit dem Datum, **Details bearbeiten** und dem **gebucht**-Umschalter, danach einer Trennlinie, allen Arten und **Löschen** (nur bei vorhandenem Eintrag). Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Details bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich, sobald die Maus es verlässt, per ESC oder bei einem Klick daneben.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
 ---
@@ -207,6 +209,7 @@ Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den 
 Klick auf **Backup importieren** öffnet den Dateidialog. Unterstützt werden:
 
 - **JSON-Dateien** (wie exportiert) – übernehmen den Startmonat des Zeitraums. Das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
+- **CSV-Dateien** im Format `JJJJ-MM-TT,ART` (eine Zeile pro Tag), z. B. `2026-09-01,BUEROTAG`. CSV-Importe übernehmen keinen Zeitraum und keine „gebucht“-Markierungen.
 
 Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
 
@@ -216,7 +219,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.3 vom 12.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.4 vom 13.08.2026`.
 
 ---
 

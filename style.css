@@ -23,7 +23,7 @@
     --sick-soft: #FCEBEB;
     --sick-line: #A32D2D;
 
-    --vacation: #712B13;
+    --vacation: #5E1F0C;
     --vacation-soft: #FAECE7;
     --vacation-line: #993C1D;
 
@@ -400,7 +400,7 @@ select:focus-visible {
 }
 
 .day.empty {
-    background: var(--surface-muted);
+    background: #ECECE6;
     cursor: default;
 }
 
@@ -536,7 +536,7 @@ select:focus-visible {
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
     padding: 14px 14px 16px;
-    box-shadow: 0 1px 2px rgba(20, 20, 15, 0.04), 0 6px 16px rgba(20, 20, 15, 0.05);
+    box-shadow: 0 2px 4px rgba(20, 20, 30, 0.06), 0 12px 28px rgba(20, 20, 30, 0.10);
 }
 
 .month-card .m-head {
@@ -574,7 +574,7 @@ select:focus-visible {
 
 .month-card .day {
     aspect-ratio: 1 / 1;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
     border-radius: 7px;
     transition: transform .12s ease, box-shadow .12s ease;
@@ -588,9 +588,9 @@ select:focus-visible {
 
 .month-card .cell-icon {
     font-size: 19px;
-    top: 1px;
-    left: 1px;
-    opacity: 0.9;
+    top: 0;
+    left: 0;
+    opacity: 0.7;
 }
 
 .month-card .check {
@@ -773,10 +773,6 @@ select:focus-visible {
 }
 
 .qm-item.qm-edit {
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
-    margin-bottom: 4px;
-    padding-bottom: 8px;
     color: var(--accent);
     font-weight: 600;
 }
@@ -787,10 +783,6 @@ select:focus-visible {
 
 .qm-item.qm-booked {
     color: var(--accent);
-    border-bottom: 1px solid var(--border);
-    border-radius: 0;
-    margin-bottom: 4px;
-    padding-bottom: 8px;
 }
 
 .qm-item.qm-booked:hover {
