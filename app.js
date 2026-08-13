@@ -32,6 +32,16 @@ const TYPE_ICONS = {
     URLAUB: '🏖️'
 };
 
+const EXPORT_LABELS = {
+    BUEROTAG: 'Bürotage',
+    HOMEOFFICE: 'Homeoffice-Tage',
+    DIENSTREISE: 'Dienstreisetage',
+    URLAUB: 'Urlaubstage',
+    FEIERTAG: 'Feiertage',
+    KRANKHEIT: 'Krankheitstage',
+    FREIZEITTAG: 'Freizeittage'
+};
+
 const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
 const URLAUB_KEY = 'homeoffice.urlaub';
@@ -44,6 +54,9 @@ let periodEnd;
 let dialogOrigDate = null;
 let pendingDelete = null;
 let activeFilter = null;
+let chipMenuExportKey = null;
+let exportKind = null;
+let exportMode = 'all';
 
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
@@ -55,6 +68,10 @@ const heroEl = document.getElementById('hero');
 const heroTitleEl = document.getElementById('heroTitle');
 const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
+const quotaWrapEl = document.querySelector('.quota-input');
+const footerActionsEl = document.querySelector('.footer-actions');
+const todayButtonEl = document.getElementById('todayButton');
+const rangeControlsEl = document.querySelector('.range-controls');
 const dashboardTitle = document.getElementById('dashboardTitle');
 
 const overlay = document.getElementById('modalOverlay');
@@ -71,6 +88,16 @@ const confirmDelete = document.getElementById('confirmDelete');
 const confirmCancel = document.getElementById('confirmCancel');
 
 const quickMenu = document.getElementById('quickMenu');
+
+const chipMenu = document.getElementById('chipMenu');
+const exportOverlay = document.getElementById('exportOverlay');
+const exportTitle = document.getElementById('exportTitle');
+const exportRange = document.getElementById('exportRange');
+const exportStart = document.getElementById('exportStart');
+const exportEnd = document.getElementById('exportEnd');
+const exportFormat = document.getElementById('exportFormat');
+const exportOk = document.getElementById('exportOk');
+const exportCancel = document.getElementById('exportCancel');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -661,12 +688,8 @@ function renderLegend() {
             ? 'Urlaub <b>' + urlaubGenommen + '</b> genommen · <b>' + urlaubGeplant + '</b> geplant · <b>' + ungeplant + '</b> ungeplant'
             : t.label + ' <b>' + (counts[t.key] || 0) + '</b>';
         const active = activeFilter === t.key ? ' active' : (activeFilter ? ' dimmed' : '');
-        const title = activeFilter === t.key
-            ? 'Filter aufheben (alle anzeigen)'
-            : 'Nur „' + t.label + '“ anzeigen';
         return '<button type="button" class="chip' + active + '"'
-            + ' data-filter="' + t.key + '"'
-            + ' title="' + title + '">'
+            + ' data-filter="' + t.key + '">'
             + '<span class="sw" style="background:' + t.color + '"></span>'
             + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
             + label
@@ -695,7 +718,12 @@ function openDialog(iso) {
     dialogType.value = existing || 'BUEROTAG';
     dialogGebucht.checked = !!gebucht[iso];
     dialogDelete.classList.toggle('hidden', !existing);
+    updateGebuchtVisibility();
     overlay.classList.remove('hidden');
+}
+
+function updateGebuchtVisibility() {
+    dialogGebuchtWrap.classList.toggle('hidden', dialogType.value !== 'BUEROTAG');
 }
 
 function closeDialog() {
@@ -709,9 +737,19 @@ dialogDate.addEventListener('change', function () {
     }
 });
 
+dialogType.addEventListener('change', updateGebuchtVisibility);
+
 function setGebuchtFlag(iso, checked) {
     if (checked) {
         gebucht[iso] = true;
+    } else {
+        delete gebucht[iso];
+    }
+}
+
+function applyGebucht(iso, type) {
+    if (type === 'BUEROTAG') {
+        setGebuchtFlag(iso, dialogGebucht.checked);
     } else {
         delete gebucht[iso];
     }
@@ -730,7 +768,7 @@ document.getElementById('dialogOk').addEventListener('click', function () {
         const end = parseISO(endDate);
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
             days[fmt(d)] = type;
-            setGebuchtFlag(fmt(d), dialogGebucht.checked);
+            applyGebucht(fmt(d), type);
         }
     } else {
         if (dialogOrigDate !== newDate && days[newDate]) {
@@ -742,7 +780,7 @@ document.getElementById('dialogOk').addEventListener('click', function () {
             delete gebucht[dialogOrigDate];
         }
         days[newDate] = type;
-        setGebuchtFlag(newDate, dialogGebucht.checked);
+        applyGebucht(newDate, type);
     }
     saveDays();
     saveGebucht();
@@ -808,10 +846,19 @@ document.addEventListener('keydown', function (e) {
         return;
     }
     quickHide();
+    hideDayTip();
     closeDialog();
+    if (!chipMenu.classList.contains('hidden')) {
+        chipMenu.classList.add('hidden');
+    }
+    closeExportDialog();
     if (!confirmOverlay.classList.contains('hidden')) {
         pendingDelete = null;
         confirmOverlay.classList.add('hidden');
+    }
+    if (!urlaubConfirmOverlay.classList.contains('hidden')) {
+        pendingUrlaub = null;
+        urlaubConfirmOverlay.classList.add('hidden');
     }
 });
 
@@ -819,7 +866,8 @@ document.addEventListener('keydown', function (e) {
     if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
         return;
     }
-    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')) {
+    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
+        || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
     const tag = e.target.tagName;
@@ -841,15 +889,45 @@ document.getElementById('importFile').addEventListener('change', function (e) {
     e.target.value = '';
 });
 
+const urlaubConfirmOverlay = document.getElementById('urlaubConfirmOverlay');
+const urlaubConfirmText = document.getElementById('urlaubConfirmText');
+let pendingUrlaub = null;
+
 document.getElementById('urlaubApply').addEventListener('click', function () {
     const v = parseInt(document.getElementById('urlaubInput').value, 10);
     if (!Number.isFinite(v) || v < 0) {
         alert('Bitte eine gültige Anzahl Urlaubstage eingeben.');
         return;
     }
-    urlaubTotal = v;
+    if (v === urlaubTotal) {
+        return;
+    }
+    pendingUrlaub = v;
+    urlaubConfirmText.innerHTML = 'Kontingent von <b>' + urlaubTotal + '</b> auf <b>' + v + '</b> Tage ändern?';
+    urlaubConfirmOverlay.classList.remove('hidden');
+});
+
+urlaubConfirmOverlay.addEventListener('click', function (e) {
+    if (e.target === urlaubConfirmOverlay) {
+        pendingUrlaub = null;
+        urlaubConfirmOverlay.classList.add('hidden');
+    }
+});
+
+document.getElementById('urlaubConfirmOk').addEventListener('click', function () {
+    if (pendingUrlaub === null) {
+        return;
+    }
+    urlaubTotal = pendingUrlaub;
+    pendingUrlaub = null;
     saveUrlaub();
     render();
+    urlaubConfirmOverlay.classList.add('hidden');
+});
+
+document.getElementById('urlaubConfirmCancel').addEventListener('click', function () {
+    pendingUrlaub = null;
+    urlaubConfirmOverlay.classList.add('hidden');
 });
 
 // ---------- Ereignis-Delegation ----------
@@ -860,26 +938,19 @@ function gridClick(e) {
     }
     const cell = e.target.closest('.day[data-date]');
     if (cell) {
+        hideDayTip();
         openDialog(cell.getAttribute('data-date'));
     }
 }
 
 function gridContext(e) {
     e.preventDefault();
+    hideDayTip();
     const cell = e.target.closest('.day[data-date]');
     if (!cell) {
         return;
     }
-    const iso = cell.getAttribute('data-date');
-    if (days[iso] === 'HOMEOFFICE') {
-        delete days[iso];
-        delete gebucht[iso];
-    } else {
-        days[iso] = 'HOMEOFFICE';
-    }
-    saveDays();
-    saveGebucht();
-    render();
+    quickShow(cell.getAttribute('data-date'), e.clientX, e.clientY);
 }
 
 legendEl.addEventListener('click', function (e) {
@@ -893,30 +964,11 @@ legendEl.addEventListener('click', function (e) {
     renderLegend();
 });
 
-// ---------- Hover-Schnellmenü ----------
+// ---------- Legenden-Kontextmenü & Export ----------
 
-let quickTimer = null;
-let quickHideTimer = null;
-let quickIso = null;
-let quickRect = null;
-
-function quickHide() {
-    if (quickTimer) {
-        clearTimeout(quickTimer);
-        quickTimer = null;
-    }
-    if (quickHideTimer) {
-        clearTimeout(quickHideTimer);
-        quickHideTimer = null;
-    }
-    quickMenu.classList.add('hidden');
-    quickIso = null;
-    quickRect = null;
-}
-
-function positionQuickMenu(rect) {
-    const menuW = quickMenu.offsetWidth;
-    const menuH = quickMenu.offsetHeight;
+function positionChipMenu(rect) {
+    const menuW = chipMenu.offsetWidth;
+    const menuH = chipMenu.offsetHeight;
     let left = rect.left + rect.width + 6;
     let top = rect.top;
     if (left + menuW > window.innerWidth - 8) {
@@ -925,24 +977,315 @@ function positionQuickMenu(rect) {
     if (top + menuH > window.innerHeight - 8) {
         top = window.innerHeight - menuH - 8;
     }
+    chipMenu.style.left = Math.max(8, left) + 'px';
+    chipMenu.style.top = Math.max(8, top) + 'px';
+}
+
+function showChipMenu(key, rect) {
+    chipMenuExportKey = key;
+    const label = EXPORT_LABELS[key] || key;
+    let html = '<div class="qm-date">' + label + '</div>';
+    if (key === 'URLAUB') {
+        html += '<button type="button" class="qm-item" data-chipexport="urlaub-genommen">'
+            + '<span class="qm-icon">📄</span>Export → Genommene Urlaubstage…</button>';
+        html += '<button type="button" class="qm-item" data-chipexport="urlaub-geplant">'
+            + '<span class="qm-icon">📄</span>Export → Geplante Urlaubstage…</button>';
+        html += '<button type="button" class="qm-item" data-chipexport="urlaub-alle">'
+            + '<span class="qm-icon">📄</span>Export → Alle eingetragenen Urlaubstage…</button>';
+    } else {
+        html += '<button type="button" class="qm-item" data-chipexport="list">'
+            + '<span class="qm-icon">📄</span>Export → ' + label + '…</button>';
+    }
+    if (key === 'BUEROTAG') {
+        html += '<button type="button" class="qm-item" data-chipexport="gebucht">'
+            + '<span class="qm-icon">☑</span>Export → gebucht-Tage…</button>';
+    }
+    chipMenu.innerHTML = html;
+    chipMenu.classList.remove('hidden');
+    positionChipMenu(rect);
+}
+
+legendEl.addEventListener('contextmenu', function (e) {
+    const chip = e.target.closest('.chip[data-filter]');
+    if (!chip) {
+        return;
+    }
+    e.preventDefault();
+    quickHide();
+    hideDayTip();
+    showChipMenu(chip.getAttribute('data-filter'), chip.getBoundingClientRect());
+});
+
+chipMenu.addEventListener('click', function (e) {
+    const item = e.target.closest('[data-chipexport]');
+    if (!item) {
+        return;
+    }
+    const action = item.getAttribute('data-chipexport');
+    chipMenu.classList.add('hidden');
+    if (action === 'gebucht') {
+        openExportDialog('GEBUCHT', 'all');
+    } else if (action === 'urlaub-genommen') {
+        openExportDialog('URLAUB', 'taken');
+    } else if (action === 'urlaub-geplant') {
+        openExportDialog('URLAUB', 'planned');
+    } else if (action === 'urlaub-alle') {
+        openExportDialog('URLAUB', 'all');
+    } else {
+        openExportDialog(chipMenuExportKey, 'all');
+    }
+});
+
+function updateExportCustom() {
+    const custom = exportRange.value === 'custom';
+    exportStart.closest('.field-group').classList.toggle('hidden', !custom);
+    exportEnd.closest('.field-group').classList.toggle('hidden', !custom);
+}
+
+const EXPORT_MODE_LABELS = {
+    'URLAUB:taken': 'Genommene Urlaubstage',
+    'URLAUB:planned': 'Geplante Urlaubstage',
+    'URLAUB:all': 'Alle eingetragenen Urlaubstage'
+};
+
+function exportLabel(kind, mode) {
+    if (kind === 'GEBUCHT') {
+        return 'gebucht';
+    }
+    const t = WORK_TYPES.find(function (x) { return x.key === kind; });
+    return EXPORT_MODE_LABELS[kind + ':' + mode]
+        || (t ? EXPORT_LABELS[kind] || t.label : kind);
+}
+
+function openExportDialog(kind, mode) {
+    exportKind = kind;
+    exportMode = mode;
+    exportTitle.textContent = exportLabel(kind, mode) + ' exportieren';
+    exportStart.value = periodStart;
+    exportEnd.value = periodEnd;
+    exportRange.value = (kind === 'URLAUB' || kind === 'FEIERTAG' || kind === 'KRANKHEIT' || kind === 'FREIZEITTAG') ? 'year' : 'month';
+    updateExportCustom();
+    exportOverlay.classList.remove('hidden');
+}
+
+function closeExportDialog() {
+    exportOverlay.classList.add('hidden');
+    exportKind = null;
+    exportMode = 'all';
+}
+
+function exportRangeDates() {
+    const now = new Date();
+    let start;
+    let end;
+    if (exportRange.value === 'month') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1);
+        end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+    } else if (exportRange.value === 'quarter') {
+        const q = Math.floor(now.getMonth() / 3);
+        start = new Date(now.getFullYear(), q * 3, 1);
+        end = new Date(now.getFullYear(), q * 3 + 3, 0);
+    } else if (exportRange.value === 'year') {
+        start = new Date(now.getFullYear(), 0, 1);
+        end = new Date(now.getFullYear(), 11, 31);
+    } else {
+        if (!isValidISODate(exportStart.value) || !isValidISODate(exportEnd.value)) {
+            alert('Bitte gültiges Start- und Enddatum wählen.');
+            return null;
+        }
+        start = parseISO(exportStart.value);
+        end = parseISO(exportEnd.value);
+        if (end < start) {
+            alert('Das Enddatum liegt vor dem Startdatum.');
+            return null;
+        }
+    }
+    return { start: fmt(start), end: fmt(end) };
+}
+
+function formatExportDate(iso, mode) {
+    if (mode === 'iso') {
+        return iso;
+    }
+    const d = parseISO(iso);
+    return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
+}
+
+function exportList() {
+    const range = exportRangeDates();
+    if (!range) {
+        return;
+    }
+    const mode = exportFormat.value;
+    const isBooked = exportKind === 'GEBUCHT';
+    const today = fmt(new Date());
+    const entries = [];
+    if (isBooked) {
+        for (const iso of Object.keys(gebucht)) {
+            if (iso >= range.start && iso <= range.end) {
+                const t = WORK_TYPES.find(function (x) { return x.key === days[iso]; });
+                entries.push({ iso: iso, label: t ? t.label : '' });
+            }
+        }
+    } else {
+        for (const iso of Object.keys(days)) {
+            if (days[iso] !== exportKind || iso < range.start || iso > range.end) {
+                continue;
+            }
+            if (exportMode === 'taken' && iso >= today) {
+                continue;
+            }
+            if (exportMode === 'planned' && iso <= today) {
+                continue;
+            }
+            entries.push({ iso: iso, label: '' });
+        }
+    }
+    entries.sort(function (a, b) { return a.iso < b.iso ? -1 : a.iso > b.iso ? 1 : 0; });
+    if (entries.length === 0) {
+        alert('Keine Einträge im gewählten Zeitraum.');
+        return;
+    }
+    const baseLabel = exportLabel(exportKind, exportMode);
+    let header = baseLabel;
+    if (exportKind === 'URLAUB') {
+        header += ' (' + entries.length + (entries.length === 1 ? ' Tag' : ' Tage') + ')';
+    }
+    const lines = entries.map(function (e) {
+        return formatExportDate(e.iso, mode) + (isBooked && e.label ? ' · ' + e.label : '');
+    });
+    const blob = new Blob([header + '\n' + lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = baseLabel.replace(/\s+/g, '') + '_' + range.start + '_bis_' + range.end + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(a.href);
+    closeExportDialog();
+}
+
+exportRange.addEventListener('change', updateExportCustom);
+exportOk.addEventListener('click', exportList);
+exportCancel.addEventListener('click', closeExportDialog);
+exportOverlay.addEventListener('click', function (e) {
+    if (e.target === exportOverlay) {
+        closeExportDialog();
+    }
+});
+
+// ---------- Tag-Kontextmenü (Rechtsklick) ----------
+
+let quickIso = null;
+let quickPos = null;
+const dayTip = document.getElementById('dayTip');
+
+function showDayTip(e) {
+    const cell = e.target.closest('.day[data-date]');
+    const chip = cell ? null : e.target.closest('.chip[data-filter]');
+    const quota = (!cell && !chip) ? e.target.closest('.quota-input') : null;
+    const btn = (!cell && !chip && !quota) ? e.target.closest('#exportButton, #importButton') : null;
+    const today = (!cell && !chip && !quota && !btn) ? e.target.closest('#todayButton') : null;
+    const nav = (!cell && !chip && !quota && !btn && !today) ? e.target.closest('#prevMonthButton, #nextMonthButton') : null;
+    const rangeLabel = (!cell && !chip && !quota && !btn && !today && !nav) ? e.target.closest('.range-label') : null;
+    if (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel) {
+        return;
+    }
+    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
+        || !urlaubConfirmOverlay.classList.contains('hidden')) {
+        return;
+    }
+    const rect = (cell || chip || quota || btn || today || nav || rangeLabel).getBoundingClientRect();
+    let html;
+    if (cell) {
+        const iso = cell.getAttribute('data-date');
+        const type = days[iso];
+        html = parseISO(iso).toLocaleDateString('de-DE',
+            { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
+        if (type) {
+            html += '<div class="day-tip-type">- ' + (WORK_TYPES.find(t => t.key === type) || {}).label + ' -</div>';
+        }
+        html += '<div class="day-tip-hints">Linksklick: Eintrag bearbeiten<br>Rechtsklick: Schnellauswahl</div>';
+    } else if (chip) {
+        const key = chip.getAttribute('data-filter');
+        const t = WORK_TYPES.find(x => x.key === key);
+        html = (activeFilter === key ? 'Filter aufheben (alle anzeigen)' : 'Nur „' + t.label + '“ anzeigen');
+        html += '<div class="day-tip-hints">Linksklick: Filtern<br>Rechtsklick: Export</div>';
+    } else if (quota) {
+        html = 'Urlaubskontingent'
+            + '<div class="day-tip-hints">Hier kann das jährliche Urlaubskontingent angepasst werden.</div>';
+    } else if (btn) {
+        html = (btn.id === 'exportButton' ? 'Backup exportieren' : 'Backup importieren')
+            + '<div class="day-tip-hints">' + (btn.id === 'exportButton'
+                ? 'Aktuelle Daten als Backup-Datei herunterladen.'
+                : 'Backup-Datei importieren (überschreibt aktuelle Daten).') + '</div>';
+    } else if (today) {
+        html = 'Heute'
+            + '<div class="day-tip-hints">Zeitraum Start-Monat auf aktuellen Monat setzen.</div>';
+    } else if (nav) {
+        const isNext = nav.id === 'nextMonthButton';
+        html = (isNext ? 'Nächster Monat' : 'Vorheriger Monat')
+            + '<div class="day-tip-hints">' + (isNext ? 'Mausklick oder Cursortaste rechts drücken.' : 'Mausklick oder Cursortaste links drücken.') + '</div>';
+    } else if (rangeLabel) {
+        html = 'Zeitraum Start-Monat'
+            + '<div class="day-tip-hints">Einstellen des Start Monats des Anzeigezeitraums.</div>';
+    }
+    dayTip.innerHTML = html;
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || btn || today || rangeLabel));
+    dayTip.classList.remove('hidden');
+    const tipW = dayTip.offsetWidth;
+    const tipH = dayTip.offsetHeight;
+    let left = rect.left + rect.width / 2 - tipW / 2;
+    let top = rect.top - tipH - 6;
+    if (top < 8) {
+        top = rect.bottom + ((nav || today || rangeLabel) ? 42 : 6);
+    }
+    dayTip.style.left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8)) + 'px';
+    dayTip.style.top = Math.max(8, Math.min(top, window.innerHeight - tipH - 8)) + 'px';
+}
+
+function hideDayTip() {
+    dayTip.classList.add('hidden');
+}
+
+function quickHide() {
+    quickMenu.classList.add('hidden');
+    quickIso = null;
+    quickPos = null;
+}
+
+function positionQuickMenuAt(x, y) {
+    const menuW = quickMenu.offsetWidth;
+    const menuH = quickMenu.offsetHeight;
+    let left = x + 4;
+    let top = y + 4;
+    if (left + menuW > window.innerWidth - 8) {
+        left = x - menuW - 4;
+    }
+    if (top + menuH > window.innerHeight - 8) {
+        top = y - menuH - 4;
+    }
     quickMenu.style.left = Math.max(8, left) + 'px';
     quickMenu.style.top = Math.max(8, top) + 'px';
 }
 
-function quickShow(iso, rect) {
+function quickShow(iso, x, y) {
+    const alreadyOpen = quickIso === iso && !quickMenu.classList.contains('hidden');
     quickIso = iso;
-    quickRect = rect;
+    quickPos = { x: x, y: y };
     const existing = days[iso];
     const booked = !!gebucht[iso];
     const tipDate = parseISO(iso).toLocaleDateString('de-DE',
         { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
     let html = '<div class="qm-date">' + tipDate + '</div>';
     html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
-        + '<span class="qm-icon">⚙️</span>Details bearbeiten</button>';
-    html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
-        + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
-        + (booked ? '<span class="qm-active">✓</span>' : '')
-        + '</button>';
+        + '<span class="qm-icon">⚙️</span>Eintrag bearbeiten</button>';
+    if (existing === 'BUEROTAG') {
+        html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
+            + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
+            + (booked ? '<span class="qm-active">✓</span>' : '')
+            + '</button>';
+    }
     html += '<div class="qm-divider"></div>';
     for (let i = 0; i < WORK_TYPES.length; i++) {
         const t = WORK_TYPES[i];
@@ -961,40 +1304,10 @@ function quickShow(iso, rect) {
             + '<span class="qm-icon">🗑</span>Löschen</button>';
     }
     quickMenu.innerHTML = html;
+    if (!alreadyOpen) {
+        positionQuickMenuAt(x, y);
+    }
     quickMenu.classList.remove('hidden');
-    positionQuickMenu(rect);
-}
-
-function quickOnOver(e) {
-    const cell = e.target.closest('.day[data-date]');
-    if (!cell) {
-        return;
-    }
-    if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')) {
-        return;
-    }
-    const iso = cell.getAttribute('data-date');
-    if (quickHideTimer) {
-        clearTimeout(quickHideTimer);
-        quickHideTimer = null;
-    }
-    if (quickTimer) {
-        clearTimeout(quickTimer);
-    }
-    quickTimer = setTimeout(function () {
-        quickTimer = null;
-        quickShow(iso, cell.getBoundingClientRect());
-    }, 900);
-}
-
-function quickOnOut(e) {
-    const related = e.relatedTarget;
-    if (related && quickMenu.contains(related)) {
-        return;
-    }
-    if (!quickMenu.classList.contains('hidden') && !quickHideTimer) {
-        quickHideTimer = setTimeout(quickHide, 150);
-    }
 }
 
 quickMenu.addEventListener('click', function (e) {
@@ -1021,7 +1334,7 @@ quickMenu.addEventListener('click', function (e) {
             gebucht[iso] = true;
         }
         saveGebucht();
-        quickShow(iso, quickRect);
+        quickShow(iso, quickPos.x, quickPos.y);
         render();
     } else {
         days[iso] = set;
@@ -1031,23 +1344,36 @@ quickMenu.addEventListener('click', function (e) {
     }
 });
 
-quickMenu.addEventListener('mouseleave', quickHide);
-
-quickMenu.addEventListener('mouseover', function () {
-    if (quickHideTimer) {
-        clearTimeout(quickHideTimer);
-        quickHideTimer = null;
-    }
-});
-
-heroEl.addEventListener('mouseover', quickOnOver);
-yearGridEl.addEventListener('mouseover', quickOnOver);
-heroEl.addEventListener('mouseout', quickOnOut);
-yearGridEl.addEventListener('mouseout', quickOnOut);
+heroEl.addEventListener('mouseover', showDayTip);
+yearGridEl.addEventListener('mouseover', showDayTip);
+legendEl.addEventListener('mouseover', showDayTip);
+quotaWrapEl.addEventListener('mouseover', showDayTip);
+footerActionsEl.addEventListener('mouseover', showDayTip);
+todayButtonEl.addEventListener('mouseover', showDayTip);
+rangeControlsEl.addEventListener('mouseover', showDayTip);
+heroEl.addEventListener('mouseout', hideDayTip);
+yearGridEl.addEventListener('mouseout', hideDayTip);
+legendEl.addEventListener('mouseout', hideDayTip);
+quotaWrapEl.addEventListener('mouseout', hideDayTip);
+footerActionsEl.addEventListener('mouseout', hideDayTip);
+todayButtonEl.addEventListener('mouseout', hideDayTip);
+rangeControlsEl.addEventListener('mouseout', hideDayTip);
 
 document.addEventListener('click', function (e) {
     if (!quickMenu.classList.contains('hidden') && !quickMenu.contains(e.target)) {
         quickHide();
+    }
+    if (!chipMenu.classList.contains('hidden') && !chipMenu.contains(e.target)) {
+        chipMenu.classList.add('hidden');
+    }
+    hideDayTip();
+});
+
+document.addEventListener('contextmenu', function (e) {
+    if (!chipMenu.classList.contains('hidden')
+        && !chipMenu.contains(e.target)
+        && !e.target.closest('.chip[data-filter]')) {
+        chipMenu.classList.add('hidden');
     }
 });
 

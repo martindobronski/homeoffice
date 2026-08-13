@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.4 vom 13.08.2026)
+## Anwesenheits-Dashboard (Version 1.9 vom 13.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -69,7 +69,8 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
-- **Schnellmenü:** Hältst du den Mauszeiger knapp eine Sekunde (~0,9 s) über einen Tag, öffnet sich ein Menü mit dem Datum, **Details bearbeiten** und dem **gebucht**-Umschalter, danach einer Trennlinie, allen Arten und **Löschen** (nur bei vorhandenem Eintrag). Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Details bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich, sobald die Maus es verlässt, per ESC oder bei einem Klick daneben.
+- **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende.
+- **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Auch die Legenden-Einträge sowie die Buttons und das Label „Zeitraum Start-Monat" zeigen solche Tooltips.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
 ---
@@ -78,9 +79,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 
 **Tag anklicken:** Ein Klick auf einen Werktag öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten`.
 
-**Schnellbelegung per Hover:** Kurz über einen Tag hovern öffnet das Schnellmenü (siehe Kapitel 4.3), mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst.
-
-**Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag setzt sofort **Homeoffice** (ohne Dialog). Ist der Tag bereits Homeoffice, wird der Eintrag wieder entfernt. So lassen sich viele Homeoffice-Tage rasch erfassen.
+**Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.3) an der Mausposition, mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst.
 
 Im Dialog kannst du:
 
@@ -88,7 +87,7 @@ Im Dialog kannst du:
   - Ist das **Enddatum größer als das Startdatum**, wird beim Speichern der **gesamte Bereich** von Start- bis Enddatum mit der gewählten Art belegt – praktisch für Urlaub, Krankheit oder Dienstreisen über mehrere Tage.
   - Änderst du das Startdatum nachträglich, wird das Enddatum automatisch angepasst, falls es vor dem Startdatum läge.
 - **Art** aus der Liste wählen (siehe Farben unten).
-- **gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Bei belegten Tagen erscheint ein grüner **Haken** unten rechts; ein Hovertipp zeigt „gebucht".
+- **gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Das Feld **gebucht** wird nur angezeigt, wenn als Art **Bürotag** gewählt ist; bei anderen Arten verschwindet es und eine bereits gesetzte Markierung wird entfernt. Bei belegten Tagen erscheint ein grüner **Haken** unten rechts.
 - über **OK** speichern,
 - über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen). Bei einem Bereich (Enddatum > Startdatum) wird der **gesamte Bereich** gelöscht; vor dem Löschen erscheint ein Bestätigungsdialog.
 - über **Abbrechen** den Dialog schließen, ohne etwas zu ändern.
@@ -125,6 +124,28 @@ Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 - Ein erneuter Klick auf die aktive Art hebt den Filter wieder auf (alle Tage werden normal angezeigt).
 - Per Tooltip (Maus darüberhalten) wird die Funktion des jeweiligen Eintrags angezeigt.
 
+**Tage als Textdatei exportieren:** Ein Rechtsklick auf einen Eintrag in der Legende öffnet ein Kontextmenü. Damit kannst du die Tagesliste dieser Art (z. B. alle Bürotage) als Textdatei exportieren. Die Menüeinträge beginnen mit **Export →** und enden mit einem Ellipse-Zeichen `…` (es folgt ein Dialog). Beim Bürotag-Eintrag gibt es zusätzlich **Export → gebucht-Tage…**. Beim Urlaub-Eintrag stehen drei Varianten zur Wahl:
+
+- **Export → Genommene Urlaubstage…:** alle Urlaubstage im gewählten Zeitraum, die vor heute liegen.
+- **Export → Geplante Urlaubstage…:** alle Urlaubstage im gewählten Zeitraum, die nach heute liegen.
+- **Export → Alle eingetragenen Urlaubstage…:** sämtliche Urlaubstage im gewählten Zeitraum (genommen und geplant).
+
+Im Export-Dialog wählst du:
+
+- **Zeitraum:** aktueller Monat, aktuelles Quartal, aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Enddatum). Bei **Urlaub, Feiertag, Krankheit und Freizeittag** ist „Aktuelles Jahr“ voreingestellt, sonst „Aktueller Monat“.
+- **Datumsformat:** `TT.MM.JJJJ` (lesbar) oder `JJJJ-MM-TT` (ISO, sortierbar).
+
+Die Textdatei enthält eine Kopfzeile mit der Kategorie und danach ein Datum pro Zeile, z. B.:
+
+```
+Bürotage
+01.09.2026
+04.09.2026
+08.09.2026
+```
+
+Bei den Urlaub-Listen steht in der Kopfzeile zusätzlich die Gesamtzahl der Tage, z. B. `Alle eingetragenen Urlaubstage (20 Tage)`. Bei der „gebucht“-Liste steht zusätzlich die Art hinter dem Datum, z. B. `01.10.2026 · Urlaub`.
+
 Für Urlaub wird zusätzlich angezeigt:
 
 ```
@@ -135,7 +156,7 @@ Urlaub (genommen x / geplant y / ungeplant z)
 - *geplant:* Urlaubstage in diesem Jahr, die in der Zukunft liegen.
 - *ungeplant:* verbleibende Tage bis zum eingestellten Jahreskontingent.
 
-**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. Unten links im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben und mit **OK** bestätigen. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. Unten links im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben und mit **OK** bestätigen. Vor der Übernahme erscheint ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den neuen Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ---
 
@@ -219,7 +240,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.4 vom 13.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.9 vom 13.08.2026`.
 
 ---
 

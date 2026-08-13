@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="0">
     <title>Anwesenheits-Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.27">
+    <link rel="stylesheet" href="style.css?v=1.33">
 </head>
 <body>
 
@@ -17,13 +20,13 @@
             <h1 id="dashboardTitle">Anwesenheits-Dashboard</h1>
         </div>
         <div class="range-controls">
-            <label>Zeitraum Start-Monat</label>
-            <button class="btn btn-icon" id="prevMonthButton" title="Vorheriger Monat (Pfeiltaste links)" aria-label="Vorheriger Monat">‹</button>
+            <label class="range-label">Zeitraum Start-Monat</label>
+            <button class="btn btn-icon" id="prevMonthButton" aria-label="Vorheriger Monat">‹</button>
 
             <select id="monthBox"></select>
             <select id="yearBox"></select>
-            <button class="btn btn-icon" id="nextMonthButton" title="Nächster Monat (Pfeiltaste rechts)" aria-label="Nächster Monat">›</button>
-            <button class="btn btn-ghost" id="todayButton" title="Zeitraum auf aktuellen Monat setzen">Heute</button>
+            <button class="btn btn-icon" id="nextMonthButton" aria-label="Nächster Monat">›</button>
+            <button class="btn btn-ghost" id="todayButton">Heute</button>
         </div>
     </div>
 
@@ -44,14 +47,16 @@
             <button class="btn btn-ghost" id="urlaubApply">OK</button>
         </div>
         <div class="footer-actions">
-            <button class="btn btn-ghost" id="exportButton" title="Aktuelle Daten als Backup-Datei herunterladen">Backup exportieren</button>
-            <button class="btn btn-ghost" id="importButton" title="Backup-Datei importieren (überschreibt aktuelle Daten)">Backup importieren</button>
+            <button class="btn btn-ghost" id="exportButton">Backup exportieren</button>
+            <button class="btn btn-ghost" id="importButton">Backup importieren</button>
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
         </div>
     </div>
-    <div id="version" class="version">Version 1.4 vom 13.08.2026 · <a href="Bedienungsanleitung.pdf" target="_blank">Bedienungsanleitung</a></div>
+    <div id="version" class="version">Version 1.9 vom 13.08.2026 · <a href="Bedienungsanleitung.pdf" target="_blank">Bedienungsanleitung</a></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
+    <div id="chipMenu" class="quick-menu hidden"></div>
+    <div id="dayTip" class="day-tip hidden" role="tooltip">Linksklick: Eintrag bearbeiten<br>Rechtsklick: Schnellauswahl</div>
 
     <div id="modalOverlay" class="overlay hidden">
         <div class="dialog">
@@ -60,7 +65,7 @@
                 <div class="field-group">
                     <label for="dialogDate">Startdatum:</label>
                     <input type="date" id="dialogDate">
-                    <label class="dialog-check">
+                    <label class="dialog-check" id="dialogGebuchtWrap">
                         <input type="checkbox" id="dialogGebucht">
                         gebucht
                     </label>
@@ -93,6 +98,53 @@
         </div>
     </div>
 
-    <script src="app.js?v=1.30"></script>
+    <div id="urlaubConfirmOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3>Urlaubskontingent ändern</h3>
+            <div class="dialog-fields" id="urlaubConfirmText"></div>
+            <div class="dialog-buttons">
+                <button id="urlaubConfirmOk" class="btn btn-primary">Ändern</button>
+                <button id="urlaubConfirmCancel" class="btn btn-ghost">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="exportOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3 id="exportTitle">Export</h3>
+            <div class="export-fields">
+                <div class="field-group">
+                    <label for="exportRange">Zeitraum:</label>
+                    <select id="exportRange">
+                        <option value="month">Aktueller Monat</option>
+                        <option value="quarter">Aktuelles Quartal</option>
+                        <option value="year">Aktuelles Jahr</option>
+                        <option value="custom">Zeitraum (Start–Ende)</option>
+                    </select>
+                </div>
+                <div class="field-group export-custom">
+                    <label for="exportStart">Startdatum:</label>
+                    <input type="date" id="exportStart">
+                </div>
+                <div class="field-group export-custom">
+                    <label for="exportEnd">Enddatum:</label>
+                    <input type="date" id="exportEnd">
+                </div>
+                <div class="field-group">
+                    <label for="exportFormat">Datumsformat:</label>
+                    <select id="exportFormat">
+                        <option value="de">TT.MM.JJJJ</option>
+                        <option value="iso">JJJJ-MM-TT</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button id="exportOk" class="btn btn-primary">Exportieren</button>
+                <button id="exportCancel" class="btn btn-ghost">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=1.65"></script>
 </body>
 </html>

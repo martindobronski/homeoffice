@@ -1,0 +1,117 @@
+ANWEISUNGEN ZUM AKTUALISIEREN DER BEDIENUNGSANLEITUNG
+=====================================================
+
+WICHTIG: Diese Datei bei jeder Aktualisierung der Bedienungsanleitung einlesen.
+Die Bedienungsanleitung wird NUR auf ausdrückliche Anforderung des Benutzers
+aktualisiert, nicht automatisch als Teil anderer Änderungen. Dabei werden
+Bedienungsanleitung.md und Bedienungsanleitung.pdf IMMER zusammen aktualisiert:
+alle sechs Schritte in dieser Reihenfolge ausführen.
+
+
+VORAUSSETZUNGEN
+---------------
+- pandoc (kMDItemCreator des PDF = "pandoc")
+- LuaLaTeX (lualatex) aus TeX Live 2026
+- lualatex-math.sty ist im TeX-Install NICHT vorhanden und kann nicht
+  installiert werden (keine Admin-Rechte) -> es wird ein LEERER STUB genutzt
+  (siehe Schritt 3). Das Dokument nutzt kein LaTeX-Mathe, daher ist der Stub
+  ausreichend.
+
+
+SCHRITT 1: Markdown aktualisieren
+---------------------------------
+- "Bedienungsanleitung.md" inhaltlich an den aktuellen Stand von
+  app.js / index.html / style.css anpassen (z. B. neue Funktionen,
+  geänderte Bedienung, Spaltenanzahl, Menü-Reihenfolge).
+- Versionsnummer im Titel (Zeile mit "## Anwesenheits-Dashboard (Version X.Y
+  vom TT.MM.JJJJ)") und in Kapitel 9 (Versionsinfo) anheben.
+- Datum = aktuelles Tagesdatum, Version = alte Version + 0.1.
+
+
+SCHRITT 2: index.html anpassen
+------------------------------
+- Versions-Fußzeile unten anheben, Format:
+    <div id="version" class="version">Version X.Y vom TT.MM.JJJJ · ...</div>
+- Cache-Buster in Zeile 10 und 96 erhöhen (damit der Browser keine alte
+  CSS/JS-Datei aus dem Cache nimmt):
+    style.css?v=1.27  ->  style.css?v=1.28  (jeweils +0.01)
+    app.js?v=1.30     ->  app.js?v=1.31
+- Versionsnummer und Datum müssen in Bedienungsanleitung.md UND index.html
+  IDENTISCH sein.
+
+
+SCHRITT 3: Build-Verzeichnis + Header anlegen (einmalig pro Build)
+-----------------------------------------------------------------
+    mkdir -p /tmp/opencode_pdfbuild
+    touch /tmp/opencode_pdfbuild/lualatex-math.sty   # leerer Stub
+
+Header-Datei mit Emoji-Fallback anlegen (nötig für 🏢🏠🏃✈️🎉🤒🏖️ ✓ →):
+
+    cat > /tmp/opencode_pdfbuild/pdf-header.tex <<'EOF'
+    \directlua{
+      luaotfload.add_fallback("emojifallback", {
+        "Apple Color Emoji:mode=harf",
+        "Hiragino Mincho ProN:mode=harf",
+      })
+    }
+    \setmainfont{Times New Roman}[RawFeature={fallback=emojifallback}]
+    \setmonofont{Menlo}[RawFeature={fallback=emojifallback}]
+    EOF
+
+
+SCHRITT 4: Markdown -> LaTeX (pandoc)
+-------------------------------------
+    pandoc Bedienungsanleitung.md -o /tmp/opencode_pdfbuild/anleitung.tex \
+      -H /tmp/opencode_pdfbuild/pdf-header.tex \
+      -V geometry:margin=2cm \
+      --metadata title="Bedienungsanleitung Anwesenheits-Dashboard"
+
+Hinweis: Den Schritt 4 bewusst OHNE PDF-Erzeugung ausführen. NICHT direkt
+`pandoc ... -o anleitung.pdf` aufrufen! Pandoc ruft lualatex mit
+-halt-on-error auf; die (harmlose) luaotfload node-filter-Warnung bricht den
+Build dann mit "Fatal error occurred" ab.
+
+
+SCHRITT 5: LaTeX -> PDF (lualatex, zwei Durchgänge nicht nötig)
+--------------------------------------------------------------
+    export TEXINPUTS="/tmp/opencode_pdfbuild:"
+    cd /tmp/opencode_pdfbuild
+    lualatex -interaction=nonstopmode anleitung.tex
+
+Der Parameter -interaction=nonstopmode ist WICHTIG: Er ignoriert die harmlose
+Warnung "warning (node filter): error: ... luaotfload-harf-plug.lua ...
+attempt to index a nil value (local 'character')". Der Build wird trotzdem
+sauber abgeschlossen, und die Farb-Emojis werden korrekt gerendert.
+
+    cp /tmp/opencode_pdfbuild/anleitung.pdf /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf
+
+
+SCHRITT 6: Prüfung
+------------------
+    pdfinfo  /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf \
+      | grep -iE "Pages|Producer"
+        -> "Producer: LuaTeX-1.24.0", Pages sinnvoll (ca. 5)
+
+    pdffonts /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf
+        -> MUSS enthalten: TimesNewRoman, Menlo, AppleColorEmoji, HiraMinProN
+
+    grep -c "Missing character" /tmp/opencode_pdfbuild/anleitung.log
+        -> muss 0 ergeben (alle Zeichen inkl. Emojis wurden gefunden)
+
+    pdftotext /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf - \
+      | grep "Version"
+        -> zeigt die neue Versionsnummer
+
+Optional visuelle Kontrolle der Farb-Emojis (per Pixel-Analyse, da kein
+Bild-Viewer):
+    pdftoppm -f 4 -l 4 -png -r 150 anleitung.pdf /tmp/chk
+    # Seiten MIT Emoji müssen deutlich mehr "farbige" Pixel (R/G/B-Differenz > 40)
+    # enthalten als eine Seite ohne Emoji.
+
+
+ALLGEMEINE HINWEISE
+-------------------
+- Nach Abschluss: Bedienungsanleitung.md, Bedienungsanleitung.pdf und
+  index.html zusammen committen.
+- Die PDF-Generierung erfolgt immer zweistufig (pandoc -> .tex, dann
+  lualatex -> .pdf), niemals direkt über `pandoc -o x.pdf`.
