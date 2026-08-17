@@ -68,6 +68,7 @@ const heroEl = document.getElementById('hero');
 const heroTitleEl = document.getElementById('heroTitle');
 const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
+const kpiStripEl = document.getElementById('kpiStrip');
 const quotaWrapEl = document.querySelector('.quota-input');
 const footerActionsEl = document.querySelector('.footer-actions');
 const todayButtonEl = document.getElementById('todayButton');
@@ -491,11 +492,25 @@ function goToToday() {
 
 // ---------- KPI-Karten ----------
 
-function kpiCard(label, value, sub, pct, color) {
-    return '<div class="kpi-card">'
+function kpiCard(label, value, sub, pct, color, tip, ampel, ringPct, target, invert) {
+    const dispPct = ringPct != null ? ringPct : pct;
+    const t = target || 100;
+    let ampelColor = '';
+    if (ampel) {
+        if (invert) {
+            ampelColor = pct >= 100 ? '#dc2626' : pct >= 60 ? '#eab308' : '#16a34a';
+        } else {
+            const greenAt = t;
+            const yellowAt = Math.round(t * 0.75);
+            ampelColor = pct >= greenAt ? '#16a34a' : pct >= yellowAt ? '#eab308' : '#dc2626';
+        }
+    }
+    const overflow = (!invert && t < 100 && pct > t) ? pct - t : 0;
+    const isOverflow = overflow > 0;
+    return '<div class="kpi-card"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
         + '<div class="ring-wrap">'
-        + '<div class="ring" style="--pct:' + pct + ';--ring-color:' + color + '"></div>'
-        + '<div class="ring-pct" style="color:' + color + '">' + pct + '%</div>'
+        + '<div class="ring' + (isOverflow ? ' ring-pulse' : '') + '" style="--pct:' + dispPct + ';--ring-color:' + (ampel ? ampelColor : color) + '"></div>'
+        + '<div class="ring-pct" style="color:' + (ampel ? ampelColor : color) + '">' + pct + '%</div>'
         + '</div>'
         + '<div class="kpi-text">'
         + '<div class="kpi-value">' + value + '</div>'
@@ -522,18 +537,24 @@ function renderKpis() {
     const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
     let html = '';
     html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#3B6D11');
+        'Bürotage erfasst', pflichtPct, '#3B6D11',
+        'Erfasste Bürotage im ' + monatName + ': ' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pflichtPct + ' %)', true);
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
+        const officeRingPct = Math.min(100, Math.round(officePct * 100 / 60));
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#3B6D11');
-        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#5F5E5A');
+        const homeofficeRingPct = Math.min(100, Math.round(homeofficePct * 100 / 40));
+        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#3B6D11',
+            'Anteil Bürotage an allen erfassten Arbeitstagen (Ziel: 60%)', true, officeRingPct, 60);
+        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#5F5E5A',
+            'Anteil Homeoffice-Tage an allen erfassten Arbeitstagen (Ziel: 40%)', true, homeofficeRingPct, 40);
     } else {
-        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11');
-        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A');
+        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
+        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A', 'Noch keine vollständigen Monate vorhanden', true);
     }
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
-        'Kontingent verbraucht', urlaubPct, '#993C1D');
+        'Kontingent verbraucht', urlaubPct, '#993C1D',
+        'Verbrauchtes Urlaubskontingent im laufenden Jahr (' + urlaubYear + ' von ' + urlaubTotal + ' Tagen)', true, null, 100, true);
     strip.innerHTML = html;
 }
 
@@ -603,6 +624,7 @@ function monthName(year, month) {
 function heroHTML(year, month) {
     const st = monthStat(year, month);
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
     return '<div class="hero-head">'
         + '<div>'
         + '<div class="badge">● Läuft gerade</div>'
@@ -614,9 +636,9 @@ function heroHTML(year, month) {
         + '<div class="l">Werktage</div>'
         + '</div>'
         + '<div class="hero-stat">'
-        + '<div class="n">' + st.office + ' / ' + st.pflicht + '</div>'
-        + '<div class="l">Bürotage (Soll)</div>'
-        + '<div class="progress-bar" style="width:120px"><div style="width:' + pct + '%"></div></div>'
+        + '<div class="n" title="' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pct + ' %)">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
+        + '<div class="l" style="text-align:left">Bürotage (Ist/Soll)</div>'
+        + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + '</div>'
         + '</div>'
         + '</div>'
@@ -626,10 +648,11 @@ function heroHTML(year, month) {
 function cardHTML(year, month, showYear) {
     const st = monthStat(year, month);
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
+    const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
     return '<div class="month-card">'
         + '<div class="m-head">'
         + '<h4>' + monthName(year, month) + (showYear ? ' <span class="m-year">' + year + '</span>' : '') + '</h4>'
-        + '<span>' + st.office + '/' + st.pflicht + '</span>'
+        + '<span title="' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pct + ' %)">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + renderCalGrid(year, month)
@@ -1208,14 +1231,15 @@ function showDayTip(e) {
     const today = (!cell && !chip && !quota && !btn) ? e.target.closest('#todayButton') : null;
     const nav = (!cell && !chip && !quota && !btn && !today) ? e.target.closest('#prevMonthButton, #nextMonthButton') : null;
     const rangeLabel = (!cell && !chip && !quota && !btn && !today && !nav) ? e.target.closest('.range-label') : null;
-    if (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel) {
+    const kpiCard = (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel) ? e.target.closest('.kpi-card[data-tip]') : null;
+    if (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel && !kpiCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || quota || btn || today || nav || rangeLabel).getBoundingClientRect();
+    const rect = (cell || chip || quota || btn || today || nav || rangeLabel || kpiCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -1258,16 +1282,18 @@ function showDayTip(e) {
     } else if (rangeLabel) {
         html = 'Zeitraum Start-Monat'
             + '<div class="day-tip-hints">Einstellen des Start Monats des Anzeigezeitraums.</div>';
+    } else if (kpiCard) {
+        html = kpiCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || btn || today || rangeLabel));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || btn || today || rangeLabel || kpiCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
     let left = rect.left + rect.width / 2 - tipW / 2;
     let top = rect.top - tipH - 6;
     if (top < 8) {
-        top = rect.bottom + ((nav || today || rangeLabel) ? 42 : 6);
+        top = rect.bottom + ((nav || today || rangeLabel || kpiCard) ? 6 : 6);
     }
     dayTip.style.left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8)) + 'px';
     dayTip.style.top = Math.max(8, Math.min(top, window.innerHeight - tipH - 8)) + 'px';
@@ -1376,6 +1402,7 @@ quickMenu.addEventListener('click', function (e) {
 
 heroEl.addEventListener('mouseover', showDayTip);
 yearGridEl.addEventListener('mouseover', showDayTip);
+kpiStripEl.addEventListener('mouseover', showDayTip);
 legendEl.addEventListener('mouseover', showDayTip);
 quotaWrapEl.addEventListener('mouseover', showDayTip);
 footerActionsEl.addEventListener('mouseover', showDayTip);
@@ -1383,6 +1410,7 @@ todayButtonEl.addEventListener('mouseover', showDayTip);
 rangeControlsEl.addEventListener('mouseover', showDayTip);
 heroEl.addEventListener('mouseout', hideDayTip);
 yearGridEl.addEventListener('mouseout', hideDayTip);
+kpiStripEl.addEventListener('mouseout', hideDayTip);
 legendEl.addEventListener('mouseout', hideDayTip);
 quotaWrapEl.addEventListener('mouseout', hideDayTip);
 footerActionsEl.addEventListener('mouseout', hideDayTip);

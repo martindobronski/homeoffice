@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.10 vom 13.08.2026)
+## Anwesenheits-Dashboard (Version 1.11 vom 17.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -19,7 +19,7 @@ Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Bro
 Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
-- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert und prozentualem **Fortschrittsring**.
+- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
 - **Fußzeile:** Urlaubskontingent, Backup-Buttons, Legende mit Zählern, Versionsinfo.
 
@@ -49,14 +49,14 @@ Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„�
 
 - **Monatsname und Jahr**, z. B. `August 2026`.
 - **Werktage:** Anzahl der Arbeitstage (Montag bis Freitag) im Monat.
-- **Bürotage (Soll):** erfasste Bürotage im Verhältnis zu den Pflichttagen, z. B. `1 / 12`, mit **Fortschrittsbalken**.
+- **Bürotage (Soll):** erfasste Bürotage im Verhältnis zu den Pflichttagen, z. B. `1 / 12`, mit **Fortschrittsbalken** und farbigem **Prozent-Badge**.
 - Den Wochenkalender (Mo – Di – Mi – Do – Fr) mit größeren Tageszellen.
 
 ### 4.2 Jahresübersicht
 
 Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 3 Spalten). Jede Karte zeigt:
 
-- **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`). Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt, z. B. `September 2026` und `August 2027`.
+- **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`) mit farbigem **Prozent-Badge**. Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt, z. B. `September 2026` und `August 2027`.
 - Einen schmalen **Fortschrittsbalken** für den Anteil der erfüllten Büropflichttage.
 - Den Wochenkalender in kleinerer Darstellung.
 
@@ -180,12 +180,21 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 
 ### 7.2 Verhältnis Büro/Homeoffice (KPI-Karten)
 
-Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick:
+Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick. Jede Karte zeigt einen **Ampel-Indikator**: Die Farbe des Rings und des Prozentwerts signalisiert den Status auf einen Blick.
 
-- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen (Soll 60 %).
-- **Homeofficequote:** Anteil der Homeoffice-Tage (Soll 40 %).
-- **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats.
-- **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent.
+- **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den Prozentwert direkt (Ziel: 100 %).
+- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf 60 % als Zielwert (60 % = voller Kreis). Überschreitet die Quote den Zielwert, pulsiert der Ring als visuelles Signal.
+- **Homeofficequote:** Anteil der Homeoffice-Tage. Der Ring skaliert auf 40 % als Zielwert (40 % = voller Kreis). Überschreitet die Quote den Zielwert, pulsiert der Ring.
+- **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig verbraucht, Rot = alles aufgebraucht (100 %).
+
+**Ampel-Farben:**
+
+| Karte | Grün | Gelb | Rot |
+|-------|------|------|-----|
+| Büropflicht | ≥100 % | ≥80 % | <80 % |
+| Büroquote | ≥60 % | ≥45 % | <45 % |
+| Homeoffice-Quote | ≥40 % | ≥30 % | <30 % |
+| Urlaub | <60 % verbraucht | 60–99 % verbraucht | 100 % verbraucht |
 
 Regeln:
 
@@ -194,6 +203,12 @@ Regeln:
 - Sind keine vollständigen Monate vorhanden, zeigen Büro- und Homeofficequote **„–"**.
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
+
+**Prozent-Badges:** In der Hero-Karte und den Mini-Karten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben.
+
+**Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
+
+**Ringskalierung:** Die Büroquote (60 % = voller Kreis) und Homeoffice-Quote (40 % = voller Kreis) verwenden eine relative Skalierung. Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
 
 ---
 
@@ -242,7 +257,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.10 vom 13.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.11 vom 17.08.2026`.
 
 ---
 

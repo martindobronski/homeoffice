@@ -255,6 +255,31 @@ select:focus-visible {
     font-weight: 700;
 }
 
+@keyframes ring-pulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.5); }
+}
+
+.ring-pulse {
+    animation: ring-pulse 2s ease-in-out infinite;
+}
+
+.ring-pct.ampel-ok    { color: #16a34a; }
+.ring-pct.ampel-warn  { color: #eab308; }
+.ring-pct.ampel-alert { color: #dc2626; }
+
+.month-card .m-head span.ampel-ok,
+.hero-stat .n .ampel-ok,
+.kpi-card .ring-pct.ampel-ok    { color: #16a34a !important; }
+
+.month-card .m-head span.ampel-warn,
+.hero-stat .n .ampel-warn,
+.kpi-card .ring-pct.ampel-warn  { color: #eab308 !important; }
+
+.month-card .m-head span.ampel-alert,
+.hero-stat .n .ampel-alert,
+.kpi-card .ring-pct.ampel-alert { color: #dc2626 !important; }
+
 .kpi-text .kpi-value {
     font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 19px;
@@ -561,6 +586,8 @@ select:focus-visible {
     font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 11px;
     color: var(--text-soft);
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .month-card .progress-bar {
