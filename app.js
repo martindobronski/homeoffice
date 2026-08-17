@@ -538,23 +538,23 @@ function renderKpis() {
     let html = '';
     html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
         'Bürotage erfasst', pflichtPct, '#3B6D11',
-        'Erfasste Bürotage im ' + monatName + ': ' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pflichtPct + ' %)', true);
+        'Erfüllungsgrad der Büropflicht in ' + monatName + ': ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60 % der Werktage, abgerundet). Kann von der Büroquote rechts abweichen, da hier gerundet wird und nur ' + monatName + ' zählt.', true);
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
         const officeRingPct = Math.min(100, Math.round(officePct * 100 / 60));
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
         const homeofficeRingPct = Math.min(100, Math.round(homeofficePct * 100 / 40));
         html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#3B6D11',
-            'Anteil Bürotage an allen erfassten Arbeitstagen (Ziel: 60%)', true, officeRingPct, 60);
+            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel: 60 %).', true, officeRingPct, 60);
         html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#5F5E5A',
-            'Anteil Homeoffice-Tage an allen erfassten Arbeitstagen (Ziel: 40%)', true, homeofficeRingPct, 40);
+            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Homeoffice-Tage an allen Büro+Homeoffice-Tagen (Ziel: 40 %).', true, homeofficeRingPct, 40);
     } else {
         html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
         html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A', 'Noch keine vollständigen Monate vorhanden', true);
     }
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
         'Kontingent verbraucht', urlaubPct, '#993C1D',
-        'Verbrauchtes Urlaubskontingent im laufenden Jahr (' + urlaubYear + ' von ' + urlaubTotal + ' Tagen)', true, null, 100, true);
+        'Verbrauchtes Urlaubskontingent im laufenden Kalenderjahr ' + now.getFullYear() + ' (' + urlaubYear + ' von ' + urlaubTotal + ' Tagen). Bezieht sich immer auf das echte Kalenderjahr, unabhängig vom gewählten Anzeigezeitraum.', true, null, 100, true);
     strip.innerHTML = html;
 }
 
@@ -636,7 +636,7 @@ function heroHTML(year, month) {
         + '<div class="l">Werktage</div>'
         + '</div>'
         + '<div class="hero-stat">'
-        + '<div class="n" title="' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pct + ' %)">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
+        + '<div class="n" title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
         + '<div class="l" style="text-align:left">Bürotage (Ist/Soll)</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + '</div>'
@@ -652,7 +652,7 @@ function cardHTML(year, month, showYear) {
     return '<div class="month-card">'
         + '<div class="m-head">'
         + '<h4>' + monthName(year, month) + (showYear ? ' <span class="m-year">' + year + '</span>' : '') + '</h4>'
-        + '<span title="' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt (' + pct + ' %)">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
+        + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + renderCalGrid(year, month)
