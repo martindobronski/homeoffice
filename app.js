@@ -117,6 +117,22 @@ function isWeekend(d) {
     return w === 0 || w === 6;
 }
 
+// Liefert die "wirksame" Art eines Tages: ein manueller Eintrag hat immer
+// Vorrang. Existiert keiner, wird automatisch auf einen Hamburger Feiertag
+// (inkl. 24./31.12.) zurückgefallen, sofern feiertage.js geladen ist.
+// Automatische Feiertage werden dabei NICHT in `days` geschrieben oder
+// gespeichert - sie bleiben rein rechnerisch, damit spätere Aktualisierungen
+// der Feiertagsliste keine "eingefrorenen" Alt-Daten hinterlassen.
+function getDayType(iso) {
+    if (days[iso]) {
+        return days[iso];
+    }
+    if (window.Feiertage && Feiertage.istFeiertag(iso)) {
+        return 'FEIERTAG';
+    }
+    return undefined;
+}
+
 function add12mMinusDay(isoStr) {
     const d = parseISO(isoStr);
     return fmt(new Date(d.getFullYear(), d.getMonth() + 12, d.getDate() - 1));
@@ -358,16 +374,16 @@ function workdaysInMonth(year, month) {
 
 function monthStat(year, month) {
     const recorded = {};
-    for (const iso of Object.keys(days)) {
-        const d = parseISO(iso);
-        if (d.getFullYear() !== year || d.getMonth() !== month - 1) {
-            continue;
-        }
+    const dim = new Date(year, month, 0).getDate();
+    for (let day = 1; day <= dim; day++) {
+        const d = new Date(year, month - 1, day);
         if (isWeekend(d)) {
             continue;
         }
-        const t = days[iso];
-        recorded[t] = (recorded[t] || 0) + 1;
+        const t = getDayType(fmt(d));
+        if (t) {
+            recorded[t] = (recorded[t] || 0) + 1;
+        }
     }
     const workdays = workdaysInMonth(year, month);
     const recordedTotal = Object.values(recorded).reduce((a, b) => a + b, 0);
@@ -417,7 +433,7 @@ function periodQuota(fromIso, toIso) {
 function populateQuick() {
     const now = new Date();
     let minYear = now.getFullYear() - 5;
-    let maxYear = now.getFullYear() + 4;
+    let maxYear = now.getFullYear() + 9;
     for (const iso of Object.keys(days)) {
         const y = parseISO(iso).getFullYear();
         minYear = Math.min(minYear, y);
@@ -538,7 +554,7 @@ function buildMonthCells(year, month) {
             row++;
         }
         prevCol = col;
-        cells.push({ row: row, col: col, day: d, iso: fmt(new Date(year, month - 1, d)), type: days[fmt(new Date(year, month - 1, d))] });
+        cells.push({ row: row, col: col, day: d, iso: fmt(new Date(year, month - 1, d)), type: getDayType(fmt(new Date(year, month - 1, d))) });
     }
     return { cells: cells, rows: row + 1, workdays: cells.length };
 }
@@ -658,12 +674,14 @@ function renderLegend() {
     const start = parseISO(periodStart);
     const end = parseISO(periodEnd);
     const counts = {};
-    for (const iso of Object.keys(days)) {
-        const d = parseISO(iso);
-        if (d < start || d > end) {
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        if (isWeekend(d)) {
             continue;
         }
-        counts[days[iso]] = (counts[days[iso]] || 0) + 1;
+        const t = getDayType(fmt(d));
+        if (t) {
+            counts[t] = (counts[t] || 0) + 1;
+        }
     }
     const now = new Date();
     const today = fmt(now);
@@ -712,10 +730,11 @@ function fillTypeSelect() {
 function openDialog(iso) {
     dialogOrigDate = iso;
     const existing = days[iso];
+    const resolved = getDayType(iso);
     dialogTitle.textContent = existing ? 'Eintrag bearbeiten' : 'Eintrag hinzufügen';
     dialogDate.value = iso;
     dialogEndDate.value = iso;
-    dialogType.value = existing || 'BUEROTAG';
+    dialogType.value = resolved || 'BUEROTAG';
     dialogGebucht.checked = !!gebucht[iso];
     dialogDelete.classList.toggle('hidden', !existing);
     updateGebuchtVisibility();
@@ -1128,8 +1147,9 @@ function exportList() {
             }
         }
     } else {
-        for (const iso of Object.keys(days)) {
-            if (days[iso] !== exportKind || iso < range.start || iso > range.end) {
+        for (let d = parseISO(range.start); fmt(d) <= range.end; d.setDate(d.getDate() + 1)) {
+            const iso = fmt(d);
+            if (getDayType(iso) !== exportKind) {
                 continue;
             }
             if (exportMode === 'taken' && iso >= today) {
@@ -1199,11 +1219,20 @@ function showDayTip(e) {
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
-        const type = days[iso];
+        const manualType = days[iso];
+        const type = getDayType(iso);
         html = parseISO(iso).toLocaleDateString('de-DE',
             { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
         if (type) {
-            html += '<div class="day-tip-type">- ' + (WORK_TYPES.find(t => t.key === type) || {}).label + ' -</div>';
+            const sonderfrei = !manualType && window.Feiertage && Feiertage.istSonderfrei(iso);
+            const label = sonderfrei ? 'Arbeitsfrei' : (WORK_TYPES.find(t => t.key === type) || {}).label;
+            html += '<div class="day-tip-type">- ' + label + ' -</div>';
+            if (!manualType && window.Feiertage) {
+                const feiertagsName = Feiertage.getName(iso);
+                if (feiertagsName) {
+                    html += '<div class="day-tip-type" style="opacity:.75">' + feiertagsName + '</div>';
+                }
+            }
         }
         html += '<div class="day-tip-hints">Linksklick: Eintrag bearbeiten<br>Rechtsklick: Schnellauswahl</div>';
     } else if (chip) {
@@ -1274,6 +1303,7 @@ function quickShow(iso, x, y) {
     quickIso = iso;
     quickPos = { x: x, y: y };
     const existing = days[iso];
+    const resolved = getDayType(iso);
     const booked = !!gebucht[iso];
     const tipDate = parseISO(iso).toLocaleDateString('de-DE',
         { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -1296,7 +1326,7 @@ function quickShow(iso, x, y) {
             + '<span class="qm-swatch" style="background:' + t.color + '"></span>'
             + '<span class="qm-icon">' + TYPE_ICONS[t.key] + '</span>'
             + t.label
-            + (existing === t.key ? '<span class="qm-active">✓</span>' : '')
+            + (resolved === t.key ? '<span class="qm-active">✓</span>' : '')
             + '</button>';
     }
     if (existing) {
