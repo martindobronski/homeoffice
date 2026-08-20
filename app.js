@@ -496,20 +496,23 @@ function kpiCard(label, value, sub, pct, color, tip, ampel, ringPct, target, inv
     const dispPct = ringPct != null ? ringPct : pct;
     const t = target || 100;
     let ampelColor = '';
+    let ringColor = '';
     if (ampel) {
         if (invert) {
-            ampelColor = pct >= 100 ? '#dc2626' : pct >= 60 ? '#eab308' : '#16a34a';
+            ampelColor = pct > 100 ? '#dc2626' : pct >= 100 ? '#dc2626' : pct >= 60 ? '#eab308' : '#16a34a';
+            ringColor = pct > 100 ? '#dc2626' : pct >= 100 ? '#9CA3AF' : pct >= 60 ? '#eab308' : '#16a34a';
         } else {
             const greenAt = t;
             const yellowAt = Math.round(t * 0.75);
             ampelColor = pct >= greenAt ? '#16a34a' : pct >= yellowAt ? '#eab308' : '#dc2626';
+            ringColor = ampelColor;
         }
     }
     const overflow = (!invert && t < 100 && pct > t) ? pct - t : 0;
     const isOverflow = overflow > 0;
     return '<div class="kpi-card"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
         + '<div class="ring-wrap">'
-        + '<div class="ring' + (isOverflow ? ' ring-pulse' : '') + '" style="--pct:' + dispPct + ';--ring-color:' + (ampel ? ampelColor : color) + '"></div>'
+        + '<div class="ring' + (isOverflow ? ' ring-pulse' : '') + '" style="--pct:' + dispPct + ';--ring-color:' + (ampel ? ringColor : color) + '"></div>'
         + '<div class="ring-pct" style="color:' + (ampel ? ampelColor : color) + '">' + pct + '%</div>'
         + '</div>'
         + '<div class="kpi-text">'
