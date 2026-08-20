@@ -611,7 +611,8 @@ function renderCalGrid(year, month) {
                 ? '<span class="check" aria-label="gebucht">✓</span>'
                 : '';
             const today = cell.iso === todayIso ? ' today' : '';
-            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + '"'
+            const booked = gebucht[cell.iso] ? ' booked' : '';
+            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + '"'
                 + ' data-date="' + cell.iso + '">'
                 + cell.day + icon + check + '</div>';
         }
