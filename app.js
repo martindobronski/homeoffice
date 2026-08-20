@@ -1316,10 +1316,10 @@ function showDayTip(e) {
         html = parseISO(iso).toLocaleDateString('de-DE',
             { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
         if (type) {
-            const sonderfrei = !manualType && window.Feiertage && Feiertage.istSonderfrei(iso);
+            const sonderfrei = window.Feiertage && Feiertage.istSonderfrei(iso);
             const label = sonderfrei ? 'Arbeitsfrei' : (WORK_TYPES.find(t => t.key === type) || {}).label;
             html += '<div class="day-tip-type">- ' + label + ' -</div>';
-            if ((!manualType || manualType === 'FEIERTAG') && window.Feiertage) {
+            if ((!manualType || manualType === 'FEIERTAG') && window.Feiertage && !sonderfrei) {
                 const feiertagsName = Feiertage.getName(iso);
                 if (feiertagsName) {
                     html += '<div class="day-tip-type" style="opacity:.75">' + feiertagsName + '</div>';
