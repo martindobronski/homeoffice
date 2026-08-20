@@ -486,23 +486,25 @@ select:focus-visible {
 }
 
 .check::after {
-    content: 'gebucht';
+    content: 'Arbeits- und/oder Parkplatz gebucht';
     position: absolute;
     bottom: calc(100% + 6px);
     right: -3px;
-    background: var(--text);
-    color: #fff;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 6px 16px rgba(20, 20, 30, .14);
+    color: var(--text-soft);
     font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 500;
     line-height: 1.4;
-    padding: 4px 8px;
-    border-radius: 6px;
+    padding: 8px 12px;
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     transition: opacity .12s ease;
-    z-index: 5;
+    z-index: 35;
 }
 
 .check:hover::after {
@@ -629,7 +631,7 @@ select:focus-visible {
 }
 
 .month-card .cell-icon {
-    font-size: 19px;
+    font-size: 24px;
     top: 0;
     left: 0;
     opacity: 0.7;
@@ -994,6 +996,9 @@ select:focus-visible {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 18px;
+}
+.dialog-buttons #dialogDelete {
+    margin-right: auto;
 }
 
 .dialog-check {
