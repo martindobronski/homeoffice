@@ -513,7 +513,7 @@ function kpiCard(label, value, sub, pct, color, tip, ampel, ringPct, target, inv
     return '<div class="kpi-card"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
         + '<div class="ring-wrap">'
         + '<div class="ring' + (isOverflow ? ' ring-pulse' : '') + '" style="--pct:' + dispPct + ';--ring-color:' + (ampel ? ringColor : color) + '"></div>'
-        + '<div class="ring-pct" style="color:' + (ampel ? ampelColor : color) + '">' + pct + '%</div>'
+        + '<div class="ring-pct" style="color:var(--text)">' + pct + '%</div>'
         + '</div>'
         + '<div class="kpi-text">'
         + '<div class="kpi-value">' + value + '</div>'
