@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.13 vom 20.08.2026)
+## Anwesenheits-Dashboard (Version 1.14 vom 20.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -21,7 +21,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
-- **Fußzeile:** Urlaubskontingent, Backup-Buttons, Legende mit Zählern, Versionsinfo.
+- **Fußzeile:** Urlaubskontingent, Bundesland-Auswahl (alle 16 Bundesländer) mit Checkbox „24./31.12. frei", Backup-Buttons mit Export-Hinweis, Legende mit Zählern, Versionsinfo.
 
 Die Darstellung passt sich der Fensterbreite an (3 / 2 / 1 Spalten).
 
@@ -70,8 +70,9 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
 - **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende.
-- **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Auch die Legenden-Einträge sowie die Buttons und das Label „Zeitraum Start-Monat" zeigen solche Tooltips.
-- **Automatische Feiertage:** Gesetzliche Feiertage (Hamburg) und arbeitsfreie Sondertage (24./31.12.) werden automatisch erkannt und im Kalender angezeigt (🎉 Icon, blaue Farbe), ohne dass du sie manuell erfassen musst. Ein manueller Eintrag hat dabei immer Vorrang – setzt du z. B. an einem Feiertag „Homeoffice", wird dieser Eintrag angezeigt statt des Feiertags. Die automatischen Feiertage werden nicht in den Browser-Daten gespeichert.
+- **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Das rote **?-Badge** auf leeren Tagen zeigt beim Überfahren den Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden." Auch die Legenden-Einträge sowie die Buttons und das Label „Zeitraum Start-Monat" zeigen solche Tooltips.
+- **Automatische Feiertage:** Gesetzliche Feiertage des gewählten Bundeslandes (alle 16 Bundesländer wählbar) und optional arbeitsfreie Sondertage (24./31.12., per Checkbox aktivierbar) werden automatisch erkannt und im Kalender angezeigt (🎉 Icon, violette Farbe), ohne dass du sie manuell erfassen musst. Ein manueller Eintrag hat dabei immer Vorrang – setzt du z. B. an einem Feiertag „Homeoffice", wird dieser Eintrag angezeigt statt des Feiertags. Beim Wechsel des Bundeslandes werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst. Die automatischen Feiertage werden nicht in den Browser-Daten gespeichert.
+- **Leere Tage:** Werktage ohne Eintrag zeigen ein rotes **?-Badge** oben rechts in der Tageszelle. Der Tooltip weist darauf hin, dass diesem Tag eine Anwesenheitsart zugeordnet werden sollte. Das ?-Badge erscheint nur in Monaten mit mindestens einem erfüllten Solltag.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
 ---
@@ -107,11 +108,11 @@ Hinweise:
 
 | Farbe     | Art         | Bedeutung                                        |
 |-----------|-------------|--------------------------------------------------|
-| Grün      | Bürotag     | Vor Ort im Büro gearbeitet                       |
-| Beige/Grau| Homeoffice  | Im Homeoffice gearbeitet                         |
+| Blau      | Bürotag     | Vor Ort im Büro gearbeitet                       |
+| Grün      | Homeoffice  | Im Homeoffice gearbeitet                         |
 | Ocker     | Freizeittag | Freizeittag                                      |
-| Violett   | Dienstreise | Dienstreise                                      |
-| Blau      | Feiertag    | Feiertag (automatisch erkannt, s. Kap. 4.3)      |
+| Grau      | Dienstreise | Dienstreise                                      |
+| Violett   | Feiertag    | Feiertag (automatisch erkannt, s. Kap. 4.3)      |
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
@@ -160,6 +161,22 @@ Urlaub (genommen x / geplant y / ungeplant z)
 
 **Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. Unten links im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben und mit **OK** bestätigen. Vor der Übernahme erscheint ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den neuen Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
+### 6.1 Bundesland und Feiertage
+
+Im Footer-Bereich befindet sich ein Dropdown **Bundesland** mit allen 16 deutschen Bundesländern. Die Auswahl bestimmt, welche gesetzlichen Feiertage automatisch erkannt werden:
+
+- **9 bundeseinheitliche Feiertage** (Neujahr, Karfreitag, Ostermontag, Tag der Arbeit, Christi Himmelfahrt, Pfingstmontag, Tag der Deutschen Einheit, 1. und 2. Weihnachtstag) gelten in allen Bundesländern.
+- **Zusätzliche Feiertage** je nach Bundesland: Reformationstag (31.10.), Allerheiligen (1.11.), Fronleichnam, Buß- und Bettag.
+- **24./31.12. frei:** Per Checkbox aktivierbar – Heiligabend und Silvester werden als arbeitsfreie Sondertage geführt (keine gesetzlichen Feiertage, aber betrieblich arbeitsfrei). Die Checkbox ist unabhängig vom Bundesland.
+
+**Beim Wechsel des Bundeslandes** werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst: Tage, die im neuen BL ein Feiertag sind, werden überschrieben; ehemalige Feiertage, die im neuen BL nicht mehr gelten, werden entfernt. Eine kurze Meldung zeigt die Anzahl der angepassten Einträge.
+
+Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+
+### 6.2 Gespeichert-Toast
+
+Nach jeder Änderung erscheint unten in der Mitte kurz der Hinweis **„Gespeichert ✓"** und verschwindet nach 1,5 Sekunden. So ist sofort erkennbar, dass die Änderung in den Browser-Daten gespeichert wurde.
+
 ---
 
 ## 7. Quotenberechnung
@@ -204,7 +221,7 @@ Regeln:
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 
-**Prozent-Badges:** In der Hero-Karte und den Mini-Karten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben.
+**Prozent-Badges:** In der Hero-Karte und den Mini-Karten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben. Die Prozentzahlen in den Rings der KPI-Karten werden immer in dunkelgrauer Schrift (`--text`) dargestellt, unabhängig von der Ring-Farbe.
 
 **Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
 
@@ -218,7 +235,11 @@ In der Fußzeile links befinden sich zwei Buttons. Ein automatisches Backup gibt
 
 ### 8.1 Backup exportieren
 
-Klick auf **Backup exportieren** lädt eine JSON-Datei in den Download-Ordner des Browsers:
+Klick auf **Backup exportieren** lädt eine JSON-Datei in den Download-Ordner des Browsers. Unterhalb der Buttons wird das Datum und die Uhrzeit des letzten Exports angezeigt (z. B. `Zuletzt exportiert: 20.08.2026, 14:32`). Die Farbe des Hinweises ändert sich automatisch:
+
+- **Grau:** Export weniger als 7 Tage alt
+- **Orange:** Export 7–30 Tage alt
+- **Rot:** Export älter als 30 Tage (Erinnerung an regelmäßige Datensicherung)
 
 ```
 jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
@@ -257,7 +278,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.13 vom 20.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.14 vom 20.08.2026`.
 
 ---
 

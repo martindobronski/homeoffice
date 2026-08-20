@@ -159,24 +159,35 @@ function storeSet(key, value) {
 }
 
 let _savedTimer = null;
-function showSaved() {
+function showToast(msg, ms) {
     const el = document.getElementById('toast');
     if (!el) return;
-    el.textContent = 'Gespeichert ✓';
+    el.textContent = msg;
     el.classList.add('show');
     clearTimeout(_savedTimer);
-    _savedTimer = setTimeout(function () { el.classList.remove('show'); }, 1500);
+    _savedTimer = setTimeout(function () { el.classList.remove('show'); }, ms || 1500);
+}
+function showSaved() {
+    showToast('Gespeichert ✓');
 }
 
-function clearFeiertagDays() {
-    let changed = false;
-    for (const iso of Object.keys(days)) {
-        if (days[iso] === 'FEIERTAG') {
+function syncFeiertagDays() {
+    const start = parseISO(periodStart);
+    const end = parseISO(periodEnd);
+    let count = 0;
+    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const iso = fmt(d);
+        const istFT = window.Feiertage && Feiertage.istFeiertag(iso);
+        if (istFT && days[iso] !== 'FEIERTAG') {
+            days[iso] = 'FEIERTAG';
+            count++;
+        } else if (!istFT && days[iso] === 'FEIERTAG') {
             delete days[iso];
-            changed = true;
+            count++;
         }
     }
-    if (changed) saveDays();
+    if (count) saveDays();
+    return count;
 }
 
 function updateExportHint() {
@@ -619,7 +630,7 @@ function buildMonthCells(year, month) {
     return { cells: cells, rows: row + 1, workdays: cells.length };
 }
 
-function renderCalGrid(year, month) {
+function renderCalGrid(year, month, showEmpty) {
     const { cells, rows } = buildMonthCells(year, month);
     const todayIso = fmt(new Date());
     let html = '<div class="cal-grid" style="grid-template-rows:auto repeat(' + rows + ',1fr)">';
@@ -639,10 +650,12 @@ function renderCalGrid(year, month) {
             }
             const cls = TYPE_CLASS[cell.type];
             const future = !cls && cell.iso > todayIso;
+            const empty = !cls;
             const filter = activeFilter
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
             const icon = cls ? '<span class="cell-icon">' + TYPE_ICONS[cell.type] + '</span>' : '';
+            const emptyMark = (empty && showEmpty) ? '<span class="cell-empty" title="Diesem Tag sollte eine Anwesenheitsart zugeordnet werden.">?</span>' : '';
             const check = gebucht[cell.iso]
                 ? '<span class="check" aria-label="gebucht">✓</span>'
                 : '';
@@ -650,7 +663,7 @@ function renderCalGrid(year, month) {
             const booked = gebucht[cell.iso] ? ' booked' : '';
             html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + '"'
                 + ' data-date="' + cell.iso + '">'
-                + cell.day + icon + check + '</div>';
+                + cell.day + icon + emptyMark + check + '</div>';
         }
     }
     html += '</div>';
@@ -682,7 +695,7 @@ function heroHTML(year, month) {
         + '</div>'
         + '</div>'
         + '</div>'
-        + renderCalGrid(year, month);
+                + renderCalGrid(year, month, st.office > 0);
 }
 
 function cardHTML(year, month, showYear) {
@@ -695,7 +708,7 @@ function cardHTML(year, month, showYear) {
         + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
-        + renderCalGrid(year, month)
+        + renderCalGrid(year, month, st.office > 0)
         + '</div>';
 }
 
@@ -1265,6 +1278,20 @@ let quickPos = null;
 const dayTip = document.getElementById('dayTip');
 
 function showDayTip(e) {
+    const emptyBadge = e.target.closest('.cell-empty');
+    if (emptyBadge) {
+        const rect = emptyBadge.getBoundingClientRect();
+        dayTip.innerHTML = 'Diesem Tag sollte eine<br>Anwesenheitsart zugeordnet werden.';
+        dayTip.classList.remove('hidden');
+        const tipW = dayTip.offsetWidth;
+        const tipH = dayTip.offsetHeight;
+        let left = rect.left + rect.width / 2 - tipW / 2;
+        let top = rect.top - tipH - 6;
+        if (top < 8) top = rect.bottom + 6;
+        dayTip.style.left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8)) + 'px';
+        dayTip.style.top = Math.max(8, Math.min(top, window.innerHeight - tipH - 8)) + 'px';
+        return;
+    }
     const cell = e.target.closest('.day[data-date]');
     const chip = cell ? null : e.target.closest('.chip[data-filter]');
     const quota = (!cell && !chip) ? e.target.closest('.quota-input') : null;
@@ -1292,7 +1319,7 @@ function showDayTip(e) {
             const sonderfrei = !manualType && window.Feiertage && Feiertage.istSonderfrei(iso);
             const label = sonderfrei ? 'Arbeitsfrei' : (WORK_TYPES.find(t => t.key === type) || {}).label;
             html += '<div class="day-tip-type">- ' + label + ' -</div>';
-            if (!manualType && window.Feiertage) {
+            if ((!manualType || manualType === 'FEIERTAG') && window.Feiertage) {
                 const feiertagsName = Feiertage.getName(iso);
                 if (feiertagsName) {
                     html += '<div class="day-tip-type" style="opacity:.75">' + feiertagsName + '</div>';
@@ -1515,13 +1542,15 @@ function init() {
 
     blSelect.addEventListener('change', function () {
         Feiertage.setBundesland(blSelect.value);
-        clearFeiertagDays();
+        var n = syncFeiertagDays();
         render();
+        if (n > 0) showToast(n + ' Feiertag' + (n > 1 ? 'e' : '') + ' angepasst');
     });
     document.getElementById('sonderfreiCheck').addEventListener('change', function (e) {
         Feiertage.setSonderfrei(e.target.checked);
-        clearFeiertagDays();
+        var n = syncFeiertagDays();
         render();
+        if (n > 0) showToast(n + ' Feiertag' + (n > 1 ? 'e' : '') + ' angepasst');
     });
 
     populateQuick();
