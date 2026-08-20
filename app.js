@@ -152,9 +152,32 @@ function storeGet(key) {
 function storeSet(key, value) {
     try {
         localStorage.setItem(key, value);
+        showSaved();
     } catch (e) {
         // Speicherung nicht möglich (z. B. file:// in Safari) - Seite funktioniert trotzdem
     }
+}
+
+let _savedTimer = null;
+function showSaved() {
+    const el = document.getElementById('toast');
+    if (!el) return;
+    el.textContent = 'Gespeichert ✓';
+    el.classList.add('show');
+    clearTimeout(_savedTimer);
+    _savedTimer = setTimeout(function () { el.classList.remove('show'); }, 1500);
+}
+
+function updateExportHint() {
+    const el = document.getElementById('exportHint');
+    if (!el) return;
+    const raw = storeGet('lastExport');
+    if (!raw) { el.textContent = ''; return; }
+    const d = new Date(raw);
+    const pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+    el.textContent = 'Zuletzt exportiert: ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    const daysSince = (Date.now() - d.getTime()) / 86400000;
+    el.style.color = daysSince > 30 ? '#FF1A1A' : daysSince > 7 ? '#D4853C' : '';
 }
 
 function loadDays() {
@@ -331,6 +354,8 @@ function exportBackup() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(a.href);
+    storeSet('lastExport', new Date().toISOString());
+    updateExportHint();
 }
 
 function handleImportFile(file) {
@@ -1469,6 +1494,7 @@ function init() {
     yearGridEl.addEventListener('contextmenu', gridContext);
     heroEl.addEventListener('contextmenu', gridContext);
     render();
+    updateExportHint();
 }
 
 init();

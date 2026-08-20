@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.46">
+    <link rel="stylesheet" href="style.css?v=1.47">
 </head>
 <body>
 
@@ -50,6 +50,7 @@
             <button class="btn btn-ghost" id="exportButton">Backup exportieren</button>
             <button class="btn btn-ghost" id="importButton">Backup importieren</button>
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
+            <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
     <div id="version" class="version">Version 1.13 vom 20.08.2026 · <a href="Bedienungsanleitung.pdf" target="_blank">Bedienungsanleitung</a></div>
@@ -145,7 +146,9 @@
         </div>
     </div>
 
+    <div class="toast" id="toast"></div>
+
     <script src="feiertage.js?v=1.0"></script>
-    <script src="app.js?v=1.110"></script>
+    <script src="app.js?v=1.113"></script>
 </body>
 </html>
