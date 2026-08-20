@@ -168,6 +168,17 @@ function showSaved() {
     _savedTimer = setTimeout(function () { el.classList.remove('show'); }, 1500);
 }
 
+function clearFeiertagDays() {
+    let changed = false;
+    for (const iso of Object.keys(days)) {
+        if (days[iso] === 'FEIERTAG') {
+            delete days[iso];
+            changed = true;
+        }
+    }
+    if (changed) saveDays();
+}
+
 function updateExportHint() {
     const el = document.getElementById('exportHint');
     if (!el) return;
@@ -730,8 +741,9 @@ function renderLegend() {
         if (isWeekend(d)) {
             continue;
         }
-        const t = getDayType(fmt(d));
-        if (t) {
+        const iso = fmt(d);
+        const t = getDayType(iso);
+        if (t && !(t === 'FEIERTAG' && window.Feiertage && Feiertage.istSonderfrei(iso))) {
             counts[t] = (counts[t] || 0) + 1;
         }
     }
@@ -1482,6 +1494,36 @@ function init() {
     loadUrlaub();
     loadGebucht();
     document.getElementById('urlaubInput').value = urlaubTotal;
+
+    // Bundesland-Dropdown füllen
+    var blSelect = document.getElementById('blSelect');
+    var BL_NAMES = {
+        BW: 'Baden-Württemberg', BY: 'Bayern', BE: 'Berlin', BB: 'Brandenburg',
+        HB: 'Bremen', HH: 'Hamburg', HE: 'Hessen', MV: 'Mecklenburg-Vorpommern',
+        NI: 'Niedersachsen', NW: 'Nordrhein-Westfalen', RP: 'Rheinland-Pfalz',
+        SL: 'Saarland', SN: 'Sachsen', ST: 'Sachsen-Anhalt', SH: 'Schleswig-Holstein',
+        TH: 'Thüringen'
+    };
+    Feiertage.BL_REIHENFOLGE.forEach(function (bl) {
+        var opt = document.createElement('option');
+        opt.value = bl;
+        opt.textContent = BL_NAMES[bl] || bl;
+        blSelect.appendChild(opt);
+    });
+    blSelect.value = Feiertage.getBundesland();
+    document.getElementById('sonderfreiCheck').checked = Feiertage.getSonderfrei();
+
+    blSelect.addEventListener('change', function () {
+        Feiertage.setBundesland(blSelect.value);
+        clearFeiertagDays();
+        render();
+    });
+    document.getElementById('sonderfreiCheck').addEventListener('change', function (e) {
+        Feiertage.setSonderfrei(e.target.checked);
+        clearFeiertagDays();
+        render();
+    });
+
     populateQuick();
     fillTypeSelect();
     monthBox.addEventListener('change', applyQuickSelection);

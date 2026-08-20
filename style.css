@@ -739,6 +739,33 @@ select:focus-visible {
     text-align: center;
 }
 
+.bl-select {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 8px 8px 8px 16px;
+}
+.bl-select span {
+    font-size: 12.5px;
+    color: var(--text-soft);
+    white-space: nowrap;
+}
+.bl-check {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--text-soft);
+    white-space: nowrap;
+    cursor: pointer;
+}
+.bl-check input {
+    accent-color: var(--accent);
+}
+
 .footer-actions {
     display: flex;
     align-items: center;

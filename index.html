@@ -46,6 +46,11 @@
             <input type="number" id="urlaubInput" min="0" max="365" step="1">
             <button class="btn btn-ghost" id="urlaubApply">OK</button>
         </div>
+        <div class="bl-select">
+            <span>Bundesland</span>
+            <select id="blSelect"></select>
+            <label class="bl-check"><input type="checkbox" id="sonderfreiCheck"> 24./31.12. frei</label>
+        </div>
         <div class="footer-actions">
             <button class="btn btn-ghost" id="exportButton">Backup exportieren</button>
             <button class="btn btn-ghost" id="importButton">Backup importieren</button>
@@ -148,7 +153,7 @@
 
     <div class="toast" id="toast"></div>
 
-    <script src="feiertage.js?v=1.0"></script>
-    <script src="app.js?v=1.113"></script>
+    <script src="feiertage.js?v=2.0"></script>
+    <script src="app.js?v=1.116"></script>
 </body>
 </html>
