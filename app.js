@@ -6,10 +6,10 @@ const WORK_TYPES = [
     { key: 'BUEROTAG', label: 'Bürotag', color: '#3B6D11' },
     { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#5F5E5A' },
     { key: 'DIENSTREISE', label: 'Dienstreise', color: '#534AB7' },
-    { key: 'URLAUB', label: 'Urlaub', color: '#993C1D' },
+    { key: 'URLAUB', label: 'Urlaub', color: '#D4853C' },
     { key: 'FEIERTAG', label: 'Feiertag', color: '#185FA5' },
-    { key: 'KRANKHEIT', label: 'Krankheit', color: '#A32D2D' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#854F0B' }
+    { key: 'KRANKHEIT', label: 'Krankheit', color: '#FF1A1A' },
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#A89928' }
 ];
 
 const TYPE_CLASS = {
@@ -556,7 +556,7 @@ function renderKpis() {
         html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A', 'Noch keine vollständigen Monate vorhanden', true);
     }
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
-        'Kontingent verbraucht', urlaubPct, '#993C1D',
+        'Kontingent verbraucht', urlaubPct, '#D4853C',
         'Verbrauchtes Urlaubskontingent im laufenden Kalenderjahr ' + now.getFullYear() + ' (' + urlaubYear + ' von ' + urlaubTotal + ' Tagen). Bezieht sich immer auf das echte Kalenderjahr, unabhängig vom gewählten Anzeigezeitraum.', true, null, 100, true);
     strip.innerHTML = html;
 }
