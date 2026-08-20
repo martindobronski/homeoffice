@@ -651,7 +651,7 @@ function cardHTML(year, month, showYear) {
     const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
     return '<div class="month-card">'
         + '<div class="m-head">'
-        + '<h4>' + monthName(year, month) + (showYear ? ' <span class="m-year">' + year + '</span>' : '') + '</h4>'
+        + '<h4>' + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
         + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
