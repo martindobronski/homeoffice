@@ -7,17 +7,17 @@
     --text-faint: #9CA3AF;
     --border: #E6E7EB;
 
-    --office: #27500A;
-    --office-soft: #EAF3DE;
-    --office-line: #3B6D11;
+    --office: #0C447C;
+    --office-soft: #E6F1FB;
+    --office-line: #185FA5;
 
-    --ho-text: #444441;
-    --ho-soft: #F1EFE8;
-    --ho-line: #5F5E5A;
+    --ho-text: #27500A;
+    --ho-soft: #EAF3DE;
+    --ho-line: #3B6D11;
 
-    --holiday: #0C447C;
-    --holiday-soft: #E6F1FB;
-    --holiday-line: #185FA5;
+    --holiday: #3C3489;
+    --holiday-soft: #EEEDFE;
+    --holiday-line: #534AB7;
 
     --sick: #CC0000;
     --sick-soft: #FCEBEB;
@@ -31,14 +31,14 @@
     --free-soft: #FAF6DC;
     --free-line: #A89928;
 
-    --travel: #3C3489;
-    --travel-soft: #EEEDFE;
-    --travel-line: #534AB7;
+    --travel: #444441;
+    --travel-soft: #F1EFE8;
+    --travel-line: #5F5E5A;
 
     --future: #FFFFFF;
     --future-line: #E9EAED;
 
-    --accent: #3B6D11;
+    --accent: #185FA5;
 
     --today: #C026D3;
     --today-glow: rgba(192, 38, 212, 0.22);
@@ -220,7 +220,7 @@ select:focus-visible {
 
 .ring {
     --pct: 0;
-    --ring-color: #3B6D11;
+    --ring-color: #185FA5;
     width: 64px;
     height: 64px;
     border-radius: 50%;

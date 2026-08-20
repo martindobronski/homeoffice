@@ -3,11 +3,11 @@
 let urlaubTotal = 30;
 
 const WORK_TYPES = [
-    { key: 'BUEROTAG', label: 'Bürotag', color: '#3B6D11' },
-    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#5F5E5A' },
-    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#534AB7' },
+    { key: 'BUEROTAG', label: 'Bürotag', color: '#185FA5' },
+    { key: 'HOMEOFFICE', label: 'Homeoffice', color: '#3B6D11' },
+    { key: 'DIENSTREISE', label: 'Dienstreise', color: '#5F5E5A' },
     { key: 'URLAUB', label: 'Urlaub', color: '#D4853C' },
-    { key: 'FEIERTAG', label: 'Feiertag', color: '#185FA5' },
+    { key: 'FEIERTAG', label: 'Feiertag', color: '#534AB7' },
     { key: 'KRANKHEIT', label: 'Krankheit', color: '#FF1A1A' },
     { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#A89928' }
 ];
@@ -540,20 +540,20 @@ function renderKpis() {
     const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
     let html = '';
     html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#3B6D11',
+        'Bürotage erfasst', pflichtPct, '#185FA5',
         'Erfüllungsgrad der Büropflicht in ' + monatName + ': ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60 % der Werktage, abgerundet). Kann von der Büroquote rechts abweichen, da hier gerundet wird und nur ' + monatName + ' zählt.', true);
     if (basis > 0) {
         const officePct = Math.round(q.office * 100 / basis);
         const officeRingPct = Math.min(100, Math.round(officePct * 100 / 60));
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
         const homeofficeRingPct = Math.min(100, Math.round(homeofficePct * 100 / 40));
-        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#3B6D11',
+        html += kpiCard('Büroquote', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#185FA5',
             'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel: 60 %).', true, officeRingPct, 60);
-        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#5F5E5A',
+        html += kpiCard('Homeoffice-Quote', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#3B6D11',
             'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Homeoffice-Tage an allen Büro+Homeoffice-Tagen (Ziel: 40 %).', true, homeofficeRingPct, 40);
     } else {
-        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
-        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#5F5E5A', 'Noch keine vollständigen Monate vorhanden', true);
+        html += kpiCard('Büroquote', '–', 'keine vollständigen Monate', 0, '#185FA5', 'Noch keine vollständigen Monate vorhanden', true);
+        html += kpiCard('Homeoffice-Quote', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
     }
     html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
         'Kontingent verbraucht', urlaubPct, '#D4853C',
