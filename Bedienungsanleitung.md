@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.15 vom 22.08.2026)
+## Anwesenheits-Dashboard (Version 1.16 vom 22.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -11,6 +11,20 @@ Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** ge
 Die App läuft im Browser. Zum Starten genügt es, die Datei `index.html` im Browser zu öffnen (z. B. per Doppelklick auf die Datei). Es ist kein Webserver erforderlich.
 
 Die Daten werden im Browser gespeichert (localStorage). Solange du denselben Browser und Computer verwendest, bleiben alle Einträge erhalten.
+
+### 1.1 Installation als App (Smartphone/Tablet)
+
+Die App ist eine **Progressive Web App (PWA)** und lässt sich auf dem Smartphone wie eine normale App installieren:
+
+1. Die App-Adresse im Browser (Chrome, Brave, Samsung Internet o. Ä.) öffnen.
+2. Im Browser-Menü **„App installieren"** bzw. **„Zum Startbildschirm hinzufügen"** wählen.
+3. Die App erscheint anschließend mit eigenem Icon auf dem Startbildschirm und startet vollflächig ohne Adressleiste – wie eine native App.
+
+Eigenschaften des App-Modus:
+
+- **Offline-Fähig:** Nach dem ersten Laden werden App-Seiten, Stylesheets, Skripte und diese Bedienungsanleitung (PDF) im Gerätespeicher vorgehalten. Die App startet und funktioniert damit auch ohne Internetverbindung; Einträge werden weiterhin lokal gesichert.
+- **Automatische Updates:** Bei bestehender Internetverbindung lädt die App immer den aktuellen Stand; Änderungen erscheinen spätestens mit dem nächsten Öffnen.
+- **Daten bleiben gerätebezogen:** Der Speicher gilt pro Gerät und Browser – unabhängig davon, ob die App installiert oder nur als Webseite geöffnet ist. Ein Datenaustausch zwischen Geräten erfolgt über Backup exportieren/importieren (Kapitel 8).
 
 ---
 
@@ -288,7 +302,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.15 vom 22.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.16 vom 22.08.2026`.
 
 ---
 
@@ -305,3 +319,6 @@ Im Browser (localStorage). Andere Browser, Computer oder das Löschen der Browse
 
 **Kann ich ein Datum zweimal erfassen?**
 Nein, pro Datum ist nur ein Eintrag möglich. Ein Klick auf einen erfassten Tag öffnet den Dialog zum Bearbeiten.
+
+**Funktioniert die App auch ohne Internet?**
+Ja, wenn sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft sie vollständig offline; neue Versionen werden automatisch geladen, sobald wieder eine Internetverbindung besteht.
