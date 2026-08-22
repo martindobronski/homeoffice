@@ -813,6 +813,8 @@ select:focus-visible {
     position: fixed;
     z-index: 30;
     min-width: 190px;
+    max-height: calc(100vh - 16px);
+    overflow-y: auto;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);

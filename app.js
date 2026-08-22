@@ -1454,15 +1454,16 @@ function quickHide() {
 }
 
 function positionQuickMenuAt(x, y) {
+    quickMenu.classList.remove('hidden');
     const menuW = quickMenu.offsetWidth;
     const menuH = quickMenu.offsetHeight;
     let left = x + 4;
     let top = y + 4;
     if (left + menuW > window.innerWidth - 8) {
-        left = x - menuW - 4;
+        left = window.innerWidth - menuW - 8;
     }
     if (top + menuH > window.innerHeight - 8) {
-        top = y - menuH - 4;
+        top = window.innerHeight - menuH - 8;
     }
     quickMenu.style.left = Math.max(8, left) + 'px';
     quickMenu.style.top = Math.max(8, top) + 'px';
@@ -1506,8 +1507,9 @@ function quickShow(iso, x, y) {
     quickMenu.innerHTML = html;
     if (!alreadyOpen) {
         positionQuickMenuAt(x, y);
+    } else {
+        quickMenu.classList.remove('hidden');
     }
-    quickMenu.classList.remove('hidden');
 }
 
 quickMenu.addEventListener('click', function (e) {
