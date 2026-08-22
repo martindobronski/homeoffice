@@ -1029,7 +1029,7 @@ select:focus-visible {
 
 @media (max-width: 640px) {
     body {
-        padding: 20px;
+        padding: 20px 14px;
     }
     .kpi-strip {
         grid-template-columns: 1fr;
@@ -1038,7 +1038,62 @@ select:focus-visible {
         grid-template-columns: 1fr;
     }
     .hero .cal-grid .day {
+        aspect-ratio: 1 / 1;
         font-size: 13px;
+    }
+    .hero .cell-icon {
+        font-size: 18px;
+    }
+    .range-controls {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+        border-radius: var(--radius-md);
+        padding: 8px 10px;
+    }
+    .range-controls .range-label {
+        display: none;
+    }
+    #monthBox,
+    #yearBox {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+    .dialog {
+        min-width: 0;
+        max-width: calc(100vw - 24px);
+    }
+    .bl-select select {
+        min-width: 0;
+        max-width: 150px;
+    }
+    .quota-input,
+    .bl-select,
+    .footer-actions,
+    .legend {
+        max-width: 100%;
+    }
+    .chip {
+        max-width: 100%;
+        flex-wrap: wrap;
+        white-space: normal;
+    }
+    .month-card .m-head {
+        flex-wrap: wrap;
+        gap: 2px 10px;
+    }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .day,
+    .chip {
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+    .check::after {
+        display: none;
     }
 }
 

@@ -1029,7 +1029,7 @@ document.getElementById('urlaubConfirmCancel').addEventListener('click', functio
 // ---------- Ereignis-Delegation ----------
 
 function gridClick(e) {
-    if (e.button !== 0) {
+    if (suppressClick || e.button !== 0) {
         return;
     }
     const cell = e.target.closest('.day[data-date]');
@@ -1041,6 +1041,9 @@ function gridClick(e) {
 
 function gridContext(e) {
     e.preventDefault();
+    if (Date.now() - lastLongPress < 700) {
+        return;
+    }
     hideDayTip();
     const cell = e.target.closest('.day[data-date]');
     if (!cell) {
@@ -1048,6 +1051,76 @@ function gridContext(e) {
     }
     quickShow(cell.getAttribute('data-date'), e.clientX, e.clientY);
 }
+
+// ---------- Touch: Long-Press öffnet Schnellmenü ----------
+
+const IS_TOUCH = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+let suppressClick = false;
+let lastLongPress = 0;
+
+function bindLongPress(el, resolver) {
+    if (!IS_TOUCH) {
+        return;
+    }
+    let timer = null;
+    let startX = 0;
+    let startY = 0;
+    el.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) {
+            return;
+        }
+        const t = e.touches[0];
+        startX = t.clientX;
+        startY = t.clientY;
+        const fire = resolver(e);
+        if (!fire) {
+            return;
+        }
+        timer = setTimeout(function () {
+            timer = null;
+            hideDayTip();
+            quickHide();
+            chipMenu.classList.add('hidden');
+            lastLongPress = Date.now();
+            suppressClick = true;
+            setTimeout(function () { suppressClick = false; }, 500);
+            fire(startX, startY);
+        }, 500);
+    }, { passive: true });
+    el.addEventListener('touchmove', function (e) {
+        if (!timer) {
+            return;
+        }
+        const t = e.touches[0];
+        if (Math.abs(t.clientX - startX) > 10 || Math.abs(t.clientY - startY) > 10) {
+            clearTimeout(timer);
+            timer = null;
+        }
+    }, { passive: true });
+    const cancel = function () {
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+    };
+    el.addEventListener('touchend', cancel);
+    el.addEventListener('touchcancel', cancel);
+}
+
+bindLongPress(heroEl, function (e) {
+    const cell = e.target.closest('.day[data-date]');
+    return cell ? function (x, y) { quickShow(cell.getAttribute('data-date'), x, y); } : null;
+});
+bindLongPress(yearGridEl, function (e) {
+    const cell = e.target.closest('.day[data-date]');
+    return cell ? function (x, y) { quickShow(cell.getAttribute('data-date'), x, y); } : null;
+});
+bindLongPress(legendEl, function (e) {
+    const chip = e.target.closest('.chip[data-filter]');
+    return chip ? function () {
+        showChipMenu(chip.getAttribute('data-filter'), chip.getBoundingClientRect());
+    } : null;
+});
 
 legendEl.addEventListener('click', function (e) {
     const chip = e.target.closest('.chip[data-filter]');
@@ -1107,6 +1180,9 @@ legendEl.addEventListener('contextmenu', function (e) {
         return;
     }
     e.preventDefault();
+    if (Date.now() - lastLongPress < 700) {
+        return;
+    }
     quickHide();
     hideDayTip();
     showChipMenu(chip.getAttribute('data-filter'), chip.getBoundingClientRect());
@@ -1468,24 +1544,29 @@ quickMenu.addEventListener('click', function (e) {
     }
 });
 
-heroEl.addEventListener('mouseover', showDayTip);
-yearGridEl.addEventListener('mouseover', showDayTip);
-kpiStripEl.addEventListener('mouseover', showDayTip);
-legendEl.addEventListener('mouseover', showDayTip);
-quotaWrapEl.addEventListener('mouseover', showDayTip);
-footerActionsEl.addEventListener('mouseover', showDayTip);
-todayButtonEl.addEventListener('mouseover', showDayTip);
-rangeControlsEl.addEventListener('mouseover', showDayTip);
-heroEl.addEventListener('mouseout', hideDayTip);
-yearGridEl.addEventListener('mouseout', hideDayTip);
-kpiStripEl.addEventListener('mouseout', hideDayTip);
-legendEl.addEventListener('mouseout', hideDayTip);
-quotaWrapEl.addEventListener('mouseout', hideDayTip);
-footerActionsEl.addEventListener('mouseout', hideDayTip);
-todayButtonEl.addEventListener('mouseout', hideDayTip);
-rangeControlsEl.addEventListener('mouseout', hideDayTip);
+if (!IS_TOUCH) {
+    heroEl.addEventListener('mouseover', showDayTip);
+    yearGridEl.addEventListener('mouseover', showDayTip);
+    kpiStripEl.addEventListener('mouseover', showDayTip);
+    legendEl.addEventListener('mouseover', showDayTip);
+    quotaWrapEl.addEventListener('mouseover', showDayTip);
+    footerActionsEl.addEventListener('mouseover', showDayTip);
+    todayButtonEl.addEventListener('mouseover', showDayTip);
+    rangeControlsEl.addEventListener('mouseover', showDayTip);
+    heroEl.addEventListener('mouseout', hideDayTip);
+    yearGridEl.addEventListener('mouseout', hideDayTip);
+    kpiStripEl.addEventListener('mouseout', hideDayTip);
+    legendEl.addEventListener('mouseout', hideDayTip);
+    quotaWrapEl.addEventListener('mouseout', hideDayTip);
+    footerActionsEl.addEventListener('mouseout', hideDayTip);
+    todayButtonEl.addEventListener('mouseout', hideDayTip);
+    rangeControlsEl.addEventListener('mouseout', hideDayTip);
+}
 
 document.addEventListener('click', function (e) {
+    if (suppressClick) {
+        return;
+    }
     if (!quickMenu.classList.contains('hidden') && !quickMenu.contains(e.target)) {
         quickHide();
     }
