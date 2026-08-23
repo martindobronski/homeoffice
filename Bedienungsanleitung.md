@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.16 vom 22.08.2026)
+## Anwesenheits-Dashboard (Version 1.17 vom 23.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -83,7 +83,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
-- **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet) funktioniert die Schnellauswahl über einen **langen Druck** auf den Tag – siehe Kapitel 4.4.
+- **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, **Mehrfachauswahl…**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog, **Mehrfachauswahl…** startet die Mehrfachauswahl (siehe Kapitel 5) und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet) funktioniert die Schnellauswahl über einen **langen Druck** auf den Tag – siehe Kapitel 4.4.
 - **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Das rote **?-Badge** auf leeren Tagen zeigt beim Überfahren den Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden." Auch die Legenden-Einträge sowie die Buttons und das Label „Zeitraum Start-Monat" zeigen solche Tooltips.
 - **Automatische Feiertage:** Gesetzliche Feiertage des gewählten Bundeslandes (alle 16 Bundesländer wählbar) und optional arbeitsfreie Sondertage (24./31.12., per Checkbox aktivierbar) werden automatisch erkannt und im Kalender angezeigt (🎉 Icon, violette Farbe), ohne dass du sie manuell erfassen musst. Ein manueller Eintrag hat dabei immer Vorrang – setzt du z. B. an einem Feiertag „Homeoffice", wird dieser Eintrag angezeigt statt des Feiertags. Beim Wechsel des Bundeslandes werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst. Die automatischen Feiertage werden nicht in den Browser-Daten gespeichert.
 - **Leere Tage:** Werktage ohne Eintrag zeigen ein rotes **?-Badge** oben rechts in der Tageszelle. Der Tooltip weist darauf hin, dass diesem Tag eine Anwesenheitsart zugeordnet werden sollte. Das ?-Badge erscheint nur in Monaten mit mindestens einem erfüllten Solltag.
@@ -94,7 +94,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und Jahresübersicht einspaltig dargestellt, alle Dialoge passen sich der Bildschirmbreite an. Die Bedienung ist vollständig ohne Maus möglich:
 
 - **Tippen auf einen Tag:** öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten` – wie der Linksklick mit der Maus.
-- **Langer Druck auf einen Tag** (ca. eine halbe Sekunde, ohne den Finger zu bewegen): öffnet das **Schnellauswahl-Menü** an der Fingerposition (gleiche Funktionen wie per Rechtsklick: Art setzen, **Eintrag bearbeiten**, **gebucht**, **Löschen**). Wird der Finger vor Ablauf bewegt oder abgehoben, wird der Vorgang abgebrochen.
+- **Langer Druck auf einen Tag** (ca. eine halbe Sekunde, ohne den Finger zu bewegen): öffnet das **Schnellauswahl-Menü** an der Fingerposition (gleiche Funktionen wie per Rechtsklick: Art setzen, **Eintrag bearbeiten**, **Mehrfachauswahl…**, **gebucht**, **Löschen**). Wird der Finger vor Ablauf bewegt oder abgehoben, wird der Vorgang abgebrochen.
 - **Langer Druck auf einen Legenden-Eintrag:** öffnet das **Export-Menü** dieser Art (wie Rechtsklick auf die Legende).
 - **Tooltips entfallen:** Die Hover-Infos für Tage, Legende und Buttons gibt es auf Touch-Geräten nicht; stattdessen dient der lange Druck direkt als Zugang zu allen Funktionen.
 - Damit der lange Druck zuverlässig funktioniert, ist die Textauswahl auf Kalenderfeldern und Legendeneinträgen deaktiviert.
@@ -106,6 +106,15 @@ Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und J
 **Tag anklicken:** Ein Klick auf einen Werktag öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten`.
 
 **Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.3) an der Mausposition, mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst. Auf Touch-Geräten genügt ein langer Druck auf den Tag (Kapitel 4.4).
+
+**Mehrfachauswahl:** Mehrere nicht zusammenhängende Tage lassen sich markieren und in einem Rutsch ändern:
+
+- Am Desktop einen Tag mit gedrückter **Shift-**, **Strg-**- oder **Cmd-Taste** anklicken – das startet die Mehrfachauswahl und markiert den Tag mit blauem Ring. Solange die Auswahl aktiv ist, genügt ein einfacher Klick, um weitere Tage hinzuzufügen oder wieder abzuwählen (statt des Dialogs).
+- Auf Touch-Geräten: im Schnellauswahl-Menü (langer Druck auf einen Tag) **Mehrfachauswahl…** wählen – der angetippte Tag ist bereits markiert, jeder weitere Tipp wählt eine Zelle an oder ab.
+- Unten erscheint eine **Auswahl-Leiste** mit Zähler („x Tage ausgewählt"), allen sieben Arten zum gemeinsamen Zuweisen sowie den Buttons **Löschen** und **Abbrechen**. Das Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓".
+- **Löschen** entfernt die Einträge aller markierten Tage; vorher erscheint ein Bestätigungsdialog. **Abbrechen** bzw. **ESC** verwirft die Auswahl – ist der Bestätigungsdialog offen, schließt das erste ESC nur diesen und das zweite ESC die Auswahl.
+- Die Auswahl darf Monate überspannen: Während der Mehrfachauswahl kann mit den Pfeilen bzw. Pfeiltasten geblättert werden, die Markierung bleibt über Monatswechsel hinweg erhalten.
+- Regeln: Wochenenden sind nicht wählbar (sie werden nicht dargestellt). Werden Nicht-Bürotage zugewiesen, verlieren diese Tage vorhandene gebucht-Haken; bei Bürotagen bleiben bestehende Haken unverändert. Die Tooltips ruhen während der Mehrfachauswahl. Ohne aktive Auswahl bleibt alles wie bisher – ein normaler Klick öffnet weiterhin den Dialog.
 
 Im Dialog kannst du:
 
@@ -302,7 +311,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.16 vom 22.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.17 vom 23.08.2026`.
 
 ---
 
@@ -319,6 +328,9 @@ Im Browser (localStorage). Andere Browser, Computer oder das Löschen der Browse
 
 **Kann ich ein Datum zweimal erfassen?**
 Nein, pro Datum ist nur ein Eintrag möglich. Ein Klick auf einen erfassten Tag öffnet den Dialog zum Bearbeiten.
+
+**Wie belege ich mehrere verstreute Tage gleichzeitig?**
+Über die Mehrfachauswahl (Kapitel 5): am Desktop mit Shift-Klick starten bzw. am Smartphone „Mehrfachauswahl…" im Schnellauswahl-Menü – dann in der unteren Leiste eine Art zuweisen oder löschen.
 
 **Funktioniert die App auch ohne Internet?**
 Ja, wenn sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft sie vollständig offline; neue Versionen werden automatisch geladen, sobald wieder eine Internetverbindung besteht.

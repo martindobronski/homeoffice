@@ -14,4 +14,5 @@ Hier die Änderungen gegenüber der Vorversion (V1.16):
 - Nicht-Bürotage entfernen vorhandene gebucht-Haken, Bürotage lassen
   bestehende Haken unverändert.
 - Tooltips ruhen im Auswahlmodus; markierte Tage tragen einen blauen Ring.
+- Bedienungsanleitung (MD und PDF) um die Mehrfachauswahl ergänzt.
 - Service-Worker-Cache und Cache-Buster angehoben (v1.17).
