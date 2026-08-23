@@ -57,6 +57,9 @@ let activeFilter = null;
 let chipMenuExportKey = null;
 let exportKind = null;
 let exportMode = 'all';
+let selectionMode = false;
+let pendingSelectionDelete = false;
+const selection = new Set();
 
 const monthBox = document.getElementById('monthBox');
 const yearBox = document.getElementById('yearBox');
@@ -91,6 +94,9 @@ const confirmCancel = document.getElementById('confirmCancel');
 const quickMenu = document.getElementById('quickMenu');
 
 const chipMenu = document.getElementById('chipMenu');
+const selectionBar = document.getElementById('selectionBar');
+const selectionInfo = document.getElementById('selectionInfo');
+const selectionTypesEl = document.getElementById('selectionTypes');
 const exportOverlay = document.getElementById('exportOverlay');
 const exportTitle = document.getElementById('exportTitle');
 const exportRange = document.getElementById('exportRange');
@@ -661,7 +667,8 @@ function renderCalGrid(year, month, showEmpty) {
                 : '';
             const today = cell.iso === todayIso ? ' today' : '';
             const booked = gebucht[cell.iso] ? ' booked' : '';
-            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + '"'
+            const sel = selection.has(cell.iso) ? ' selected' : '';
+            html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + sel + '"'
                 + ' data-date="' + cell.iso + '">'
                 + cell.day + icon + emptyMark + check + '</div>';
         }
@@ -903,6 +910,21 @@ dialogDelete.addEventListener('click', function () {
 });
 
 confirmDelete.addEventListener('click', function () {
+    if (pendingSelectionDelete) {
+        const n = selection.size;
+        for (const iso of selection) {
+            delete days[iso];
+            delete gebucht[iso];
+        }
+        pendingSelectionDelete = false;
+        saveDays();
+        saveGebucht();
+        confirmOverlay.classList.add('hidden');
+        exitSelectionMode();
+        render();
+        showToast(n + ' Einträge gelöscht');
+        return;
+    }
     if (!pendingDelete) {
         return;
     }
@@ -920,12 +942,14 @@ confirmDelete.addEventListener('click', function () {
 
 confirmCancel.addEventListener('click', function () {
     pendingDelete = null;
+    pendingSelectionDelete = false;
     confirmOverlay.classList.add('hidden');
 });
 
 confirmOverlay.addEventListener('click', function (e) {
     if (e.target === confirmOverlay) {
         pendingDelete = null;
+        pendingSelectionDelete = false;
         confirmOverlay.classList.add('hidden');
     }
 });
@@ -950,7 +974,10 @@ document.addEventListener('keydown', function (e) {
     closeExportDialog();
     if (!confirmOverlay.classList.contains('hidden')) {
         pendingDelete = null;
+        pendingSelectionDelete = false;
         confirmOverlay.classList.add('hidden');
+    } else if (selectionMode) {
+        exitSelectionMode();
     }
     if (!urlaubConfirmOverlay.classList.contains('hidden')) {
         pendingUrlaub = null;
@@ -1033,10 +1060,18 @@ function gridClick(e) {
         return;
     }
     const cell = e.target.closest('.day[data-date]');
-    if (cell) {
-        hideDayTip();
-        openDialog(cell.getAttribute('data-date'));
+    if (!cell) {
+        return;
     }
+    if (selectionMode || e.shiftKey || e.ctrlKey || e.metaKey) {
+        if (!selectionMode) {
+            startSelectionMode();
+        }
+        toggleSelection(cell.getAttribute('data-date'), cell);
+        return;
+    }
+    hideDayTip();
+    openDialog(cell.getAttribute('data-date'));
 }
 
 function gridContext(e) {
@@ -1354,6 +1389,9 @@ let quickPos = null;
 const dayTip = document.getElementById('dayTip');
 
 function showDayTip(e) {
+    if (selectionMode) {
+        return;
+    }
     const emptyBadge = e.target.closest('.cell-empty');
     if (emptyBadge) {
         const rect = emptyBadge.getBoundingClientRect();
@@ -1481,6 +1519,8 @@ function quickShow(iso, x, y) {
     let html = '<div class="qm-date">' + tipDate + '</div>';
     html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
         + '<span class="qm-icon">⚙️</span>Eintrag bearbeiten</button>';
+    html += '<button type="button" class="qm-item" data-set="__multiselect__">'
+        + '<span class="qm-icon">🗂️</span>Mehrfachauswahl…</button>';
     if (existing === 'BUEROTAG') {
         html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
             + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
@@ -1529,6 +1569,12 @@ quickMenu.addEventListener('click', function (e) {
     } else if (set === '__edit__') {
         quickHide();
         openDialog(iso);
+    } else if (set === '__multiselect__') {
+        quickHide();
+        startSelectionMode();
+        selection.add(iso);
+        updateSelectionBar();
+        renderMonths();
     } else if (set === '__gebucht__') {
         if (gebucht[iso]) {
             delete gebucht[iso];
@@ -1545,6 +1591,96 @@ quickMenu.addEventListener('click', function (e) {
         render();
     }
 });
+
+// ---------- Mehrfachauswahl ----------
+
+const selectionDeleteButton = document.getElementById('selectionDelete');
+const selectionCancelButton = document.getElementById('selectionCancel');
+
+function startSelectionMode() {
+    selectionMode = true;
+    hideDayTip();
+    quickHide();
+    chipMenu.classList.add('hidden');
+    updateSelectionBar();
+}
+
+function exitSelectionMode() {
+    selectionMode = false;
+    selection.clear();
+    document.querySelectorAll('.day.selected').forEach(function (el) {
+        el.classList.remove('selected');
+    });
+    selectionBar.classList.add('hidden');
+}
+
+function toggleSelection(iso, cellEl) {
+    if (selection.has(iso)) {
+        selection.delete(iso);
+        if (cellEl) {
+            cellEl.classList.remove('selected');
+        }
+    } else {
+        selection.add(iso);
+        if (cellEl) {
+            cellEl.classList.add('selected');
+        }
+    }
+    updateSelectionBar();
+}
+
+function updateSelectionBar() {
+    if (!selectionMode) {
+        selectionBar.classList.add('hidden');
+        return;
+    }
+    selectionBar.classList.remove('hidden');
+    selectionInfo.textContent = selection.size === 0
+        ? 'Mehrfachauswahl: Tage antippen'
+        : selection.size + ' Tag' + (selection.size > 1 ? 'e' : '') + ' ausgewählt';
+    selectionDeleteButton.classList.toggle('hidden', selection.size === 0);
+}
+
+function fillSelectionTypes() {
+    selectionTypesEl.innerHTML = WORK_TYPES.map(function (t) {
+        return '<button type="button" class="sb-type" data-sbtype="' + t.key + '">'
+            + '<span class="sw" style="background:' + t.color + '"></span>'
+            + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>' + t.label
+            + '</button>';
+    }).join('');
+}
+
+selectionTypesEl.addEventListener('click', function (e) {
+    const item = e.target.closest('[data-sbtype]');
+    if (!item || selection.size === 0) {
+        return;
+    }
+    const type = item.getAttribute('data-sbtype');
+    for (const iso of selection) {
+        days[iso] = type;
+        if (type !== 'BUEROTAG') {
+            delete gebucht[iso];
+        }
+    }
+    saveDays();
+    saveGebucht();
+    const n = selection.size;
+    exitSelectionMode();
+    render();
+    showToast(n + ' Tag' + (n > 1 ? 'e' : '') + ' gesetzt ✓');
+});
+
+selectionDeleteButton.addEventListener('click', function () {
+    if (selection.size === 0) {
+        return;
+    }
+    confirmText.innerHTML = 'Einträge in <b>' + selection.size + '</b> ausgewählten Tag(en) löschen?';
+    pendingDelete = null;
+    pendingSelectionDelete = true;
+    confirmOverlay.classList.remove('hidden');
+});
+
+selectionCancelButton.addEventListener('click', exitSelectionMode);
 
 if (!IS_TOUCH) {
     heroEl.addEventListener('mouseover', showDayTip);
@@ -1638,6 +1774,7 @@ function init() {
 
     populateQuick();
     fillTypeSelect();
+    fillSelectionTypes();
     monthBox.addEventListener('change', applyQuickSelection);
     yearBox.addEventListener('change', applyQuickSelection);
     prevMonthButton.addEventListener('click', function () { shiftPeriod(-1); });

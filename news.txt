@@ -1,0 +1,17 @@
+Version 1.17 vom 23.08.2026
+Hier die Änderungen gegenüber der Vorversion (V1.16):
+
+- Neu: Mehrfachauswahl für Kalendertage – mit Shift-/Strg-/Cmd-Klick mehrere
+  nicht zusammenhängende Tage markieren und in einem Rutsch einem
+  Anwesenheitstyp zuordnen oder löschen (statt nur zusammenhängender Bereiche
+  im Dialog).
+- Smartphone: neuer Punkt „Mehrfachauswahl…" im Schnellmenü (Long-Press);
+  danach schaltet jeder Tipp eine Zelle in/aus der Auswahl.
+- Neue Auswahl-Leiste unten: Zähler, alle 7 Anwesenheitstypen zum Zuweisen,
+  Löschen (mit Bestätigungsdialog) und Abbrechen; Esc bricht ab.
+- Monatsübergreifendes Sammeln möglich – die Pfeiltasten-Navigation bleibt
+  aktiv und die Markierung bleibt über Monatswechsel hinweg erhalten.
+- Nicht-Bürotage entfernen vorhandene gebucht-Haken, Bürotage lassen
+  bestehende Haken unverändert.
+- Tooltips ruhen im Auswahlmodus; markierte Tage tragen einen blauen Ring.
+- Service-Worker-Cache und Cache-Buster angehoben (v1.17).
