@@ -1,6 +1,7 @@
 /* Service Worker – Anwesenheits-Dashboard
    Strategie:
-   - HTML/Navigation: network-first (Updates sofort sichtbar), Offline-Fallback auf index.html
+   - HTML/Navigation und Bedienungsanleitung.pdf (unversioniert!): network-first
+     (Updates sofort sichtbar), Offline-Fallback auf Cache bzw. index.html
    - übrige gleiche-Origin-Assets: stale-while-revalidate (Cache zuerst, im Hintergrund aktualisieren)
    Bei einem Release CACHE_NAME zusammen mit den Cache-Bustern in index.html erhöhen. */
 
@@ -49,7 +50,12 @@ self.addEventListener('fetch', function (e) {
     if (req.method !== 'GET') {
         return;
     }
-    if (req.mode === 'navigate' || (req.destination === 'document')) {
+    const url = new URL(req.url);
+    // Das PDF ist als einziger Asset unversioniert und würde bei
+    // stale-while-revalidate beim ersten Öffnen nach einem Release die
+    // Vorversion zeigen - daher network-first wie die Navigation.
+    if (req.mode === 'navigate' || req.destination === 'document'
+        || url.pathname.endsWith('/Bedienungsanleitung.pdf')) {
         e.respondWith(
             fetch(req).then(function (res) {
                 const copy = res.clone();
@@ -65,7 +71,6 @@ self.addEventListener('fetch', function (e) {
         );
         return;
     }
-    const url = new URL(req.url);
     if (url.origin === self.location.origin) {
         e.respondWith(
             caches.match(req).then(function (hit) {

@@ -15,4 +15,7 @@ Hier die Änderungen gegenüber der Vorversion (V1.16):
   bestehende Haken unverändert.
 - Tooltips ruhen im Auswahlmodus; markierte Tage tragen einen blauen Ring.
 - Bedienungsanleitung (MD und PDF) um die Mehrfachauswahl ergänzt.
+- Fix: Das PDF der Bedienungsanleitung wird jetzt wie die App-Seite immer
+  aktuell geladen – auf dem Smartphone erschien nach einem Update zuvor
+  zunächst die Vorversion aus dem Cache.
 - Service-Worker-Cache und Cache-Buster angehoben (v1.17).
