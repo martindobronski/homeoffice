@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.20 vom 24.08.2026)
+## Anwesenheits-Dashboard (Version 1.22 vom 24.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -35,7 +35,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
-- **Fußzeile:** Urlaubskontingent, Bundesland-Auswahl (alle 16 Bundesländer) mit Checkbox „24./31.12. frei", Backup-Buttons mit Export-Hinweis, Legende mit Zählern, Versionsinfo.
+- **Fußzeile:** Urlaubskontingent, Bundesland-Auswahl (alle 16 Bundesländer) mit Checkbox „24./31.12. frei", Druck-/PDF-Button, Backup-Buttons mit Export-Hinweis, Legende mit Zählern, Versionsinfo.
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.
 
@@ -220,6 +220,21 @@ Bei inhaltlichen Änderungen an Tagen (Setzen, Löschen, Zuweisen – auch über
 - **Nicht betroffen:** Zeitraum/Startmonat, Urlaubskontingent und Bundesland-/Feiertags-Einstellungen lassen sich nicht über Undo/Redo ändern – sie sind aber direkt über die Bedienelemente in der Fußzeile revertierbar.
 - **Regeln:** Jede neue Änderung verwirft die Redo-Historie (es kann nur in eine Richtung fortgesetzt werden). Liegt der Fokus in einem Eingabefeld, bleiben Strg+Z/Cmd+Z für die native Text-Rückgängig-Funktion des Feldes reserviert.
 
+### 6.4 Übersicht drucken / PDF (Nachweis)
+
+Der Button **„Übersicht drucken / PDF"** in der Fußzeile erzeugt ein aufbereitetes, seitenformatiertes Dokument (A4) für Abrechnungs- oder Nachweiszwecke – z. B. gegenüber dem Arbeitgeber:
+
+1. Klick auf den Button öffnet einen Dialog zur Wahl des **Berichtszeitraums**: Start- und Enddatum sind frei einstellbar, vorbelegt ist der aktuell gewählte Zeitraum der App. Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt; **Abbrechen**, **ESC** oder ein Klick neben den Dialog schließen ihn ohne Aktion.
+2. Nach **„Übersicht erstellen"** öffnet sich das Dokument in einem neuen Tab:
+   - Am Desktop erscheint direkt der **Druckdialog** des Browsers – dort „Als PDF speichern" wählen ergibt eine PDF-Datei.
+   - Auf Touch-Geräten zeigt das Dokument einen kurzen Hinweis; der Druck/PDF-Export erfolgt über das Browser-Menü (**Teilen → Drucken** bzw. **Drucken → Als PDF speichern**).
+3. **Inhalt des Dokuments:**
+   - Kopfzeile mit Titel „Anwesenheitsübersicht", gewähltem Zeitraum, Bundesland und Erstellungsdatum.
+   - **Zusammenfassung:** Tagesanzahl je Art im Berichtszeitraum; beim Urlaub zusätzlich genommen/geplant und das Kontingent, bei Krankheit zusätzlich die Jahreszahl.
+   - **Monatsdetails:** je Monat eine Tabelle mit Datum, Wochentag, Anwesenheitsart (mit Farbpunkt und Feiertagsnamen) sowie Haken bei „gebucht". Wochenenden und arbeitsfreie Sondertage (24./31.12.) entfallen wie in der App; noch nicht erfasste Tage sind als *– nicht erfasst -* gekennzeichnet.
+
+Das Druckdokument wird vollständig offline im Browser erzeugt (keine externen Schriften oder Bibliotheken) und enthält ausschließlich die lokal gespeicherten Daten.
+
 ---
 
 ## 7. Quotenberechnung
@@ -321,7 +336,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.20 vom 24.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.22 vom 24.08.2026`.
 
 ---
 
@@ -344,6 +359,9 @@ Nein, pro Datum ist nur ein Eintrag möglich. Ein Klick auf einen erfassten Tag 
 
 **Wie mache ich eine Änderung rückgängig?**
 Innerhalb von 8 Sekunden über den „Rückgängig"-Link im Toast, jederzeit über **Strg+Z** (**Cmd+Z** am Mac); mit **Strg+Shift+Z**/**Strg+Y** wird die Änderung wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.
+
+**Wie erstelle ich einen Nachweis für meinen Arbeitgeber?**
+Über **„Übersicht drucken / PDF"** in der Fußzeile (Kapitel 6.4): Zeitraum einstellen – vorbelegt ist der aktuelle App-Zeitraum – und im Druckdialog „Als PDF speichern" wählen. Das Dokument enthält Zusammenfassung und taggenaue Monatstabellen.
 
 **Funktioniert die App auch ohne Internet?**
 Ja, wenn sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft sie vollständig offline; neue Versionen werden automatisch geladen, sobald wieder eine Internetverbindung besteht.

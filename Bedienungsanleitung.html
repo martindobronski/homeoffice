@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.20-vom-24.08.2026">Anwesenheits-Dashboard
-(Version 1.20 vom 24.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.22-vom-24.08.2026">Anwesenheits-Dashboard
+(Version 1.22 vom 24.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -317,8 +317,9 @@ beim Überfahren.</li>
 weiteren Monate des Zeitraums als kompakte Mini-Karten in einer
 Jahresübersicht.</li>
 <li><strong>Fußzeile:</strong> Urlaubskontingent, Bundesland-Auswahl
-(alle 16 Bundesländer) mit Checkbox „24./31.12. frei”, Backup-Buttons
-mit Export-Hinweis, Legende mit Zählern, Versionsinfo.</li>
+(alle 16 Bundesländer) mit Checkbox „24./31.12. frei”,
+Druck-/PDF-Button, Backup-Buttons mit Export-Hinweis, Legende mit
+Zählern, Versionsinfo.</li>
 </ul>
 <p>Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3
 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf
@@ -751,6 +752,45 @@ Redo-Historie (es kann nur in eine Richtung fortgesetzt werden). Liegt
 der Fokus in einem Eingabefeld, bleiben Strg+Z/Cmd+Z für die native
 Text-Rückgängig-Funktion des Feldes reserviert.</li>
 </ul>
+<h3 id="übersicht-drucken-pdf-nachweis">6.4 Übersicht drucken / PDF
+(Nachweis)</h3>
+<p>Der Button <strong>„Übersicht drucken / PDF”</strong> in der Fußzeile
+erzeugt ein aufbereitetes, seitenformatiertes Dokument (A4) für
+Abrechnungs- oder Nachweiszwecke – z. B. gegenüber dem Arbeitgeber:</p>
+<ol type="1">
+<li>Klick auf den Button öffnet einen Dialog zur Wahl des
+<strong>Berichtszeitraums</strong>: Start- und Enddatum sind frei
+einstellbar, vorbelegt ist der aktuell gewählte Zeitraum der App.
+Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt;
+<strong>Abbrechen</strong>, <strong>ESC</strong> oder ein Klick neben
+den Dialog schließen ihn ohne Aktion.</li>
+<li>Nach <strong>„Übersicht erstellen”</strong> öffnet sich das Dokument
+in einem neuen Tab:
+<ul>
+<li>Am Desktop erscheint direkt der <strong>Druckdialog</strong> des
+Browsers – dort „Als PDF speichern” wählen ergibt eine PDF-Datei.</li>
+<li>Auf Touch-Geräten zeigt das Dokument einen kurzen Hinweis; der
+Druck/PDF-Export erfolgt über das Browser-Menü (<strong>Teilen →
+Drucken</strong> bzw. <strong>Drucken → Als PDF
+speichern</strong>).</li>
+</ul></li>
+<li><strong>Inhalt des Dokuments:</strong>
+<ul>
+<li>Kopfzeile mit Titel „Anwesenheitsübersicht”, gewähltem Zeitraum,
+Bundesland und Erstellungsdatum.</li>
+<li><strong>Zusammenfassung:</strong> Tagesanzahl je Art im
+Berichtszeitraum; beim Urlaub zusätzlich genommen/geplant und das
+Kontingent, bei Krankheit zusätzlich die Jahreszahl.</li>
+<li><strong>Monatsdetails:</strong> je Monat eine Tabelle mit Datum,
+Wochentag, Anwesenheitsart (mit Farbpunkt und Feiertagsnamen) sowie
+Haken bei „gebucht”. Wochenenden und arbeitsfreie Sondertage
+(24./31.12.) entfallen wie in der App; noch nicht erfasste Tage sind als
+<em>– nicht erfasst -</em> gekennzeichnet.</li>
+</ul></li>
+</ol>
+<p>Das Druckdokument wird vollständig offline im Browser erzeugt (keine
+externen Schriften oder Bibliotheken) und enthält ausschließlich die
+lokal gespeicherten Daten.</p>
 <hr />
 <h2 id="quotenberechnung">7. Quotenberechnung</h2>
 <h3 id="büropflichttage-pro-monat">7.1 Büropflichttage pro Monat</h3>
@@ -907,7 +947,7 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B.
-<code>Version 1.20 vom 24.08.2026</code>.</p>
+<code>Version 1.22 vom 24.08.2026</code>.</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
 <p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein
@@ -932,6 +972,11 @@ von 8 Sekunden über den „Rückgängig”-Link im Toast, jederzeit über
 <strong>Strg+Z</strong> (<strong>Cmd+Z</strong> am Mac); mit
 <strong>Strg+Shift+Z</strong>/<strong>Strg+Y</strong> wird die Änderung
 wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.</p>
+<p><strong>Wie erstelle ich einen Nachweis für meinen
+Arbeitgeber?</strong> Über <strong>„Übersicht drucken / PDF”</strong> in
+der Fußzeile (Kapitel 6.4): Zeitraum einstellen – vorbelegt ist der
+aktuelle App-Zeitraum – und im Druckdialog „Als PDF speichern” wählen.
+Das Dokument enthält Zusammenfassung und taggenaue Monatstabellen.</p>
 <p><strong>Funktioniert die App auch ohne Internet?</strong> Ja, wenn
 sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft
 sie vollständig offline; neue Versionen werden automatisch geladen,
