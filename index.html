@@ -63,7 +63,7 @@
             <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
-    <div id="version" class="version">Version 1.24 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
+    <div id="version" class="version">Version 1.25 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -176,6 +176,12 @@
                     <label for="printEnd">Enddatum:</label>
                     <input type="date" id="printEnd">
                 </div>
+                <div class="field-group">
+                    <label for="printArt">Anwesenheitsart:</label>
+                    <select id="printArt">
+                        <option value="">Alle</option>
+                    </select>
+                </div>
             </div>
             <div class="dialog-buttons">
                 <button id="printOk" class="btn btn-primary">Übersicht erstellen</button>
@@ -187,7 +193,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.137"></script>
+    <script src="app.js?v=1.138"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

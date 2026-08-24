@@ -109,6 +109,7 @@ const exportCancel = document.getElementById('exportCancel');
 const printOverlay = document.getElementById('printOverlay');
 const printStart = document.getElementById('printStart');
 const printEnd = document.getElementById('printEnd');
+const printArt = document.getElementById('printArt');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -1542,7 +1543,7 @@ function formatDeDate(iso) {
     return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
 }
 
-function buildPrintDocument(rangeStart, rangeEnd) {
+function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
     const start = parseISO(rangeStart);
     const end = parseISO(rangeEnd);
     const today = fmt(new Date());
@@ -1572,6 +1573,9 @@ function buildPrintDocument(rangeStart, rangeEnd) {
             if (!t && window.Feiertage && Feiertage.istSonderfrei(iso)) {
                 continue;
             }
+            if (artFilter && t !== artFilter) {
+                continue;
+            }
             if (t === 'URLAUB') {
                 if (iso < today) {
                     urlaubGenommen++;
@@ -1598,10 +1602,18 @@ function buildPrintDocument(rangeStart, rangeEnd) {
                 + '<td class="center">' + (gebucht[iso] ? '✓' : '') + '</td>'
                 + '</tr>');
         }
-        monate.push({ name: m.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' }), zeilen: zeilen.join('\n') });
+        if (!artFilter || zeilen.length) {
+            monate.push({ name: m.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' }), zeilen: zeilen.join('\n') });
+        }
     }
 
-    const summaryRows = WORK_TYPES.map(function (t) {
+    if (artFilter && !monate.length) {
+        return null;
+    }
+
+    const summaryRows = WORK_TYPES.filter(function (t) {
+        return !artFilter || t.key === artFilter;
+    }).map(function (t) {
         const n = counts[t.key] || 0;
         let hinweis = '';
         if (t.key === 'URLAUB') {
@@ -1659,6 +1671,7 @@ function openPrintView() {
     chipMenu.classList.add('hidden');
     printStart.value = periodStart;
     printEnd.value = periodEnd;
+    printArt.value = '';
     printOverlay.classList.remove('hidden');
 }
 
@@ -1678,7 +1691,11 @@ function generatePrintDocument() {
     closePrintView();
     quickMenu.classList.add('hidden');
     chipMenu.classList.add('hidden');
-    const html = buildPrintDocument(printStart.value, printEnd.value);
+    const html = buildPrintDocument(printStart.value, printEnd.value, printArt.value);
+    if (!html) {
+        alert('Keine Einträge der gewählten Art im gewählten Zeitraum.');
+        return;
+    }
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const win = window.open(url, '_blank');
@@ -2097,6 +2114,13 @@ function init() {
         var n = syncFeiertagDays();
         render();
         if (n > 0) showToast(n + ' Feiertag' + (n > 1 ? 'e' : '') + ' angepasst');
+    });
+
+    WORK_TYPES.forEach(function (t) {
+        const opt = document.createElement('option');
+        opt.value = t.key;
+        opt.textContent = t.label;
+        printArt.appendChild(opt);
     });
 
     populateQuick();

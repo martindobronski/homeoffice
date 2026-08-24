@@ -3,6 +3,18 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.25 vom 24.08.2026
+Änderungen gegenüber V1.24:
+
+- Druck-/PDF-Dialog: Neue Auswahl „Anwesenheitsart" (voreingestellt
+  „Alle"). Bei Wahl einer bestimmten Art enthält der Bericht nur noch
+  die Tage dieser Art – Zusammenfassung und Monatstabellen werden
+  entsprechend gefiltert, Monate ohne Treffer entfallen.
+- Gibt es im gewählten Zeitraum keinen Eintrag der gewählten Art,
+  erscheint ein Hinweis statt eines leeren Dokuments.
+
+--------------------------------------------------------------------------
+
 Version 1.24 vom 24.08.2026
 Änderungen gegenüber V1.23:
 
