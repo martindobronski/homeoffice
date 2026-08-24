@@ -857,24 +857,28 @@ function renderLegend() {
     const today = fmt(now);
     let urlaubGenommen = 0;
     let urlaubGeplant = 0;
+    let krankJahr = 0;
     for (const iso of Object.keys(days)) {
         if (parseISO(iso).getFullYear() !== now.getFullYear()) {
             continue;
         }
-        if (days[iso] !== 'URLAUB') {
-            continue;
-        }
-        if (iso < today) {
-            urlaubGenommen++;
-        } else if (iso > today) {
-            urlaubGeplant++;
+        if (days[iso] === 'KRANKHEIT') {
+            krankJahr++;
+        } else if (days[iso] === 'URLAUB') {
+            if (iso < today) {
+                urlaubGenommen++;
+            } else if (iso > today) {
+                urlaubGeplant++;
+            }
         }
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
     legendEl.innerHTML = WORK_TYPES.map(function (t) {
         const label = t.key === 'URLAUB'
             ? 'Urlaub <b>' + urlaubGenommen + '</b> genommen · <b>' + urlaubGeplant + '</b> geplant · <b>' + ungeplant + '</b> ungeplant'
-            : t.label + ' <b>' + (counts[t.key] || 0) + '</b>';
+            : t.key === 'KRANKHEIT'
+                ? t.label + ' <b>' + (counts[t.key] || 0) + '</b> · Jahr <b>' + krankJahr + '</b>'
+                : t.label + ' <b>' + (counts[t.key] || 0) + '</b>';
         const active = activeFilter === t.key ? ' active' : (activeFilter ? ' dimmed' : '');
         return '<button type="button" class="chip' + active + '"'
             + ' data-filter="' + t.key + '">'

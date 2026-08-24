@@ -1,17 +1,11 @@
-Version 1.19 vom 24.08.2026
-Hier die Änderungen gegenüber der Vorversion (V1.18):
+Version 1.20 vom 24.08.2026
+Hier die Änderungen gegenüber der Vorversion (V1.19):
 
-- Neu: Redo (Wiederholen) – rückgängig gemachte Änderungen lassen sich
-  jetzt wiederherstellen, mit denselben Grenzen wie das Undo (bis zu 30
-  Schritte; Zeitraum, Urlaubskontingent und Bundesland-Einstellungen
-  bleiben außen vor).
-- Tastenkürzel: Strg+Shift+Z bzw. Cmd+Shift+Z (Plattform-Standard) oder
-  Strg+Y / Cmd+Y – jeweils nur wirksam, solange etwas zum Wiederholen
-  vorhanden ist.
-- Touch/Maus: Nach einem „Rückgängig" bietet der Toast 8 Sekunden lang
-  einen „Wiederholen"-Link an (und nach dem Wiederholen entsprechend
-  wieder „Rückgängig") – so ist das Hin- und Herschalten auch ohne
-  Tastatur möglich.
-- Wie gewohnt gilt: Jede neue Änderung verwirft die Redo-Historie
-  (es kann nur in eine Richtung fortgesetzt werden).
-- Service-Worker-Cache und Cache-Buster angehoben (v1.19).
+- Legende: Der Krankheit-Chip zeigt jetzt zwei Zahlen – weiterhin die
+  Anzahl im gewählten Zeitraum (wie bei Bürotag, Homeoffice & Co.) und
+  zusätzlich „· Jahr“ mit der Gesamtzahl der Krankheitstage im laufenden
+  Kalenderjahr, analog zur Jahresbetrachtung bei den Urlaubstagen.
+  Beispiel: „Krankheitstage 2 · Jahr 9“.
+- Damit bleibt sichtbar, wie viele Krankheitstage in diesem Jahr
+  angefallen sind, auch wenn gerade nur ein Monat oder Quartal gewählt ist.
+- Service-Worker-Cache und Cache-Buster angehoben (v1.20).
