@@ -22,7 +22,7 @@ Die App ist eine **Progressive Web App (PWA)** und lässt sich auf dem Smartphon
 
 Eigenschaften des App-Modus:
 
-- **Offline-Fähig:** Nach dem ersten Laden werden App-Seiten, Stylesheets, Skripte und diese Bedienungsanleitung (PDF) im Gerätespeicher vorgehalten. Die App startet und funktioniert damit auch ohne Internetverbindung; Einträge werden weiterhin lokal gesichert.
+- **Offline-Fähig:** Nach dem ersten Laden werden App-Seiten, Stylesheets, Skripte und diese Bedienungsanleitung (HTML/PDF) im Gerätespeicher vorgehalten. Die App startet und funktioniert damit auch ohne Internetverbindung; Einträge werden weiterhin lokal gesichert.
 - **Automatische Updates:** Bei bestehender Internetverbindung lädt die App immer den aktuellen Stand; Änderungen erscheinen spätestens mit dem nächsten Öffnen.
 - **Daten bleiben gerätebezogen:** Der Speicher gilt pro Gerät und Browser – unabhängig davon, ob die App installiert oder nur als Webseite geöffnet ist. Ein Datenaustausch zwischen Geräten erfolgt über Backup exportieren/importieren (Kapitel 8).
 

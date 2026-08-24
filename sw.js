@@ -16,6 +16,7 @@ const PRECACHE = [
     'manifest.json',
     'icon-192.png',
     'icon-512.png',
+    'Bedienungsanleitung.html',
     'Bedienungsanleitung.pdf'
 ];
 

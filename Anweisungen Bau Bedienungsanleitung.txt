@@ -4,8 +4,8 @@ ANWEISUNGEN ZUM AKTUALISIEREN DER BEDIENUNGSANLEITUNG
 WICHTIG: Diese Datei bei jeder Aktualisierung der Bedienungsanleitung einlesen.
 Die Bedienungsanleitung wird NUR auf ausdrückliche Anforderung des Benutzers
 aktualisiert, nicht automatisch als Teil anderer Änderungen. Dabei werden
-Bedienungsanleitung.md und Bedienungsanleitung.pdf IMMER zusammen aktualisiert:
-alle sechs Schritte in dieser Reihenfolge ausführen.
+Bedienungsanleitung.md, Bedienungsanleitung.html und Bedienungsanleitung.pdf
+IMMER zusammen aktualisiert: alle Schritte in dieser Reihenfolge ausführen.
 
 
 VORAUSSETZUNGEN
@@ -72,6 +72,39 @@ Hinweis: Den Schritt 4 bewusst OHNE PDF-Erzeugung ausführen. NICHT direkt
 Build dann mit "Fatal error occurred" ab.
 
 
+SCHRITT 4B: Markdown -> HTML (pandoc)
+-------------------------------------
+Header-Fragment mit App-Look anlegen:
+
+    cat > /tmp/opencode_pdfbuild/html-header.html <<'EOF'
+    <style>
+    body { font-family: -apple-system, 'Segoe UI', Roboto, Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 16px; color: #1C2128; line-height: 1.5; font-size: 15px; }
+    h1, h2, h3 { color: #185FA5; line-height: 1.25; }
+    h2 { border-bottom: 1px solid #E6E7EB; padding-bottom: 4px; }
+    code, pre { font-family: Menlo, Consolas, monospace; background: #F4F5F7; border-radius: 4px; font-size: 0.9em; }
+    pre { padding: 10px 12px; overflow-x: auto; }
+    code { padding: 1px 4px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #E6E7EB; padding: 6px 8px; text-align: left; vertical-align: top; }
+    th { background: #F4F5F7; }
+    hr { border: none; border-top: 1px solid #E6E7EB; margin: 24px 0; }
+    a { color: #185FA5; }
+    blockquote { border-left: 3px solid #E6E7EB; margin-left: 0; padding-left: 12px; color: #6B7280; }
+    </style>
+    <meta name="theme-color" content="#185FA5">
+    EOF
+
+    pandoc Bedienungsanleitung.md -o Bedienungsanleitung.html --standalone \
+      --include-in-header=/tmp/opencode_pdfbuild/html-header.html \
+      --metadata title="Bedienungsanleitung Anwesenheits-Dashboard"
+
+Die HTML-Fassung ist die PRIMÄRE Anzeige in der App (Footer-Link in
+index.html): PDF-Links öffnen auf Android aus einer installierten PWA oft den
+Download-/externen Viewer-Pfad, der am Service Worker vorbeiläuft und eine
+statische Kopie stehen lässt. Die HTML-Seite ist eine normale Navigation und
+wird network-first geladen; sie steht zusätzlich im SW-PRECACHE (Offline).
+
+
 SCHRITT 5: LaTeX -> PDF (lualatex, zwei Durchgänge nicht nötig)
 --------------------------------------------------------------
     export TEXINPUTS="/tmp/opencode_pdfbuild:"
@@ -111,7 +144,7 @@ Bild-Viewer):
 
 ALLGEMEINE HINWEISE
 -------------------
-- Nach Abschluss: Bedienungsanleitung.md, Bedienungsanleitung.pdf und
-  index.html zusammen committen.
+- Nach Abschluss: Bedienungsanleitung.md, Bedienungsanleitung.html,
+  Bedienungsanleitung.pdf und index.html zusammen committen.
 - Die PDF-Generierung erfolgt immer zweistufig (pandoc -> .tex, dann
   lualatex -> .pdf), niemals direkt über `pandoc -o x.pdf`.
