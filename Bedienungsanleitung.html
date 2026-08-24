@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.17-vom-23.08.2026">Anwesenheits-Dashboard
-(Version 1.17 vom 23.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.20-vom-24.08.2026">Anwesenheits-Dashboard
+(Version 1.20 vom 24.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -609,12 +609,15 @@ Fenster neben dem Dialog schließt ihn ebenfalls.</li>
 </table>
 <p>Die <strong>Legende</strong> unterhalb der Jahresübersicht zeigt für
 jede Art den Farbklecks, das <strong>Icon</strong> und die Anzahl im
-gewählten Zeitraum, z. B. <code>Bürotag (10)</code>. Die Icons (🏢 🏠 🏃
-✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei
-Farbsehschwäche eindeutig sind.</p>
-<p>Die <strong>Legende</strong> unterhalb der Jahresübersicht zeigt für
-jede Art die Anzahl im gewählten Zeitraum, z. B.
-<code>Bürotag (10)</code>.</p>
+gewählten Zeitraum, z. B. <code>Bürotag (10)</code>. Zwei Arten sind
+Sonderfälle: Beim <strong>Urlaub</strong> steht statt der Zeitraumzahl
+der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim
+<strong>Krankheitstag</strong> die Zahl im gewählten Zeitraum
+<strong>plus die Jahreszahl</strong>, z. B.
+<code>Krankheitstage 2 · Jahr 9</code> – so bleibt sichtbar, wie viele
+Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die
+Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch
+bei Farbsehschwäche eindeutig sind.</p>
 <p>Die Legendeneinträge sind <strong>klickbar und fungieren als
 Filter</strong>:</p>
 <ul>
@@ -713,6 +716,41 @@ wiederhergestellt.</p>
 <strong>„Gespeichert ✓“</strong> und verschwindet nach 1,5 Sekunden. So
 ist sofort erkennbar, dass die Änderung in den Browser-Daten gespeichert
 wurde.</p>
+<p>Bei inhaltlichen Änderungen an Tagen (Setzen, Löschen, Zuweisen –
+auch über die Mehrfachauswahl oder einen Backup-Import) bleibt die
+Meldung <strong>8 Sekunden</strong> stehen und enthält zusätzlich den
+Link <strong>„Rückgängig”</strong>, mit dem sich die Änderung direkt
+zurücknehmen lässt (siehe Kapitel 6.3).</p>
+<h3 id="rückgängig-und-wiederholen-undoredo">6.3 Rückgängig und
+Wiederholen (Undo/Redo)</h3>
+<p>Änderungen an Tageseinträgen lassen sich rückgängig machen und erneut
+anwenden:</p>
+<ul>
+<li><strong>Rückgängig:</strong> Klick auf den
+<strong>„Rückgängig”-Link</strong> im Toast (8 Sekunden verfügbar) oder
+die Tastenkombination <strong>Strg+Z</strong> (<strong>Cmd+Z</strong> am
+Mac).</li>
+<li><strong>Wiederholen:</strong> Nach einem „Rückgängig” bietet der
+Toast den Link <strong>„Wiederholen”</strong> an; per Tastatur geht es
+mit <strong>Strg+Shift+Z</strong> bzw. <strong>Cmd+Shift+Z</strong> oder
+<strong>Strg+Y</strong>/<strong>Cmd+Y</strong>. Über Toast-Link oder
+Tastenkürzel lässt sich so beliebig hin- und herschalten.</li>
+<li><strong>Umfang:</strong> Bis zu <strong>30
+Änderungsschritte</strong> sind zurückholbar. Rückgängig machbar sind:
+Einzeltage setzen/löschen (Dialog und Schnellauswahl-Menü inkl.
+gebucht-Umschalter), Bereichs- und Verschiebe-Aktionen aus dem Dialog,
+gemeinsames Zuweisen/Löschen über die Mehrfachauswahl sowie der
+komplette Backup-Import (Voll-Restore des vorherigen Datenstands, siehe
+Kapitel 8.2).</li>
+<li><strong>Nicht betroffen:</strong> Zeitraum/Startmonat,
+Urlaubskontingent und Bundesland-/Feiertags-Einstellungen lassen sich
+nicht über Undo/Redo ändern – sie sind aber direkt über die
+Bedienelemente in der Fußzeile revertierbar.</li>
+<li><strong>Regeln:</strong> Jede neue Änderung verwirft die
+Redo-Historie (es kann nur in eine Richtung fortgesetzt werden). Liegt
+der Fokus in einem Eingabefeld, bleiben Strg+Z/Cmd+Z für die native
+Text-Rückgängig-Funktion des Feldes reserviert.</li>
+</ul>
 <hr />
 <h2 id="quotenberechnung">7. Quotenberechnung</h2>
 <h3 id="büropflichttage-pro-monat">7.1 Büropflichttage pro Monat</h3>
@@ -858,8 +896,9 @@ CSV-Importe übernehmen keinen Zeitraum und keine
 </ul>
 <p>Der Import <strong>überschreibt</strong> alle aktuellen Einträge.
 Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge
-angezeigt. Ungültige Dateien werden mit einer Fehlermeldung
-abgelehnt.</p>
+angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
+Der importierte Datenstand lässt sich unmittelbar danach über
+<strong>Rückgängig</strong> zurücknehmen (Kapitel 6.3).</p>
 <blockquote>
 <p><strong>Tipp:</strong> Erstelle regelmäßig einen Export, um bei
 Verlust der Browserdaten (z. B. nach dem Leeren des Caches) deine Daten
@@ -868,7 +907,7 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B.
-<code>Version 1.17 vom 23.08.2026</code>.</p>
+<code>Version 1.20 vom 24.08.2026</code>.</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
 <p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein
@@ -888,6 +927,11 @@ den Dialog zum Bearbeiten.</p>
 Über die Mehrfachauswahl (Kapitel 5): am Desktop mit Shift-Klick starten
 bzw. am Smartphone „Mehrfachauswahl…” im Schnellauswahl-Menü – dann in
 der unteren Leiste eine Art zuweisen oder löschen.</p>
+<p><strong>Wie mache ich eine Änderung rückgängig?</strong> Innerhalb
+von 8 Sekunden über den „Rückgängig”-Link im Toast, jederzeit über
+<strong>Strg+Z</strong> (<strong>Cmd+Z</strong> am Mac); mit
+<strong>Strg+Shift+Z</strong>/<strong>Strg+Y</strong> wird die Änderung
+wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.</p>
 <p><strong>Funktioniert die App auch ohne Internet?</strong> Ja, wenn
 sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft
 sie vollständig offline; neue Versionen werden automatisch geladen,

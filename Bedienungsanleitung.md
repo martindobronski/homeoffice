@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.17 vom 23.08.2026)
+## Anwesenheits-Dashboard (Version 1.20 vom 24.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -149,9 +149,7 @@ Hinweise:
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
-
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Zeitraum, z. B. `Bürotag (10)`. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** die Zahl im gewählten Zeitraum **plus die Jahreszahl**, z. B. `Krankheitstage 2 · Jahr 9` – so bleibt sichtbar, wie viele Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
 Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
@@ -209,6 +207,18 @@ Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 ### 6.2 Gespeichert-Toast
 
 Nach jeder Änderung erscheint unten in der Mitte kurz der Hinweis **„Gespeichert ✓"** und verschwindet nach 1,5 Sekunden. So ist sofort erkennbar, dass die Änderung in den Browser-Daten gespeichert wurde.
+
+Bei inhaltlichen Änderungen an Tagen (Setzen, Löschen, Zuweisen – auch über die Mehrfachauswahl oder einen Backup-Import) bleibt die Meldung **8 Sekunden** stehen und enthält zusätzlich den Link **„Rückgängig"**, mit dem sich die Änderung direkt zurücknehmen lässt (siehe Kapitel 6.3).
+
+### 6.3 Rückgängig und Wiederholen (Undo/Redo)
+
+Änderungen an Tageseinträgen lassen sich rückgängig machen und erneut anwenden:
+
+- **Rückgängig:** Klick auf den **„Rückgängig"-Link** im Toast (8 Sekunden verfügbar) oder die Tastenkombination **Strg+Z** (**Cmd+Z** am Mac).
+- **Wiederholen:** Nach einem „Rückgängig" bietet der Toast den Link **„Wiederholen"** an; per Tastatur geht es mit **Strg+Shift+Z** bzw. **Cmd+Shift+Z** oder **Strg+Y**/**Cmd+Y**. Über Toast-Link oder Tastenkürzel lässt sich so beliebig hin- und herschalten.
+- **Umfang:** Bis zu **30 Änderungsschritte** sind zurückholbar. Rückgängig machbar sind: Einzeltage setzen/löschen (Dialog und Schnellauswahl-Menü inkl. gebucht-Umschalter), Bereichs- und Verschiebe-Aktionen aus dem Dialog, gemeinsames Zuweisen/Löschen über die Mehrfachauswahl sowie der komplette Backup-Import (Voll-Restore des vorherigen Datenstands, siehe Kapitel 8.2).
+- **Nicht betroffen:** Zeitraum/Startmonat, Urlaubskontingent und Bundesland-/Feiertags-Einstellungen lassen sich nicht über Undo/Redo ändern – sie sind aber direkt über die Bedienelemente in der Fußzeile revertierbar.
+- **Regeln:** Jede neue Änderung verwirft die Redo-Historie (es kann nur in eine Richtung fortgesetzt werden). Liegt der Fokus in einem Eingabefeld, bleiben Strg+Z/Cmd+Z für die native Text-Rückgängig-Funktion des Feldes reserviert.
 
 ---
 
@@ -303,7 +313,7 @@ Klick auf **Backup importieren** öffnet den Dateidialog. Unterstützt werden:
 - **JSON-Dateien** (wie exportiert) – übernehmen den Startmonat des Zeitraums. Das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
 - **CSV-Dateien** im Format `JJJJ-MM-TT,ART` (eine Zeile pro Tag), z. B. `2026-09-01,BUEROTAG`. CSV-Importe übernehmen keinen Zeitraum und keine „gebucht“-Markierungen.
 
-Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
+Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt. Der importierte Datenstand lässt sich unmittelbar danach über **Rückgängig** zurücknehmen (Kapitel 6.3).
 
 > **Tipp:** Erstelle regelmäßig einen Export, um bei Verlust der Browserdaten (z. B. nach dem Leeren des Caches) deine Daten wiederherstellen zu können.
 
@@ -311,7 +321,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.17 vom 23.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.20 vom 24.08.2026`.
 
 ---
 
@@ -331,6 +341,9 @@ Nein, pro Datum ist nur ein Eintrag möglich. Ein Klick auf einen erfassten Tag 
 
 **Wie belege ich mehrere verstreute Tage gleichzeitig?**
 Über die Mehrfachauswahl (Kapitel 5): am Desktop mit Shift-Klick starten bzw. am Smartphone „Mehrfachauswahl…" im Schnellauswahl-Menü – dann in der unteren Leiste eine Art zuweisen oder löschen.
+
+**Wie mache ich eine Änderung rückgängig?**
+Innerhalb von 8 Sekunden über den „Rückgängig"-Link im Toast, jederzeit über **Strg+Z** (**Cmd+Z** am Mac); mit **Strg+Shift+Z**/**Strg+Y** wird die Änderung wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.
 
 **Funktioniert die App auch ohne Internet?**
 Ja, wenn sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft sie vollständig offline; neue Versionen werden automatisch geladen, sobald wieder eine Internetverbindung besteht.
