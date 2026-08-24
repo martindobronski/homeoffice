@@ -3,6 +3,19 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.28 vom 24.08.2026
+Änderungen gegenüber V1.27:
+
+- Druck-/PDF-Ansicht: Die Spalte „gebucht" erscheint nur noch, wenn
+  sie sinnvoll sein kann – bei „Alle" oder wenn Bürotag Teil der
+  gewählten Arten-Filterung ist. Bei anderen Art-Filtern (z. B. nur
+  Urlaub) entfällt Spalte inklusive Überschrift, die Anwesenheits-
+  Spalte wird entsprechend breiter.
+- Der gebucht-Haken wird zudem nur bei Bürotagen gesetzt (konsistent
+  zur Datenhaltung in der App).
+
+--------------------------------------------------------------------------
+
 Version 1.27 vom 24.08.2026
 Änderungen gegenüber V1.26:
 

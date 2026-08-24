@@ -1558,6 +1558,8 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
         }
     }
 
+    const zeigebuchtSpalte = !artFilter.length || artFilter.indexOf('BUEROTAG') !== -1;
+
     const monate = [];
     for (let m = new Date(start.getFullYear(), start.getMonth(), 1); m <= end; m.setMonth(m.getMonth() + 1)) {
         const monatStart = new Date(Math.max(m.getTime(), start.getTime()));
@@ -1594,11 +1596,12 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
             } else {
                 art = '<span class="leer">– nicht erfasst –</span>';
             }
+            const zeigeHaken = t === 'BUEROTAG' && gebucht[iso];
             zeilen.push('<tr>'
                 + '<td>' + formatDeDate(iso) + '</td>'
                 + '<td>' + WOCHENTAGE_KURZ[d.getDay()] + '</td>'
                 + '<td>' + art + '</td>'
-                + '<td class="center">' + (gebucht[iso] ? '✓' : '') + '</td>'
+                + (zeigebuchtSpalte ? '<td class="center">' + (zeigeHaken ? '✓' : '') + '</td>' : '')
                 + '</tr>');
         }
         if (!artFilter.length || zeilen.length) {
@@ -1631,8 +1634,11 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
     const monatsTabellen = monate.map(function (mo) {
         return '<h3>' + mo.name + '</h3>\n'
             + '<table>\n'
-            + '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:57%"><col style="width:12%"></colgroup>\n'
-            + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
+            + (zeigebuchtSpalte
+                ? '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:57%"><col style="width:12%"></colgroup>\n'
+                  + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
+                : '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:69%"></colgroup>\n'
+                  + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th></tr></thead>\n')
             + '<tbody>\n' + mo.zeilen + '\n</tbody>\n</table>';
     }).join('\n');
 
