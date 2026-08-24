@@ -1129,6 +1129,7 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+document.getElementById('printButton').addEventListener('click', openPrintView);
 document.getElementById('exportButton').addEventListener('click', exportBackup);
 document.getElementById('importButton').addEventListener('click', function () {
     document.getElementById('importFile').click();
@@ -1510,6 +1511,161 @@ exportOverlay.addEventListener('click', function (e) {
         closeExportDialog();
     }
 });
+
+// ---------- Druckansicht / PDF (Anwesenheitsübersicht) ----------
+
+const WOCHENTAGE_KURZ = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const BL_NAMES = {
+    BW: 'Baden-Württemberg', BY: 'Bayern', BE: 'Berlin', BB: 'Brandenburg',
+    HB: 'Bremen', HH: 'Hamburg', HE: 'Hessen', MV: 'Mecklenburg-Vorpommern',
+    NI: 'Niedersachsen', NW: 'Nordrhein-Westfalen', RP: 'Rheinland-Pfalz',
+    SL: 'Saarland', SN: 'Sachsen', ST: 'Sachsen-Anhalt', SH: 'Schleswig-Holstein',
+    TH: 'Thüringen'
+};
+
+function formatDeDate(iso) {
+    const d = parseISO(iso);
+    return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
+}
+
+function buildPrintDocument() {
+    const start = parseISO(periodStart);
+    const end = parseISO(periodEnd);
+    const today = fmt(new Date());
+    const jahr = new Date().getFullYear();
+
+    const counts = {};
+    let urlaubGenommen = 0;
+    let urlaubGeplant = 0;
+    let krankJahr = 0;
+    for (const iso of Object.keys(days)) {
+        if (parseISO(iso).getFullYear() === jahr && days[iso] === 'KRANKHEIT') {
+            krankJahr++;
+        }
+    }
+
+    const monate = [];
+    for (let m = new Date(start.getFullYear(), start.getMonth(), 1); m <= end; m.setMonth(m.getMonth() + 1)) {
+        const monatStart = new Date(Math.max(m.getTime(), start.getTime()));
+        const monatEnd = new Date(Math.min(new Date(m.getFullYear(), m.getMonth() + 1, 0).getTime(), end.getTime()));
+        const zeilen = [];
+        for (let d = new Date(monatStart); d <= monatEnd; d.setDate(d.getDate() + 1)) {
+            if (isWeekend(d)) {
+                continue;
+            }
+            const iso = fmt(d);
+            const t = getDayType(iso);
+            if (!t && window.Feiertage && Feiertage.istSonderfrei(iso)) {
+                continue;
+            }
+            if (t === 'URLAUB') {
+                if (iso < today) {
+                    urlaubGenommen++;
+                } else if (iso > today) {
+                    urlaubGeplant++;
+                }
+            }
+            if (t) {
+                counts[t] = (counts[t] || 0) + 1;
+            }
+            const typeDef = t ? WORK_TYPES.find(function (x) { return x.key === t; }) : null;
+            let art;
+            if (typeDef) {
+                art = '<span class="swatch" style="background:' + typeDef.color + '"></span>'
+                    + typeDef.label
+                    + (t === 'FEIERTAG' && window.Feiertage && Feiertage.getName(iso) ? ' – ' + Feiertage.getName(iso) : '');
+            } else {
+                art = '<span class="leer">– nicht erfasst –</span>';
+            }
+            zeilen.push('<tr>'
+                + '<td>' + formatDeDate(iso) + '</td>'
+                + '<td>' + WOCHENTAGE_KURZ[d.getDay()] + '</td>'
+                + '<td>' + art + '</td>'
+                + '<td class="center">' + (gebucht[iso] ? '✓' : '') + '</td>'
+                + '</tr>');
+        }
+        monate.push({ name: m.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' }), zeilen: zeilen.join('\n') });
+    }
+
+    const summaryRows = WORK_TYPES.map(function (t) {
+        const n = counts[t.key] || 0;
+        let hinweis = '';
+        if (t.key === 'URLAUB') {
+            hinweis = 'davon genommen: ' + urlaubGenommen + ' · geplant: ' + urlaubGeplant
+                + ' · Kontingent: ' + urlaubTotal;
+        } else if (t.key === 'KRANKHEIT') {
+            hinweis = 'im Kalenderjahr ' + jahr + ': ' + krankJahr;
+        }
+        return '<tr>'
+            + '<td><span class="swatch" style="background:' + t.color + '"></span>' + t.label + '</td>'
+            + '<td class="center">' + n + '</td>'
+            + '<td>' + hinweis + '</td>'
+            + '</tr>';
+    }).join('\n');
+
+    const monatsTabellen = monate.map(function (mo) {
+        return '<h3>' + mo.name + '</h3>\n'
+            + '<table>\n<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
+            + '<tbody>\n' + mo.zeilen + '\n</tbody>\n</table>';
+    }).join('\n');
+
+    const blName = BL_NAMES[window.Feiertage && Feiertage.getBundesland()] || '';
+    return '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="UTF-8">\n'
+        + '<title>Anwesenheitsübersicht ' + periodStart + '_bis_' + periodEnd + '</title>\n'
+        + '<style>\n'
+        + '@page { size: A4; margin: 15mm; }\n'
+        + 'body { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #111; font-size: 10.5pt; line-height: 1.4; margin: 0 auto; max-width: 180mm; padding: 12px; }\n'
+        + 'h1 { font-size: 17pt; margin: 0 0 2px; }\n'
+        + 'h2 { font-size: 13pt; margin: 18px 0 6px; border-bottom: 1px solid #999; padding-bottom: 2px; }\n'
+        + 'h3 { font-size: 11pt; margin: 14px 0 4px; page-break-after: avoid; }\n'
+        + '.meta { color: #444; margin: 0 0 10px; }\n'
+        + '.touch-hint { background: #F4F5F7; border: 1px solid #ccc; border-radius: 6px; padding: 8px 10px; margin: 0 0 12px; font-size: 9.5pt; }\n'
+        + '@media print { .touch-hint { display: none; } body { padding: 0; } }\n'
+        + 'table { width: 100%; border-collapse: collapse; page-break-inside: auto; }\n'
+        + 'th, td { border: 1px solid #999; padding: 2.5px 6px; text-align: left; font-size: 9pt; }\n'
+        + 'th { background: #ECECEC; }\n'
+        + '.center { text-align: center; }\n'
+        + '.swatch { display: inline-block; width: 9px; height: 9px; border: 1px solid #666; margin-right: 5px; vertical-align: baseline; }\n'
+        + '.leer { color: #888; font-style: italic; }\n'
+        + 'thead { display: table-header-group; }\n'
+        + '</style>\n</head>\n<body>\n'
+        + '<h1>Anwesenheits&uuml;bersicht</h1>\n'
+        + '<p class="meta">Zeitraum: ' + formatDeDate(periodStart) + ' &ndash; ' + formatDeDate(periodEnd)
+        + (blName ? ' &middot; Bundesland: ' + blName : '')
+        + ' &middot; Erstellt am ' + formatDeDate(today) + '</p>\n'
+        + '<div class="touch-hint"><b>Drucken / PDF speichern:</b> Browser-Men&uuml; &ouml;ffnen und '
+        + '&bdquo;Drucken&ldquo; bzw. &bdquo;Als PDF speichern&ldquo; w&auml;hlen.</div>\n'
+        + '<h2>Zusammenfassung</h2>\n'
+        + '<table>\n<thead><tr><th>Art</th><th>Tage im Zeitraum</th><th>Hinweis</th></tr></thead>\n'
+        + '<tbody>\n' + summaryRows + '\n</tbody>\n</table>\n'
+        + '<h2>Monatsdetails</h2>\n'
+        + monatsTabellen + '\n'
+        + '</body>\n</html>';
+}
+
+function openPrintView() {
+    quickMenu.classList.add('hidden');
+    chipMenu.classList.add('hidden');
+    const html = buildPrintDocument();
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const win = window.open(url, '_blank');
+    setTimeout(function () {
+        URL.revokeObjectURL(url);
+    }, 60000);
+    if (!win) {
+        alert('Das Druckdokument konnte nicht geöffnet werden. Bitte Popups für diese App zulassen.');
+        return;
+    }
+    if (!IS_TOUCH) {
+        win.addEventListener('load', function () {
+            try {
+                win.focus();
+                win.print();
+            } catch (e) {}
+        });
+    }
+}
 
 // ---------- Tag-Kontextmenü (Rechtsklick) ----------
 

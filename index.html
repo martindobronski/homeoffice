@@ -56,13 +56,14 @@
             <label class="bl-check"><input type="checkbox" id="sonderfreiCheck"> 24./31.12. frei</label>
         </div>
         <div class="footer-actions">
+            <button class="btn btn-ghost" id="printButton">Übersicht drucken / PDF</button>
             <button class="btn btn-ghost" id="exportButton">Backup exportieren</button>
             <button class="btn btn-ghost" id="importButton">Backup importieren</button>
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
             <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
-    <div id="version" class="version">Version 1.20 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
+    <div id="version" class="version">Version 1.21 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -166,7 +167,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.133"></script>
+    <script src="app.js?v=1.134"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

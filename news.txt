@@ -3,6 +3,25 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.21 vom 24.08.2026
+Änderungen gegenüber V1.20:
+
+- Neu: Druck-/PDF-Ansicht der Jahresübersicht – neuer Button
+  „Übersicht drucken / PDF" in der Fußzeile erzeugt ein aufbereitetes,
+  seitenformatiertes Dokument (A4) für Abrechnungs- und Nachweiszwecke
+  (z. B. gegenüber dem Arbeitgeber).
+- Inhalt: Kopf mit Zeitraum, Bundesland und Erstellungsdatum;
+  Zusammenfassung mit Tagesanzahl je Art (Urlaub zusätzlich genommen/
+  geplant/Kontingent, Krankheit zusätzlich mit Jahreszahl) sowie eine
+  Tabelle pro Monat mit Datum, Wochentag, Anwesenheitsart (inkl.
+  Feiertagsnamen, Wochenenden und 24./31.12. entfallen) und gebucht-Haken.
+- Am Desktop öffnet sich direkt der Druckdialog (dort „Als PDF
+  speichern" wählen); auf Touch-Geräten erscheint das Dokument mit
+  kurzem Hinweis über den Browser-Menü-Pfad. Funktioniert vollständig
+  offline; es werden keine externen Schriften oder Bibliotheken geladen.
+
+--------------------------------------------------------------------------
+
 Version 1.20 vom 24.08.2026
 Änderungen gegenüber V1.19:
 
