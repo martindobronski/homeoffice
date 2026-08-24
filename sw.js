@@ -10,7 +10,7 @@ const CACHE_NAME = 'homeoffice-v1.17';
 const PRECACHE = [
     './',
     'index.html',
-    'style.css?v=1.57',
+    'style.css?v=1.58',
     'app.js?v=1.130',
     'feiertage.js?v=2.0',
     'manifest.json',

@@ -21,4 +21,6 @@ Hier die Änderungen gegenüber der Vorversion (V1.16):
 - Neu: Bedienungsanleitung jetzt zusätzlich als HTML-Ansicht; der Footer-Link
   in der App öffnet diese (immer aktuell, kein PDF-Viewer/Download nötig).
   Das PDF bleibt als zweite Ansicht verfügbar.
+- Der PDF-Link wird auf Smartphones/Tablets ausgeblendet – dort gibt es nur
+  die immer aktuelle HTML-Ansicht; das PDF bleibt am Desktop erreichbar.
 - Service-Worker-Cache und Cache-Buster angehoben (v1.17).
