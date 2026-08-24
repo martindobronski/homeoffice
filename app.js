@@ -1630,7 +1630,9 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
 
     const monatsTabellen = monate.map(function (mo) {
         return '<h3>' + mo.name + '</h3>\n'
-            + '<table>\n<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
+            + '<table>\n'
+            + '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:57%"><col style="width:12%"></colgroup>\n'
+            + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
             + '<tbody>\n' + mo.zeilen + '\n</tbody>\n</table>';
     }).join('\n');
 
@@ -1651,7 +1653,7 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
         + 'h3 { font-size: 11pt; margin: 14px 0 4px; page-break-after: avoid; }\n'
         + '.meta { color: #444; margin: 0 0 10px; }\n'
         + '@media print { body { padding: 0; } }\n'
-        + 'table { width: 100%; border-collapse: collapse; page-break-inside: auto; }\n'
+        + 'table { width: 100%; border-collapse: collapse; page-break-inside: auto; table-layout: fixed; }\n'
         + 'th, td { border: 1px solid #999; padding: 2.5px 6px; text-align: left; font-size: 9pt; }\n'
         + 'th { background: #ECECEC; }\n'
         + '.center { text-align: center; }\n'
@@ -1664,7 +1666,9 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
         + (blName ? ' &middot; Bundesland: ' + blName : '')
         + ' &middot; Erstellt am ' + formatDeDate(today) + artenLabel + '</p>\n'
         + '<h2>Zusammenfassung</h2>\n'
-        + '<table>\n<thead><tr><th>Art</th><th>Tage im Zeitraum</th><th>Hinweis</th></tr></thead>\n'
+        + '<table>\n'
+        + '<colgroup><col style="width:28%"><col style="width:17%"><col style="width:55%"></colgroup>\n'
+        + '<thead><tr><th>Art</th><th>Tage im Zeitraum</th><th>Hinweis</th></tr></thead>\n'
         + '<tbody>\n' + summaryRows + '\n</tbody>\n</table>\n'
         + '<h2>Monatsdetails</h2>\n'
         + monatsTabellen + '\n'

@@ -3,6 +3,18 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.27 vom 24.08.2026
+Änderungen gegenüber V1.26:
+
+- Druck-/PDF-Ansicht: Die Spalten der Monatstabellen sind jetzt über
+  alle Monate hinweg exakt untereinander ausgerichtet (feste
+  Spaltenbreiten via table-layout:fixed und Colgroup statt
+  inhaltsabhängiger Breiten – lange Feiertagsnamen brechen nun in der
+  Spalte um, statt die Tabelle zu verschieben).
+- Die Zusammenfassungstabelle erhält ebenfalls feste Spaltenbreiten.
+
+--------------------------------------------------------------------------
+
 Version 1.26 vom 24.08.2026
 Änderungen gegenüber V1.25:
 
