@@ -1633,8 +1633,7 @@ function buildPrintDocument(rangeStart, rangeEnd) {
         + 'h2 { font-size: 13pt; margin: 18px 0 6px; border-bottom: 1px solid #999; padding-bottom: 2px; }\n'
         + 'h3 { font-size: 11pt; margin: 14px 0 4px; page-break-after: avoid; }\n'
         + '.meta { color: #444; margin: 0 0 10px; }\n'
-        + '.touch-hint { background: #F4F5F7; border: 1px solid #ccc; border-radius: 6px; padding: 8px 10px; margin: 0 0 12px; font-size: 9.5pt; }\n'
-        + '@media print { .touch-hint { display: none; } body { padding: 0; } }\n'
+        + '@media print { body { padding: 0; } }\n'
         + 'table { width: 100%; border-collapse: collapse; page-break-inside: auto; }\n'
         + 'th, td { border: 1px solid #999; padding: 2.5px 6px; text-align: left; font-size: 9pt; }\n'
         + 'th { background: #ECECEC; }\n'
@@ -1647,8 +1646,6 @@ function buildPrintDocument(rangeStart, rangeEnd) {
         + '<p class="meta">Zeitraum: ' + formatDeDate(rangeStart) + ' &ndash; ' + formatDeDate(rangeEnd)
         + (blName ? ' &middot; Bundesland: ' + blName : '')
         + ' &middot; Erstellt am ' + formatDeDate(today) + '</p>\n'
-        + '<div class="touch-hint"><b>Drucken / PDF speichern:</b> Browser-Men&uuml; &ouml;ffnen und '
-        + '&bdquo;Drucken&ldquo; bzw. &bdquo;Als PDF speichern&ldquo; w&auml;hlen.</div>\n'
         + '<h2>Zusammenfassung</h2>\n'
         + '<table>\n<thead><tr><th>Art</th><th>Tage im Zeitraum</th><th>Hinweis</th></tr></thead>\n'
         + '<tbody>\n' + summaryRows + '\n</tbody>\n</table>\n'
