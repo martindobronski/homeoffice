@@ -1,11 +1,199 @@
+Änderungshistorie des Anwesenheits-Dashboards.
+Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
+
+==========================================================================
+
 Version 1.20 vom 24.08.2026
-Hier die Änderungen gegenüber der Vorversion (V1.19):
+Änderungen gegenüber V1.19:
 
 - Legende: Der Krankheit-Chip zeigt jetzt zwei Zahlen – weiterhin die
   Anzahl im gewählten Zeitraum (wie bei Bürotag, Homeoffice & Co.) und
-  zusätzlich „· Jahr“ mit der Gesamtzahl der Krankheitstage im laufenden
+  zusätzlich „· Jahr" mit der Gesamtzahl der Krankheitstage im laufenden
   Kalenderjahr, analog zur Jahresbetrachtung bei den Urlaubstagen.
-  Beispiel: „Krankheitstage 2 · Jahr 9“.
-- Damit bleibt sichtbar, wie viele Krankheitstage in diesem Jahr
-  angefallen sind, auch wenn gerade nur ein Monat oder Quartal gewählt ist.
-- Service-Worker-Cache und Cache-Buster angehoben (v1.20).
+  Beispiel: „Krankheitstage 2 · Jahr 9".
+- Bedienungsanleitung aktualisiert (MD/HTML/PDF): neues Kapitel 6.3 zu
+  Undo/Redo, Hinweise im Gespeichert-Toast-, Import- und FAQ-Abschnitt,
+  Krankheits-Jahreszahl in der Legende beschrieben.
+
+--------------------------------------------------------------------------
+
+Version 1.19 vom 24.08.2026
+Änderungen gegenüber V1.18:
+
+- Neu: Redo (Wiederholen) – rückgängig gemachte Änderungen lassen sich
+  jetzt wiederherstellen, mit denselben Grenzen wie das Undo (bis zu 30
+  Schritte; Zeitraum, Urlaubskontingent und Bundesland-Einstellungen
+  bleiben außen vor).
+- Tastenkürzel: Strg+Shift+Z bzw. Cmd+Shift+Z (Plattform-Standard) oder
+  Strg+Y / Cmd+Y – jeweils nur wirksam, solange etwas zum Wiederholen
+  vorhanden ist.
+- Touch/Maus: Nach einem „Rückgängig" bietet der Toast 8 Sekunden lang
+  einen „Wiederholen"-Link an (und nach dem Wiederholen entsprechend
+  wieder „Rückgängig") – so ist das Hin- und Herschalten auch ohne
+  Tastatur möglich.
+- Wie gewohnt gilt: Jede neue Änderung verwirft die Redo-Historie
+  (es kann nur in eine Richtung fortgesetzt werden).
+
+--------------------------------------------------------------------------
+
+Version 1.18 vom 24.08.2026
+Änderungen gegenüber V1.17:
+
+- Neu: Undo – nach jeder Änderung an Tageseinträgen zeigt der Toast
+  („Gespeichert ✓", „… gelöscht", „Import durchgeführt") 8 Sekunden lang
+  einen „Rückgängig"-Link; zusätzlich wirkt Strg+Z (Cmd+Z am Mac) als
+  Tastenkürzel mit demselben Effekt.
+- Rückgängig machbar: Einzeltage setzen/löschen/„gebucht"-Umschalter
+  (Schnellmenü), Dialog-Einträge inklusive Bereichs- und Verschiebe-Aktionen,
+  Mehrfachauswahl (gemeinsames Zuweisen und Löschen) sowie der komplette
+  Backup-Import (Voll-Restore des vorherigen Datenstands).
+- Bis zu 30 Änderungsschritte sind zurückholbar (Strg+Z mehrfach).
+- Bewusst nicht Teil des Undo: Zeitraum/Startmonat, Urlaubskontingent und
+  Bundesland-/Feiertags-Einstellungen (über die UI direkt revertierbar).
+- Strg+Z greift nicht, während der Fokus in einem Eingabefeld liegt – dort
+  bleibt die native Text-Undo-Funktion aktiv.
+
+--------------------------------------------------------------------------
+
+Version 1.17 vom 23.08.2026
+Änderungen gegenüber V1.16:
+
+- Neu: Mehrfachauswahl – am Desktop startet Shift-/Strg-/Cmd-Klick auf
+  einen Tag den Auswahlmodus, danach wählt ein einfacher Klick Tage an
+  oder ab; auf Touch-Geräten über „Mehrfachauswahl…" im Schnellmenü
+  (langer Druck).
+- Unten erscheint eine Auswahl-Leiste mit Zähler, allen sieben Arten zum
+  gemeinsamen Zuweisen sowie Löschen (mit Bestätigung) und Abbrechen;
+  ESC schließt bei offenem Bestätigungsdialog zuerst nur diesen.
+- Die Auswahl darf Monate überspannen (Blättern während der Auswahl);
+  Nicht-Bürotage verlieren vorhandene gebucht-Haken, Bürotage behalten sie.
+- Bedienungsanleitung um Mehrfachauswahl ergänzt (MD/PDF), zusätzlich als
+  HTML-Ansicht verfügbar: Footer-Link öffnet primär
+  Bedienungsanleitung.html (lädt network-first, im Offline-Cache);
+  PDF-Link wird auf Touch-Geräten ausgeblendet (Android-PDF-Viewer läuft
+  am Service Worker vorbei).
+- Service-Worker-Fix: Anleitungs-PDF network-first statt
+  stale-while-revalidate (Smartphones zeigten sonst eine Vorversion).
+
+--------------------------------------------------------------------------
+
+Version 1.16 vom 22.08.2026
+Änderungen gegenüber V1.15:
+
+- PWA-Dokumentation in der Bedienungsanleitung (Installation als App,
+  Offline-Fähigkeit, automatische Updates); Service-Worker-Cache und
+  Cache-Buster angehoben.
+
+--------------------------------------------------------------------------
+
+Version 1.15 vom 22.08.2026
+Änderungen gegenüber V1.14:
+
+- Mobile-/Touch-Support (z. B. Galaxy S24): Layout-Fixes für 360 px
+  Breite, langer Druck auf einen Tag öffnet das Schnellauswahl-Menü
+  (Positionierung an allen Viewport-Rändern geklemmt), Hover-Tooltips
+  entfallen auf Touch-Geräten, Textauswahl auf Kalenderfeldern/
+  Legendeneinträgen deaktiviert.
+
+--------------------------------------------------------------------------
+
+Version 1.14 vom 20.08.2026
+Änderungen gegenüber V1.13:
+
+- Bundesland-Dropdown (alle 16 Bundesländer) mit Checkbox „24./31.12.
+  frei": automatische Feiertagserkennung je Bundesland, beim Wechsel
+  werden Feiertags-Einträge automatisch angepasst; sonderfreie Tage
+  zählen nicht mehr in der Legende.
+- Gespeichert-Toast nach jeder Änderung; Hinweis auf Alter des letzten
+  Backups (grau/orange/rot); rotes ?-Badge für unerfasste vergangene
+  Tage; kräftigere Farben und Farbrotaion (Büro blau, Homeoffice grün,
+  Feiertag violett, Dienstreise grau).
+
+--------------------------------------------------------------------------
+
+Version 1.13 vom 20.08.2026
+Änderungen gegenüber V1.12:
+
+- Jahreszahl wird immer auf den Mini-Karten angezeigt (klein, grau);
+  Urlaubs-Ring erscheint grau bei 100 % Verbrauch (Text bleibt rot).
+
+--------------------------------------------------------------------------
+
+Version 1.12 vom 17.08.2026
+Änderungen gegenüber V1.11:
+
+- Zeilenumbrüche in den Tooltips der Büro-/Homeoffice-Quote-Karten
+  (bessere Lesbarkeit).
+
+--------------------------------------------------------------------------
+
+Version 1.11 vom 17.08.2026
+Änderungen gegenüber V1.10:
+
+- Ampelfarben-System: farbige Badges an Monatskarten, informative
+  Tooltips und relative Ring-Skalierung der KPI-Karten
+  (Büroquote 60 % = voller Kreis, Homeoffice 40 %).
+
+--------------------------------------------------------------------------
+
+Version 1.10 vom 17.08.2026
+Änderungen gegenüber V1.9:
+
+- Automatische Feiertagserkennung (bundesdeutsche Feiertage inkl.
+  Hamburg) direkt im Kalender, ohne manuelle Erfassung;
+  Bedienungsanleitung und PDF aktualisiert.
+
+--------------------------------------------------------------------------
+
+Version 1.9 vom 13.08.2026
+Änderungen gegenüber V1.4:
+
+- Gestylte Tooltips für Tage, Legende und Buttons; Rechtsklick-
+  Schnellauswahl-Menü ersetzt das Hover-Menü; „gebucht" nur noch bei
+  Bürotagen (Menü und Dialog); Kontingent-Änderung mit Bestätigungsdialog.
+
+--------------------------------------------------------------------------
+
+Version 1.4 vom 13.08.2026
+Änderungen gegenüber V1.3:
+
+- Visuelle Verbesserungen; neue Schnellmenü-Reihenfolge (Eintrag
+  bearbeiten, gebucht, Trennlinie, Arten).
+
+--------------------------------------------------------------------------
+
+Version 1.3 vom 12.08.2026
+Änderungen gegenüber V1.2:
+
+- Rechtsklick auf Tageszellen (Schnellzugriff), Dialog mit Start- und
+  Enddatum zur Bereichsbelegung, „gebucht"-Status mit Haken und Tooltip,
+  Farben nach Referenzpalette, Icons in Zellen und Legende, Tag-Tooltip
+  mit Verzögerung, ESC schließt Dialoge; Bedienungsanleitung aktualisiert.
+
+--------------------------------------------------------------------------
+
+Version 1.2 vom 11.08.2026
+Änderungen gegenüber V1.1:
+
+- Zeitraum umfasst immer 12 Monate ab gewähltem Startmonat,
+  Jahresauswahl bis 2030.
+
+--------------------------------------------------------------------------
+
+Version 1.1 vom 11.08.2026
+Änderungen gegenüber V1.0:
+
+- Neues GUI nach Referenz-Design: KPI-Karten mit Fortschrittsringen,
+  Hero-Karte für den aktuellen Monat, kompakte Mini-Kalender,
+  Chip-Legende mit Filterfunktion; Icons in Tageszellen
+  (farbenblind-tauglich); Bedienungsanleitung per Footer-Link aufrufbar;
+  freies Urlaubskontingent; Storage-Absicherung und Cache-Busting.
+
+--------------------------------------------------------------------------
+
+Version 1.0 vom 11.08.2026
+Erstversion:
+
+- Erfassung Büro/Homeoffice je Werktag, Monats- und Jahresübersicht,
+  Quotenberechnung, Backup-Export/Import, Bedienungsanleitung als
+  Markdown und PDF.
