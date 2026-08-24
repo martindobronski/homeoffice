@@ -1726,7 +1726,7 @@ function showDayTip(e) {
     const cell = e.target.closest('.day[data-date]');
     const chip = cell ? null : e.target.closest('.chip[data-filter]');
     const quota = (!cell && !chip) ? e.target.closest('.quota-input') : null;
-    const btn = (!cell && !chip && !quota) ? e.target.closest('#exportButton, #importButton') : null;
+    const btn = (!cell && !chip && !quota) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
     const today = (!cell && !chip && !quota && !btn) ? e.target.closest('#todayButton') : null;
     const nav = (!cell && !chip && !quota && !btn && !today) ? e.target.closest('#prevMonthButton, #nextMonthButton') : null;
     const rangeLabel = (!cell && !chip && !quota && !btn && !today && !nav) ? e.target.closest('.range-label') : null;
@@ -1767,10 +1767,13 @@ function showDayTip(e) {
         html = 'Urlaubskontingent'
             + '<div class="day-tip-hints">Hier kann das jährliche Urlaubskontingent angepasst werden.</div>';
     } else if (btn) {
-        html = (btn.id === 'exportButton' ? 'Backup exportieren' : 'Backup importieren')
+        html = (btn.id === 'exportButton' ? 'Backup exportieren'
+            : btn.id === 'importButton' ? 'Backup importieren' : 'Übersicht drucken / PDF')
             + '<div class="day-tip-hints">' + (btn.id === 'exportButton'
                 ? 'Aktuelle Daten als Backup-Datei herunterladen.'
-                : 'Backup-Datei importieren (überschreibt aktuelle Daten).') + '</div>';
+                : btn.id === 'importButton'
+                    ? 'Backup-Datei importieren (überschreibt aktuelle Daten).'
+                    : 'Anwesenheitsübersicht mit frei wählbarem Zeitraum als Druckdokument/PDF erstellen.') + '</div>';
     } else if (today) {
         html = 'Heute'
             + '<div class="day-tip-hints">Zeitraum Start-Monat auf aktuellen Monat setzen.</div>';

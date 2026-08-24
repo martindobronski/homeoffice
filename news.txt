@@ -3,6 +3,16 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.24 vom 24.08.2026
+Änderungen gegenüber V1.23:
+
+- Der Button „Übersicht drucken / PDF" zeigt jetzt beim Überfahren einen
+  Tooltip im gewohnten Stil (wie bei Backup exportieren/importieren):
+  „Anwesenheitsübersicht mit frei wählbarem Zeitraum als
+  Druckdokument/PDF erstellen."
+
+--------------------------------------------------------------------------
+
 Version 1.23 vom 24.08.2026
 Änderungen gegenüber V1.22:
 
