@@ -165,16 +165,79 @@ function storeSet(key, value) {
 }
 
 let _savedTimer = null;
-function showToast(msg, ms) {
+let _toastAction = null;
+
+function showToast(msg, ms, action) {
     const el = document.getElementById('toast');
     if (!el) return;
-    el.textContent = msg;
+    _toastAction = action || null;
+    if (_toastAction) {
+        el.innerHTML = '<span>' + msg + '</span>'
+            + '<button type="button" class="toast-action">' + _toastAction.label + '</button>';
+    } else {
+        el.textContent = msg;
+    }
     el.classList.add('show');
     clearTimeout(_savedTimer);
-    _savedTimer = setTimeout(function () { el.classList.remove('show'); }, ms || 1500);
+    _savedTimer = setTimeout(function () {
+        el.classList.remove('show');
+        _toastAction = null;
+    }, ms || 1500);
 }
 function showSaved() {
     showToast('Gespeichert ✓');
+}
+function hideToast() {
+    clearTimeout(_savedTimer);
+    const el = document.getElementById('toast');
+    if (el) {
+        el.classList.remove('show');
+    }
+    _toastAction = null;
+}
+
+// ---------- Undo (Rückgängig) ----------
+
+const undoStack = [];
+const UNDO_MAX = 30;
+
+function beginChange() {
+    undoStack.push({
+        days: JSON.parse(JSON.stringify(days)),
+        gebucht: JSON.parse(JSON.stringify(gebucht))
+    });
+    if (undoStack.length > UNDO_MAX) {
+        undoStack.shift();
+    }
+}
+
+function performUndo() {
+    const snap = undoStack.pop();
+    if (!snap) {
+        return;
+    }
+    days = snap.days;
+    gebucht = snap.gebucht;
+    try {
+        localStorage.setItem(DAYS_KEY, JSON.stringify(days));
+        localStorage.setItem(GEBUCHT_KEY, JSON.stringify(gebucht));
+    } catch (e) {}
+    hideToast();
+    render();
+    showToast('Wiederhergestellt ✓');
+}
+
+document.getElementById('toast').addEventListener('click', function (e) {
+    if (!_toastAction || !e.target.closest('.toast-action')) {
+        return;
+    }
+    const fn = _toastAction.fn;
+    hideToast();
+    fn();
+});
+
+function showUndoable(msg) {
+    showToast(msg, 8000, { label: 'Rückgängig', fn: performUndo });
 }
 
 function syncFeiertagDays() {
@@ -391,6 +454,7 @@ function handleImportFile(file) {
     reader.onload = function () {
         try {
             const data = parseBackupText(reader.result);
+            beginChange();
             days = data.days;
             gebucht = data.gebucht && typeof data.gebucht === 'object' ? data.gebucht : {};
             if (data.period && data.period.start && isValidISODate(data.period.start)) {
@@ -403,6 +467,7 @@ function handleImportFile(file) {
             populateQuick();
             render();
             alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
+            showUndoable('Import durchgeführt');
         } catch (e) {
             alert('Import fehlgeschlagen: ' + e.message);
         }
@@ -866,7 +931,13 @@ document.getElementById('dialogOk').addEventListener('click', function () {
         alert('Bitte ein Startdatum wählen.');
         return;
     }
-    if (endDate && endDate > newDate) {
+    const isRange = !!(endDate && endDate > newDate);
+    if (!isRange && dialogOrigDate !== newDate && days[newDate]) {
+        alert('Für dieses Datum existiert bereits ein Eintrag.');
+        return;
+    }
+    beginChange();
+    if (isRange) {
         const start = parseISO(newDate);
         const end = parseISO(endDate);
         for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
@@ -874,10 +945,6 @@ document.getElementById('dialogOk').addEventListener('click', function () {
             applyGebucht(fmt(d), type);
         }
     } else {
-        if (dialogOrigDate !== newDate && days[newDate]) {
-            alert('Für dieses Datum existiert bereits ein Eintrag.');
-            return;
-        }
         if (dialogOrigDate !== newDate && days[dialogOrigDate]) {
             delete days[dialogOrigDate];
             delete gebucht[dialogOrigDate];
@@ -889,6 +956,7 @@ document.getElementById('dialogOk').addEventListener('click', function () {
     saveGebucht();
     closeDialog();
     render();
+    showUndoable('Gespeichert ✓');
 });
 
 dialogDelete.addEventListener('click', function () {
@@ -912,6 +980,7 @@ dialogDelete.addEventListener('click', function () {
 confirmDelete.addEventListener('click', function () {
     if (pendingSelectionDelete) {
         const n = selection.size;
+        beginChange();
         for (const iso of selection) {
             delete days[iso];
             delete gebucht[iso];
@@ -922,13 +991,18 @@ confirmDelete.addEventListener('click', function () {
         confirmOverlay.classList.add('hidden');
         exitSelectionMode();
         render();
-        showToast(n + ' Einträge gelöscht');
+        showUndoable(n + ' Einträge gelöscht');
         return;
     }
     if (!pendingDelete) {
         return;
     }
+    let cnt = 0;
+    beginChange();
     for (let d = new Date(pendingDelete.start); d <= pendingDelete.end; d.setDate(d.getDate() + 1)) {
+        if (days[fmt(d)] || gebucht[fmt(d)]) {
+            cnt++;
+        }
         delete days[fmt(d)];
         delete gebucht[fmt(d)];
     }
@@ -938,6 +1012,7 @@ confirmDelete.addEventListener('click', function () {
     closeDialog();
     confirmOverlay.classList.add('hidden');
     render();
+    showUndoable(cnt + ' Einträge gelöscht');
 });
 
 confirmCancel.addEventListener('click', function () {
@@ -998,6 +1073,21 @@ document.addEventListener('keydown', function (e) {
         return;
     }
     shiftPeriod(e.key === 'ArrowLeft' ? -1 : 1);
+});
+
+document.addEventListener('keydown', function (e) {
+    if ((e.key !== 'z' && e.key !== 'Z') || !(e.ctrlKey || e.metaKey) || e.altKey) {
+        return;
+    }
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.target.isContentEditable) {
+        return;
+    }
+    if (!undoStack.length) {
+        return;
+    }
+    e.preventDefault();
+    performUndo();
 });
 
 document.getElementById('exportButton').addEventListener('click', exportBackup);
@@ -1560,12 +1650,14 @@ quickMenu.addEventListener('click', function (e) {
     const set = item.getAttribute('data-set');
     const iso = quickIso;
     if (set === '__delete__') {
+        beginChange();
         delete days[iso];
         delete gebucht[iso];
         saveDays();
         saveGebucht();
         quickHide();
         render();
+        showUndoable('Eintrag gelöscht');
     } else if (set === '__edit__') {
         quickHide();
         openDialog(iso);
@@ -1576,6 +1668,7 @@ quickMenu.addEventListener('click', function (e) {
         updateSelectionBar();
         renderMonths();
     } else if (set === '__gebucht__') {
+        beginChange();
         if (gebucht[iso]) {
             delete gebucht[iso];
         } else {
@@ -1584,11 +1677,14 @@ quickMenu.addEventListener('click', function (e) {
         saveGebucht();
         quickShow(iso, quickPos.x, quickPos.y);
         render();
+        showUndoable('Gespeichert ✓');
     } else {
+        beginChange();
         days[iso] = set;
         saveDays();
         quickHide();
         render();
+        showUndoable('Gespeichert ✓');
     }
 });
 
@@ -1656,6 +1752,7 @@ selectionTypesEl.addEventListener('click', function (e) {
         return;
     }
     const type = item.getAttribute('data-sbtype');
+    beginChange();
     for (const iso of selection) {
         days[iso] = type;
         if (type !== 'BUEROTAG') {
@@ -1667,7 +1764,7 @@ selectionTypesEl.addEventListener('click', function (e) {
     const n = selection.size;
     exitSelectionMode();
     render();
-    showToast(n + ' Tag' + (n > 1 ? 'e' : '') + ' gesetzt ✓');
+    showUndoable(n + ' Tag' + (n > 1 ? 'e' : '') + ' gesetzt ✓');
 });
 
 selectionDeleteButton.addEventListener('click', function () {

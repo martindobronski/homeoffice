@@ -1,26 +1,17 @@
-Version 1.17 vom 23.08.2026
-Hier die Änderungen gegenüber der Vorversion (V1.16):
+Version 1.18 vom 24.08.2026
+Hier die Änderungen gegenüber der Vorversion (V1.17):
 
-- Neu: Mehrfachauswahl für Kalendertage – mit Shift-/Strg-/Cmd-Klick mehrere
-  nicht zusammenhängende Tage markieren und in einem Rutsch einem
-  Anwesenheitstyp zuordnen oder löschen (statt nur zusammenhängender Bereiche
-  im Dialog).
-- Smartphone: neuer Punkt „Mehrfachauswahl…" im Schnellmenü (Long-Press);
-  danach schaltet jeder Tipp eine Zelle in/aus der Auswahl.
-- Neue Auswahl-Leiste unten: Zähler, alle 7 Anwesenheitstypen zum Zuweisen,
-  Löschen (mit Bestätigungsdialog) und Abbrechen; Esc bricht ab.
-- Monatsübergreifendes Sammeln möglich – die Pfeiltasten-Navigation bleibt
-  aktiv und die Markierung bleibt über Monatswechsel hinweg erhalten.
-- Nicht-Bürotage entfernen vorhandene gebucht-Haken, Bürotage lassen
-  bestehende Haken unverändert.
-- Tooltips ruhen im Auswahlmodus; markierte Tage tragen einen blauen Ring.
-- Bedienungsanleitung (MD und PDF) um die Mehrfachauswahl ergänzt.
-- Fix: Das PDF der Bedienungsanleitung wird jetzt wie die App-Seite immer
-  aktuell geladen – auf dem Smartphone erschien nach einem Update zuvor
-  zunächst die Vorversion aus dem Cache.
-- Neu: Bedienungsanleitung jetzt zusätzlich als HTML-Ansicht; der Footer-Link
-  in der App öffnet diese (immer aktuell, kein PDF-Viewer/Download nötig).
-  Das PDF bleibt als zweite Ansicht verfügbar.
-- Der PDF-Link wird auf Smartphones/Tablets ausgeblendet – dort gibt es nur
-  die immer aktuelle HTML-Ansicht; das PDF bleibt am Desktop erreichbar.
-- Service-Worker-Cache und Cache-Buster angehoben (v1.17).
+- Neu: Undo – nach jeder Änderung an Tageseinträgen zeigt der Toast
+  („Gespeichert ✓", „… gelöscht", „Import durchgeführt") 8 Sekunden lang
+  einen „Rückgängig"-Link; zusätzlich wirkt Strg+Z (Cmd+Z am Mac) als
+  Tastenkürzel mit demselben Effekt.
+- Rückgängig machbar: Einzeltage setzen/löschen/„gebucht"-Umschalter
+  (Schnellmenü), Dialog-Einträge inklusive Bereichs- und Verschiebe-Aktionen,
+  Mehrfachauswahl (gemeinsames Zuweisen und Löschen) sowie der komplette
+  Backup-Import (Voll-Restore des vorherigen Datenstands).
+- Bis zu 30 Änderungsschritte sind zurückholbar (Strg+Z mehrfach).
+- Bewusst nicht Teil des Undo: Zeitraum/Startmonat, Urlaubskontingent und
+  Bundesland-/Feiertags-Einstellungen (über die UI direkt revertierbar).
+- Strg+Z greift nicht, während der Fokus in einem Eingabefeld liegt – dort
+  bleibt die native Text-Undo-Funktion aktiv.
+- Service-Worker-Cache und Cache-Buster angehoben (v1.18).
