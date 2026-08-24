@@ -196,26 +196,28 @@ function hideToast() {
     _toastAction = null;
 }
 
-// ---------- Undo (Rückgängig) ----------
+// ---------- Undo/Redo (Rückgängig/Wiederholen) ----------
 
 const undoStack = [];
+const redoStack = [];
 const UNDO_MAX = 30;
 
-function beginChange() {
-    undoStack.push({
+function snapshotNow() {
+    return {
         days: JSON.parse(JSON.stringify(days)),
         gebucht: JSON.parse(JSON.stringify(gebucht))
-    });
+    };
+}
+
+function beginChange() {
+    undoStack.push(snapshotNow());
     if (undoStack.length > UNDO_MAX) {
         undoStack.shift();
     }
+    redoStack.length = 0;
 }
 
-function performUndo() {
-    const snap = undoStack.pop();
-    if (!snap) {
-        return;
-    }
+function applySnapshot(snap) {
     days = snap.days;
     gebucht = snap.gebucht;
     try {
@@ -224,7 +226,26 @@ function performUndo() {
     } catch (e) {}
     hideToast();
     render();
-    showToast('Wiederhergestellt ✓');
+}
+
+function performUndo() {
+    const snap = undoStack.pop();
+    if (!snap) {
+        return;
+    }
+    redoStack.push(snapshotNow());
+    applySnapshot(snap);
+    showToast('Wiederhergestellt ✓', 8000, { label: 'Wiederholen', fn: performRedo });
+}
+
+function performRedo() {
+    const snap = redoStack.pop();
+    if (!snap) {
+        return;
+    }
+    undoStack.push(snapshotNow());
+    applySnapshot(snap);
+    showToast('Erneut angewendet ✓', 8000, { label: 'Rückgängig', fn: performUndo });
 }
 
 document.getElementById('toast').addEventListener('click', function (e) {
@@ -1076,18 +1097,32 @@ document.addEventListener('keydown', function (e) {
 });
 
 document.addEventListener('keydown', function (e) {
-    if ((e.key !== 'z' && e.key !== 'Z') || !(e.ctrlKey || e.metaKey) || e.altKey) {
+    const mod = e.ctrlKey || e.metaKey;
+    if (!mod || e.altKey) {
+        return;
+    }
+    const istZ = e.key === 'z' || e.key === 'Z';
+    const istY = e.key === 'y' || e.key === 'Y';
+    if (!istZ && !istY) {
         return;
     }
     const tag = e.target.tagName;
     if (tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA' || e.target.isContentEditable) {
         return;
     }
-    if (!undoStack.length) {
-        return;
+    if (istZ && !e.shiftKey) {
+        if (!undoStack.length) {
+            return;
+        }
+        e.preventDefault();
+        performUndo();
+    } else {
+        if (!redoStack.length) {
+            return;
+        }
+        e.preventDefault();
+        performRedo();
     }
-    e.preventDefault();
-    performUndo();
 });
 
 document.getElementById('exportButton').addEventListener('click', exportBackup);

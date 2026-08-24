@@ -1,17 +1,17 @@
-Version 1.18 vom 24.08.2026
-Hier die Änderungen gegenüber der Vorversion (V1.17):
+Version 1.19 vom 24.08.2026
+Hier die Änderungen gegenüber der Vorversion (V1.18):
 
-- Neu: Undo – nach jeder Änderung an Tageseinträgen zeigt der Toast
-  („Gespeichert ✓", „… gelöscht", „Import durchgeführt") 8 Sekunden lang
-  einen „Rückgängig"-Link; zusätzlich wirkt Strg+Z (Cmd+Z am Mac) als
-  Tastenkürzel mit demselben Effekt.
-- Rückgängig machbar: Einzeltage setzen/löschen/„gebucht"-Umschalter
-  (Schnellmenü), Dialog-Einträge inklusive Bereichs- und Verschiebe-Aktionen,
-  Mehrfachauswahl (gemeinsames Zuweisen und Löschen) sowie der komplette
-  Backup-Import (Voll-Restore des vorherigen Datenstands).
-- Bis zu 30 Änderungsschritte sind zurückholbar (Strg+Z mehrfach).
-- Bewusst nicht Teil des Undo: Zeitraum/Startmonat, Urlaubskontingent und
-  Bundesland-/Feiertags-Einstellungen (über die UI direkt revertierbar).
-- Strg+Z greift nicht, während der Fokus in einem Eingabefeld liegt – dort
-  bleibt die native Text-Undo-Funktion aktiv.
-- Service-Worker-Cache und Cache-Buster angehoben (v1.18).
+- Neu: Redo (Wiederholen) – rückgängig gemachte Änderungen lassen sich
+  jetzt wiederherstellen, mit denselben Grenzen wie das Undo (bis zu 30
+  Schritte; Zeitraum, Urlaubskontingent und Bundesland-Einstellungen
+  bleiben außen vor).
+- Tastenkürzel: Strg+Shift+Z bzw. Cmd+Shift+Z (Plattform-Standard) oder
+  Strg+Y / Cmd+Y – jeweils nur wirksam, solange etwas zum Wiederholen
+  vorhanden ist.
+- Touch/Maus: Nach einem „Rückgängig" bietet der Toast 8 Sekunden lang
+  einen „Wiederholen"-Link an (und nach dem Wiederholen entsprechend
+  wieder „Rückgängig") – so ist das Hin- und Herschalten auch ohne
+  Tastatur möglich.
+- Wie gewohnt gilt: Jede neue Änderung verwirft die Redo-Historie
+  (es kann nur in eine Richtung fortgesetzt werden).
+- Service-Worker-Cache und Cache-Buster angehoben (v1.19).
