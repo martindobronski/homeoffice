@@ -109,7 +109,7 @@ const exportCancel = document.getElementById('exportCancel');
 const printOverlay = document.getElementById('printOverlay');
 const printStart = document.getElementById('printStart');
 const printEnd = document.getElementById('printEnd');
-const printArt = document.getElementById('printArt');
+const printArtTypes = document.getElementById('printArtTypes');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -1543,8 +1543,7 @@ function formatDeDate(iso) {
     return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
 }
 
-function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
-    const start = parseISO(rangeStart);
+function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = parseISO(rangeStart);
     const end = parseISO(rangeEnd);
     const today = fmt(new Date());
     const jahr = new Date().getFullYear();
@@ -1573,7 +1572,7 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
             if (!t && window.Feiertage && Feiertage.istSonderfrei(iso)) {
                 continue;
             }
-            if (artFilter && t !== artFilter) {
+            if (artFilter.length && artFilter.indexOf(t) === -1) {
                 continue;
             }
             if (t === 'URLAUB') {
@@ -1602,17 +1601,17 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
                 + '<td class="center">' + (gebucht[iso] ? '✓' : '') + '</td>'
                 + '</tr>');
         }
-        if (!artFilter || zeilen.length) {
+        if (!artFilter.length || zeilen.length) {
             monate.push({ name: m.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' }), zeilen: zeilen.join('\n') });
         }
     }
 
-    if (artFilter && !monate.length) {
+    if (artFilter.length && !monate.length) {
         return null;
     }
 
     const summaryRows = WORK_TYPES.filter(function (t) {
-        return !artFilter || t.key === artFilter;
+        return !artFilter.length || artFilter.indexOf(t.key) !== -1;
     }).map(function (t) {
         const n = counts[t.key] || 0;
         let hinweis = '';
@@ -1636,6 +1635,12 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
     }).join('\n');
 
     const blName = BL_NAMES[window.Feiertage && Feiertage.getBundesland()] || '';
+    let artenLabel = '';
+    if (artFilter.length) {
+        artenLabel = ' &middot; Arten: ' + WORK_TYPES.filter(function (t) {
+            return artFilter.indexOf(t.key) !== -1;
+        }).map(function (t) { return t.label; }).join(', ');
+    }
     return '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="UTF-8">\n'
         + '<title>Anwesenheitsübersicht ' + rangeStart + '_bis_' + rangeEnd + '</title>\n'
         + '<style>\n'
@@ -1657,7 +1662,7 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {
         + '<h1>Anwesenheits&uuml;bersicht</h1>\n'
         + '<p class="meta">Zeitraum: ' + formatDeDate(rangeStart) + ' &ndash; ' + formatDeDate(rangeEnd)
         + (blName ? ' &middot; Bundesland: ' + blName : '')
-        + ' &middot; Erstellt am ' + formatDeDate(today) + '</p>\n'
+        + ' &middot; Erstellt am ' + formatDeDate(today) + artenLabel + '</p>\n'
         + '<h2>Zusammenfassung</h2>\n'
         + '<table>\n<thead><tr><th>Art</th><th>Tage im Zeitraum</th><th>Hinweis</th></tr></thead>\n'
         + '<tbody>\n' + summaryRows + '\n</tbody>\n</table>\n'
@@ -1671,9 +1676,51 @@ function openPrintView() {
     chipMenu.classList.add('hidden');
     printStart.value = periodStart;
     printEnd.value = periodEnd;
-    printArt.value = '';
+    resetPrintArts();
     printOverlay.classList.remove('hidden');
 }
+
+function fillPrintArts() {
+    printArtTypes.innerHTML = '<button type="button" class="pa-chip active" data-art="">Alle</button>'
+        + WORK_TYPES.map(function (t) {
+            return '<button type="button" class="pa-chip" data-art="' + t.key + '">'
+                + '<span class="sw" style="background:' + t.color + '"></span>' + t.label
+                + '</button>';
+        }).join('');
+}
+
+function resetPrintArts() {
+    printArtTypes.querySelectorAll('.pa-chip').forEach(function (chip) {
+        chip.classList.toggle('active', !chip.getAttribute('data-art'));
+    });
+}
+
+function selectedPrintArts() {
+    const arts = [];
+    printArtTypes.querySelectorAll('.pa-chip.active').forEach(function (chip) {
+        const v = chip.getAttribute('data-art');
+        if (v) {
+            arts.push(v);
+        }
+    });
+    return arts;
+}
+
+printArtTypes.addEventListener('click', function (e) {
+    const chip = e.target.closest('.pa-chip');
+    if (!chip) {
+        return;
+    }
+    if (!chip.getAttribute('data-art')) {
+        resetPrintArts();
+        return;
+    }
+    chip.classList.toggle('active');
+    const alleChip = printArtTypes.querySelector('.pa-chip[data-art=""]');
+    if (alleChip) {
+        alleChip.classList.toggle('active', !printArtTypes.querySelector('.pa-chip.active[data-art]'));
+    }
+});
 
 function closePrintView() {
     printOverlay.classList.add('hidden');
@@ -1691,9 +1738,9 @@ function generatePrintDocument() {
     closePrintView();
     quickMenu.classList.add('hidden');
     chipMenu.classList.add('hidden');
-    const html = buildPrintDocument(printStart.value, printEnd.value, printArt.value);
+    const html = buildPrintDocument(printStart.value, printEnd.value, selectedPrintArts());
     if (!html) {
-        alert('Keine Einträge der gewählten Art im gewählten Zeitraum.');
+        alert('Keine Einträge der gewählten Art(en) im gewählten Zeitraum.');
         return;
     }
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
@@ -2116,16 +2163,10 @@ function init() {
         if (n > 0) showToast(n + ' Feiertag' + (n > 1 ? 'e' : '') + ' angepasst');
     });
 
-    WORK_TYPES.forEach(function (t) {
-        const opt = document.createElement('option');
-        opt.value = t.key;
-        opt.textContent = t.label;
-        printArt.appendChild(opt);
-    });
-
     populateQuick();
     fillTypeSelect();
     fillSelectionTypes();
+    fillPrintArts();
     monthBox.addEventListener('change', applyQuickSelection);
     yearBox.addEventListener('change', applyQuickSelection);
     prevMonthButton.addEventListener('click', function () { shiftPeriod(-1); });

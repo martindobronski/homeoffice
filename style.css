@@ -1220,3 +1220,50 @@ select:focus-visible {
 .toast-action:hover {
     opacity: .8;
 }
+
+/* ---------- Druck-Dialog: Arten-Mehrfachauswahl ---------- */
+
+.pa-types {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pa-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text);
+    background: var(--surface-muted);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 5px 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background .12s ease, box-shadow .12s ease;
+}
+
+.pa-chip:hover {
+    background: #eef0ef;
+    box-shadow: 0 1px 4px rgba(20, 20, 30, .10);
+}
+
+.pa-chip.active {
+    background: #185FA5;
+    border-color: #185FA5;
+    color: #fff;
+}
+
+.pa-chip.active .sw {
+    outline: 1px solid rgba(255, 255, 255, .6);
+}
+
+.pa-chip .sw {
+    width: 11px;
+    height: 11px;
+    border-radius: 4px;
+    flex: none;
+}

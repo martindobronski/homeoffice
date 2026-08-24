@@ -3,6 +3,21 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.26 vom 24.08.2026
+Änderungen gegenüber V1.25:
+
+- Druck-/PDF-Dialog: Die Anwesenheitsart ist jetzt als Mehrfachauswahl
+  umgesetzt – umschaltbare Art-Chips (Stil wie die Auswahl-Leiste der
+  Mehrfachauswahl) statt eines einfachen Auswahlmenüs.
+- „Alle" ist voreingestellt; ein Tipp/Klick auf eine Art schaltet „Alle"
+  ab, mehrere Arten lassen sich kombinieren (Oder-Filter). Wird die
+  letzte gewählte Art abgewählt, springt die Auswahl automatisch auf
+  „Alle" zurück; ein Klick auf „Alle" leert die Einzelauswahl.
+- Bei gefilterter Auswahl nennt die Kopfzeile des Berichts die
+  berücksichtigten Arten (z. B. „Arten: Urlaub, Krankheit").
+
+--------------------------------------------------------------------------
+
 Version 1.25 vom 24.08.2026
 Änderungen gegenüber V1.24:
 
