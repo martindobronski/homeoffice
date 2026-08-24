@@ -3,6 +3,18 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.22 vom 24.08.2026
+Änderungen gegenüber V1.21:
+
+- Druck-/PDF-Ansicht: Vor dem Erstellen erscheint jetzt ein Dialog zur
+  Wahl des Berichtszeitraums – Start- und Enddatum sind frei einstellbar,
+  vorbelegt ist immer der aktuell gewählte Zeitraum der App.
+- Validierung wie gewohnt: ungültige oder umgekehrte Datumsangaben
+  werden mit Hinweis abgelehnt; ESC, Abbrechen und Klick neben den
+  Dialog schließen ihn ohne Aktion.
+
+--------------------------------------------------------------------------
+
 Version 1.21 vom 24.08.2026
 Änderungen gegenüber V1.20:
 

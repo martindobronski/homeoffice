@@ -63,7 +63,7 @@
             <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
-    <div id="version" class="version">Version 1.21 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
+    <div id="version" class="version">Version 1.22 vom 24.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -164,10 +164,30 @@
         </div>
     </div>
 
+    <div id="printOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3>Übersicht drucken / PDF</h3>
+            <div class="export-fields">
+                <div class="field-group">
+                    <label for="printStart">Startdatum:</label>
+                    <input type="date" id="printStart">
+                </div>
+                <div class="field-group">
+                    <label for="printEnd">Enddatum:</label>
+                    <input type="date" id="printEnd">
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button id="printOk" class="btn btn-primary">Übersicht erstellen</button>
+                <button id="printCancel" class="btn btn-ghost">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.134"></script>
+    <script src="app.js?v=1.135"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

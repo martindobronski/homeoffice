@@ -106,6 +106,10 @@ const exportFormat = document.getElementById('exportFormat');
 const exportOk = document.getElementById('exportOk');
 const exportCancel = document.getElementById('exportCancel');
 
+const printOverlay = document.getElementById('printOverlay');
+const printStart = document.getElementById('printStart');
+const printEnd = document.getElementById('printEnd');
+
 function pad(n) {
     return String(n).padStart(2, '0');
 }
@@ -1072,6 +1076,7 @@ document.addEventListener('keydown', function (e) {
         chipMenu.classList.add('hidden');
     }
     closeExportDialog();
+    closePrintView();
     if (!confirmOverlay.classList.contains('hidden')) {
         pendingDelete = null;
         pendingSelectionDelete = false;
@@ -1090,7 +1095,9 @@ document.addEventListener('keydown', function (e) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
-        || !urlaubConfirmOverlay.classList.contains('hidden')) {
+        || !urlaubConfirmOverlay.classList.contains('hidden')
+        || !exportOverlay.classList.contains('hidden')
+        || !printOverlay.classList.contains('hidden')) {
         return;
     }
     const tag = e.target.tagName;
@@ -1130,6 +1137,13 @@ document.addEventListener('keydown', function (e) {
 });
 
 document.getElementById('printButton').addEventListener('click', openPrintView);
+document.getElementById('printOk').addEventListener('click', generatePrintDocument);
+document.getElementById('printCancel').addEventListener('click', closePrintView);
+printOverlay.addEventListener('click', function (e) {
+    if (e.target === printOverlay) {
+        closePrintView();
+    }
+});
 document.getElementById('exportButton').addEventListener('click', exportBackup);
 document.getElementById('importButton').addEventListener('click', function () {
     document.getElementById('importFile').click();
@@ -1528,9 +1542,9 @@ function formatDeDate(iso) {
     return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
 }
 
-function buildPrintDocument() {
-    const start = parseISO(periodStart);
-    const end = parseISO(periodEnd);
+function buildPrintDocument(rangeStart, rangeEnd) {
+    const start = parseISO(rangeStart);
+    const end = parseISO(rangeEnd);
     const today = fmt(new Date());
     const jahr = new Date().getFullYear();
 
@@ -1611,7 +1625,7 @@ function buildPrintDocument() {
 
     const blName = BL_NAMES[window.Feiertage && Feiertage.getBundesland()] || '';
     return '<!DOCTYPE html>\n<html lang="de">\n<head>\n<meta charset="UTF-8">\n'
-        + '<title>Anwesenheitsübersicht ' + periodStart + '_bis_' + periodEnd + '</title>\n'
+        + '<title>Anwesenheitsübersicht ' + rangeStart + '_bis_' + rangeEnd + '</title>\n'
         + '<style>\n'
         + '@page { size: A4; margin: 15mm; }\n'
         + 'body { font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif; color: #111; font-size: 10.5pt; line-height: 1.4; margin: 0 auto; max-width: 180mm; padding: 12px; }\n'
@@ -1630,7 +1644,7 @@ function buildPrintDocument() {
         + 'thead { display: table-header-group; }\n'
         + '</style>\n</head>\n<body>\n'
         + '<h1>Anwesenheits&uuml;bersicht</h1>\n'
-        + '<p class="meta">Zeitraum: ' + formatDeDate(periodStart) + ' &ndash; ' + formatDeDate(periodEnd)
+        + '<p class="meta">Zeitraum: ' + formatDeDate(rangeStart) + ' &ndash; ' + formatDeDate(rangeEnd)
         + (blName ? ' &middot; Bundesland: ' + blName : '')
         + ' &middot; Erstellt am ' + formatDeDate(today) + '</p>\n'
         + '<div class="touch-hint"><b>Drucken / PDF speichern:</b> Browser-Men&uuml; &ouml;ffnen und '
@@ -1646,7 +1660,28 @@ function buildPrintDocument() {
 function openPrintView() {
     quickMenu.classList.add('hidden');
     chipMenu.classList.add('hidden');
-    const html = buildPrintDocument();
+    printStart.value = periodStart;
+    printEnd.value = periodEnd;
+    printOverlay.classList.remove('hidden');
+}
+
+function closePrintView() {
+    printOverlay.classList.add('hidden');
+}
+
+function generatePrintDocument() {
+    if (!isValidISODate(printStart.value) || !isValidISODate(printEnd.value)) {
+        alert('Bitte gültiges Start- und Enddatum wählen.');
+        return;
+    }
+    if (printEnd.value < printStart.value) {
+        alert('Das Enddatum liegt vor dem Startdatum.');
+        return;
+    }
+    closePrintView();
+    quickMenu.classList.add('hidden');
+    chipMenu.classList.add('hidden');
+    const html = buildPrintDocument(printStart.value, printEnd.value);
     const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const win = window.open(url, '_blank');
