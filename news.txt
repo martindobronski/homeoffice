@@ -3,6 +3,17 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.30 vom 26.08.2026
+Änderungen gegenüber V1.29:
+
+- Druck-/PDF-Ansicht: Beim Wechsel auf „Monat:" oder „Quartal:" wird
+  das Dropdown jetzt jeweils auf den aktuellen Monat bzw. das aktuelle
+  Quartal zurückgesetzt, sodass das Jahr beim Umschalten nicht
+  versehentlich ins Vorjahr springt. Bei „Monat:" wird zudem immer das
+  aktuelle Jahr verwendet (auch für Monate nach dem aktuellen).
+
+--------------------------------------------------------------------------
+
 Version 1.29 vom 26.08.2026
 Änderungen gegenüber V1.28:
 

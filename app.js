@@ -1750,8 +1750,7 @@ function applyPeriodSelection(type) {
         setPrintDates(firstOf(y, m), lastOf(y, m));
     } else if (type === 'monthSelect') {
         var sm = parseInt(printMonthSelect.value, 10) - 1;
-        var dy = (sm > m) ? y - 1 : y;
-        setPrintDates(firstOf(dy, sm), lastOf(dy, sm));
+        setPrintDates(firstOf(y, sm), lastOf(y, sm));
     } else if (type === 'quarterSelect') {
         var q = parseInt(printQuarterSelect.value, 10);
         var qm = (q - 1) * 3;
@@ -1762,9 +1761,16 @@ function applyPeriodSelection(type) {
 }
 
 function selectPeriod(type) {
+    var now = new Date();
     printPeriod.querySelectorAll('.pa-chip').forEach(function (c) {
         c.classList.toggle('active', c.getAttribute('data-period') === type);
     });
+    if (type === 'monthSelect') {
+        printMonthSelect.value = String(now.getMonth() + 1);
+    }
+    if (type === 'quarterSelect') {
+        printQuarterSelect.value = String(Math.floor(now.getMonth() / 3) + 1);
+    }
     printMonthSelect.classList.toggle('hidden', type !== 'monthSelect');
     printQuarterSelect.classList.toggle('hidden', type !== 'quarterSelect');
     applyPeriodSelection(type);
