@@ -110,6 +110,9 @@ const printOverlay = document.getElementById('printOverlay');
 const printStart = document.getElementById('printStart');
 const printEnd = document.getElementById('printEnd');
 const printArtTypes = document.getElementById('printArtTypes');
+const printPeriod = document.getElementById('printPeriod');
+const printMonthSelect = document.getElementById('printMonthSelect');
+const printQuarterSelect = document.getElementById('printQuarterSelect');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -1684,8 +1687,8 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
 function openPrintView() {
     quickMenu.classList.add('hidden');
     chipMenu.classList.add('hidden');
-    printStart.value = periodStart;
-    printEnd.value = periodEnd;
+    fillPeriodSelects();
+    selectPeriod('month');
     resetPrintArts();
     printOverlay.classList.remove('hidden');
 }
@@ -1715,6 +1718,73 @@ function selectedPrintArts() {
     });
     return arts;
 }
+
+/* --- Zeitraum-Auswahl (Druck-Dialog) --- */
+
+function fillPeriodSelects() {
+    const now = new Date();
+    const monate = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni',
+        'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+    printMonthSelect.innerHTML = monate.map(function (name, i) {
+        return '<option value="' + (i + 1) + '"' + (i === now.getMonth() ? ' selected' : '') + '>' + name + '</option>';
+    }).join('');
+    var aktQ = Math.floor(now.getMonth() / 3) + 1;
+    printQuarterSelect.innerHTML = [1, 2, 3, 4].map(function (q) {
+        return '<option value="' + q + '"' + (q === aktQ ? ' selected' : '') + '>Q' + q + '</option>';
+    }).join('');
+}
+
+function setPrintDates(startISO, endISO) {
+    printStart.value = startISO;
+    printEnd.value = endISO;
+}
+
+function applyPeriodSelection(type) {
+    var now = new Date();
+    var y = now.getFullYear();
+    var m = now.getMonth();
+    function firstOf(y, mo) { return y + '-' + pad(mo + 1) + '-01'; }
+    function lastOf(y, mo) { return new Date(y, mo + 1, 0).getFullYear() + '-' + pad(new Date(y, mo + 1, 0).getMonth() + 1) + '-' + pad(new Date(y, mo + 1, 0).getDate()); }
+
+    if (type === 'month') {
+        setPrintDates(firstOf(y, m), lastOf(y, m));
+    } else if (type === 'monthSelect') {
+        var sm = parseInt(printMonthSelect.value, 10) - 1;
+        var dy = (sm > m) ? y - 1 : y;
+        setPrintDates(firstOf(dy, sm), lastOf(dy, sm));
+    } else if (type === 'quarterSelect') {
+        var q = parseInt(printQuarterSelect.value, 10);
+        var qm = (q - 1) * 3;
+        setPrintDates(firstOf(y, qm), lastOf(y, qm + 2));
+    } else if (type === 'year') {
+        setPrintDates(y + '-01-01', y + '-12-31');
+    }
+}
+
+function selectPeriod(type) {
+    printPeriod.querySelectorAll('.pa-chip').forEach(function (c) {
+        c.classList.toggle('active', c.getAttribute('data-period') === type);
+    });
+    printMonthSelect.classList.toggle('hidden', type !== 'monthSelect');
+    printQuarterSelect.classList.toggle('hidden', type !== 'quarterSelect');
+    applyPeriodSelection(type);
+}
+
+printPeriod.addEventListener('click', function (e) {
+    var chip = e.target.closest('.pa-chip');
+    if (!chip) {
+        return;
+    }
+    selectPeriod(chip.getAttribute('data-period'));
+});
+
+printMonthSelect.addEventListener('change', function () {
+    applyPeriodSelection('monthSelect');
+});
+
+printQuarterSelect.addEventListener('change', function () {
+    applyPeriodSelection('quarterSelect');
+});
 
 printArtTypes.addEventListener('click', function (e) {
     const chip = e.target.closest('.pa-chip');

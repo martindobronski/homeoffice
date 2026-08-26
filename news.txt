@@ -3,6 +3,17 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.29 vom 24.08.2026
+Änderungen gegenüber V1.28:
+
+- Druck-/PDF-Ansicht: Der Druckzeitraum lässt sich jetzt per Klick auf
+  eine der vordefinierten Optionen wählen: „Aktueller Monat",
+  „Monat" (per Dropdown), „Quartal" (per Dropdown) oder
+  „Aktuelles Jahr". Die Start-/Enddatum-Felder werden automatisch
+  befüllt; eine manuelle Nachjustierung ist weiterhin möglich.
+
+--------------------------------------------------------------------------
+
 Version 1.28 vom 24.08.2026
 Änderungen gegenüber V1.27:
 

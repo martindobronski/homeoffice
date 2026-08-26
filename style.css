@@ -1267,3 +1267,55 @@ select:focus-visible {
     border-radius: 4px;
     flex: none;
 }
+
+/* ---------- Druck-Dialog: Zeitraum-Auswahl ---------- */
+
+.pa-period {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.pa-pair {
+    display: contents;
+}
+
+.pa-select {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 12.5px;
+    padding: 5px 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    min-width: 110px;
+}
+
+.pa-select:focus {
+    outline: none;
+    border-color: #185FA5;
+    box-shadow: 0 0 0 2px rgba(24, 95, 165, .2);
+}
+
+.field-dates {
+    flex-direction: row !important;
+    align-items: center;
+    gap: 8px;
+}
+
+.field-dates > label {
+    flex: none;
+}
+
+.field-dates > input[type="date"] {
+    flex: 0 1 150px;
+    min-width: 0;
+}
+
+.date-sep {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-muted, #666);
+    flex: none;
+}
