@@ -323,10 +323,7 @@ Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den 
 
 ### 8.2 Backup importieren
 
-Klick auf **Backup importieren** öffnet den Dateidialog. Unterstützt werden:
-
-- **JSON-Dateien** (wie exportiert) – übernehmen den Startmonat des Zeitraums. Das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
-- **CSV-Dateien** im Format `JJJJ-MM-TT,ART` (eine Zeile pro Tag), z. B. `2026-09-01,BUEROTAG`. CSV-Importe übernehmen keinen Zeitraum und keine „gebucht“-Markierungen.
+Klick auf **Backup importieren** öffnet den Dateidialog. Es werden ausschließlich JSON-Dateien im Format des Exports unterstützt. Der Import übernimmt den Startmonat des Zeitraums; das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
 
 Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt. Der importierte Datenstand lässt sich unmittelbar danach über **Rückgängig** zurücknehmen (Kapitel 6.3).
 
