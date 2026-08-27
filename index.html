@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.62">
+    <link rel="stylesheet" href="style.css?v=1.63">
 </head>
 <body>
 
@@ -44,26 +44,48 @@
 
     <div class="legend" id="legend"></div>
 
-    <div class="footer">
-        <div class="quota-input">
-            <span>Urlaubskontingent</span>
-            <input type="number" id="urlaubInput" min="0" max="365" step="1">
-            <button class="btn btn-ghost" id="urlaubApply">OK</button>
+    <div class="settings-wrapper">
+        <div class="card">
+            <p class="card-label">Einstellungen</p>
+            <div class="setting-row quota-input">
+                <label for="urlaubInput">Urlaubskontingent</label>
+                <div class="field-inline">
+                    <input type="number" id="urlaubInput" min="0" max="365" step="1">
+                    <button class="btn-ok" id="urlaubApply">OK</button>
+                </div>
+            </div>
+            <div class="setting-row">
+                <label for="blSelect">Bundesland</label>
+                <select id="blSelect"></select>
+            </div>
+            <div class="setting-row">
+                <label for="sonderfreiCheck">24./31.12. frei</label>
+                <input type="checkbox" id="sonderfreiCheck">
+            </div>
         </div>
-        <div class="bl-select">
-            <span>Bundesland</span>
-            <select id="blSelect"></select>
-            <label class="bl-check"><input type="checkbox" id="sonderfreiCheck"> 24./31.12. frei</label>
-        </div>
-        <div class="footer-actions">
-            <button class="btn btn-ghost" id="printButton">Übersicht drucken / PDF</button>
-            <button class="btn btn-ghost" id="exportButton">Backup exportieren</button>
-            <button class="btn btn-ghost" id="importButton">Backup importieren</button>
+
+        <div class="card footer-actions">
+            <p class="card-label">Daten</p>
+            <button class="btn-action" id="printButton">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 9h1"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+                Übersicht drucken / PDF
+            </button>
+            <span class="export-wrap">
+                <button class="btn-action" id="exportButton">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                    Backup exportieren
+                </button>
+                <p class="export-meta" id="exportHint"></p>
+            </span>
+            <button class="btn-action" id="importButton">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                Backup importieren
+            </button>
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
-            <div class="export-hint" id="exportHint"></div>
         </div>
+
+        <div id="version" class="version">Version 1.34 vom 27.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
     </div>
-    <div id="version" class="version">Version 1.33 vom 27.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -225,7 +247,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.147"></script>
+    <script src="app.js?v=1.148"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

@@ -3,6 +3,23 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.34 vom 27.08.2026
+Änderungen gegenüber V1.33:
+
+- Druckübersicht („Übersicht drucken / PDF"): Die Spalte „gebucht" heißt
+  jetzt „Arbeitsplatz und/oder Parkplatz gebucht", der Haken (✓) für
+  gebuchte Tage wird grün, fett und größer hervorgehoben. Die Wochentage
+  werden ausgeschrieben (z. B. „Montag" statt „Mo"), die Tag-Spalte ist
+  entsprechend breiter.
+- Einstellungsbereich neu gestaltet: Die Fußzeile ist jetzt in zwei
+  Karten aufgeteilt – „Einstellungen" (Urlaubskontingent, Bundesland,
+  24./31.12. frei) und „Daten" (Übersicht drucken / Backup exportieren /
+  Backup importieren). Die Karten liegen nebeneinander (Desktop) bzw.
+  untereinander (schmal). „Zuletzt exportiert:" erscheint direkt unter
+  dem Export-Button. Die Versionsangabe steht zentriert unter den Karten.
+
+--------------------------------------------------------------------------
+
 Version 1.33 vom 27.08.2026
 Änderungen gegenüber V1.32:
 

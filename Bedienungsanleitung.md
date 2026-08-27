@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.33 vom 27.08.2026)
+## Anwesenheits-Dashboard (Version 1.34 vom 27.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -35,7 +35,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
-- **Fußzeile:** Urlaubskontingent, Bundesland-Auswahl (alle 16 Bundesländer) mit Checkbox „24./31.12. frei", Druck-/PDF-Button, Backup-Buttons mit Export-Hinweis, Legende mit Zählern, Versionsinfo.
+- **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl mit Checkbox „24./31.12. frei") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter zentriert die Versionsinfo.
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.
 
@@ -243,7 +243,7 @@ Der Button **„Übersicht drucken / PDF"** in der Fußzeile erzeugt ein aufbere
 3. **Inhalt des Dokuments:**
    - Kopfzeile mit Titel „Anwesenheitsübersicht", gewähltem Zeitraum, Bundesland und Erstellungsdatum.
    - **Zusammenfassung:** Tagesanzahl je Art im Berichtszeitraum; beim Urlaub zusätzlich genommen/geplant und das Kontingent, bei Krankheit zusätzlich die Jahreszahl.
-   - **Monatsdetails:** je Monat eine Tabelle mit Datum, Wochentag und Anwesenheitsart (mit Farbpunkt und Feiertagsnamen). Die Spalte *gebucht* erscheint nur, wenn sie sinnvoll ist (bei *Alle* oder wenn Bürotag Teil der gewählten Art-Filterung ist); Haken stehen ausschließlich auf Bürotagen. Wochenenden und arbeitsfreie Sondertage (24./31.12.) entfallen wie in der App; noch nicht erfasste Tage sind als *– nicht erfasst -* gekennzeichnet. Die Spaltenbreiten sind fest, sodass die Tabellen aller Monate exakt untereinander ausgerichtet sind.
+   - **Monatsdetails:** je Monat eine Tabelle mit Datum, ausgeschriebenem Wochentag (z. B. „Montag") und Anwesenheitsart (mit Farbpunkt und Feiertagsnamen). Die Spalte *Arbeitsplatz und/oder Parkplatz gebucht* erscheint nur, wenn sie sinnvoll ist (bei *Alle* oder wenn Bürotag Teil der gewählten Art-Filterung ist); gebuchte Bürotage sind mit einem grün hervorgehobenen Haken (✓) markiert, Haken stehen ausschließlich auf Bürotagen. Wochenenden und arbeitsfreie Sondertage (24./31.12.) entfallen wie in der App; noch nicht erfasste Tage sind als *– nicht erfasst -* gekennzeichnet. Die Spaltenbreiten sind fest, sodass die Tabellen aller Monate exakt untereinander ausgerichtet sind.
 
 Das Druckdokument wird vollständig offline im Browser erzeugt (keine externen Schriften oder Bibliotheken) und enthält ausschließlich die lokal gespeicherten Daten.
 
@@ -359,7 +359,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.33 vom 27.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.34 vom 27.08.2026`.
 
 ---
 

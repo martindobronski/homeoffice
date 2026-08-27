@@ -1607,7 +1607,7 @@ backupOverlay.addEventListener('click', function (e) {
 
 // ---------- Druckansicht / PDF (Anwesenheitsübersicht) ----------
 
-const WOCHENTAGE_KURZ = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WOCHENTAGE_DRUCK = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
 const BL_NAMES = {
     BW: 'Baden-Württemberg', BY: 'Bayern', BE: 'Berlin', BB: 'Brandenburg',
     HB: 'Bremen', HH: 'Hamburg', HE: 'Hessen', MV: 'Mecklenburg-Vorpommern',
@@ -1677,9 +1677,9 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
             const zeigeHaken = t === 'BUEROTAG' && gebucht[iso];
             zeilen.push('<tr>'
                 + '<td>' + formatDeDate(iso) + '</td>'
-                + '<td>' + WOCHENTAGE_KURZ[d.getDay()] + '</td>'
+                + '<td>' + WOCHENTAGE_DRUCK[d.getDay()] + '</td>'
                 + '<td>' + art + '</td>'
-                + (zeigebuchtSpalte ? '<td class="center">' + (zeigeHaken ? '✓' : '') + '</td>' : '')
+                + (zeigebuchtSpalte ? '<td class="center">' + (zeigeHaken ? '<span class="haken">✓</span>' : '') + '</td>' : '')
                 + '</tr>');
         }
         if (!artFilter.length || zeilen.length) {
@@ -1713,9 +1713,9 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
         return '<h3>' + mo.name + '</h3>\n'
             + '<table>\n'
             + (zeigebuchtSpalte
-                ? '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:57%"><col style="width:12%"></colgroup>\n'
-                  + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>gebucht</th></tr></thead>\n'
-                : '<colgroup><col style="width:21%"><col style="width:10%"><col style="width:69%"></colgroup>\n'
+                ? '<colgroup><col style="width:18%"><col style="width:13%"><col style="width:40%"><col style="width:29%"></colgroup>\n'
+                  + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th><th>Arbeitsplatz und/oder Parkplatz gebucht</th></tr></thead>\n'
+                : '<colgroup><col style="width:20%"><col style="width:13%"><col style="width:67%"></colgroup>\n'
                   + '<thead><tr><th>Datum</th><th>Tag</th><th>Anwesenheit</th></tr></thead>\n')
             + '<tbody>\n' + mo.zeilen + '\n</tbody>\n</table>';
     }).join('\n');
@@ -1743,6 +1743,7 @@ function buildPrintDocument(rangeStart, rangeEnd, artFilter) {    const start = 
         + '.center { text-align: center; }\n'
         + '.swatch { display: inline-block; width: 9px; height: 9px; border: 1px solid #666; margin-right: 5px; vertical-align: baseline; }\n'
         + '.leer { color: #888; font-style: italic; }\n'
+        + '.haken { color: #1E7B34; font-size: 13pt; font-weight: bold; }\n'
         + 'thead { display: table-header-group; }\n'
         + '</style>\n</head>\n<body>\n'
         + '<h1>Anwesenheits&uuml;bersicht</h1>\n'
