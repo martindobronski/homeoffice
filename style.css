@@ -665,9 +665,7 @@ select:focus-visible {
 /* ---------- Legend ---------- */
 
 .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: block;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -675,30 +673,49 @@ select:focus-visible {
     margin-bottom: 20px;
 }
 
+.tile-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.tile-row:last-child {
+    margin-bottom: 0;
+}
+
 .chip {
     display: flex;
-    align-items: center;
-    gap: 7px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
     font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 12.5px;
-    font-weight: 500;
-    color: var(--text-soft);
+    color: var(--text);
     background: var(--surface-muted);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 6px 12px 6px 8px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    text-align: left;
     cursor: pointer;
-    transition: background .12s ease, box-shadow .12s ease;
+    line-height: 1.2;
+    transition: background .12s ease, border-color .12s ease;
 }
 
 .chip:hover {
     background: #eef0ef;
 }
 
-.chip .sw {
-    width: 12px;
-    height: 12px;
-    border-radius: 4px;
+.tile-head {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-width: 0;
+}
+
+.chip .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
     flex: none;
 }
 
@@ -707,24 +724,78 @@ select:focus-visible {
     font-size: 13px;
 }
 
-.chip b {
-    color: var(--text);
+.tile-label {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--text-soft);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tile-value {
     font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 22px;
     font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+}
+
+.tile-value.sub {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-soft);
+}
+
+.urlaub-breakdown {
+    display: flex;
+    align-items: flex-end;
+    gap: 18px;
+}
+
+.urlaub-b {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tile-caption {
+    font-size: 11px;
+    color: var(--text-faint);
+    white-space: nowrap;
 }
 
 .chip.active {
     border-color: var(--accent);
-    color: var(--accent);
     box-shadow: 0 0 0 1px var(--accent) inset;
 }
 
-.chip.active b {
+.chip.active .tile-value {
     color: var(--accent);
 }
 
 .chip.dimmed {
-    opacity: 0.35;
+    opacity: 0.4;
+}
+
+.stats-section {
+    margin-bottom: 20px;
+}
+
+.stats-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.stats-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: .06em;
 }
 
 /* ---------- Footer / Einstellungen ---------- */
@@ -739,6 +810,12 @@ select:focus-visible {
 @media (max-width: 560px) {
     .settings-wrapper {
         grid-template-columns: 1fr;
+    }
+    .tile-row {
+        grid-template-columns: 1fr;
+    }
+    .urlaub-breakdown {
+        gap: 14px;
     }
 }
 
@@ -897,11 +974,24 @@ select:focus-visible {
 
 .version {
     grid-column: 1 / -1;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 14px;
     font-size: 12px;
     color: var(--text-faint);
     margin: 10px 0 0;
     padding-top: 4px;
+}
+
+.version .ver-manual {
+    flex: 1;
+    text-align: left;
+}
+
+.version .ver-meta {
+    text-align: right;
+    white-space: nowrap;
 }
 
 .version a {
@@ -1252,8 +1342,6 @@ select:focus-visible {
     }
     .chip {
         max-width: 100%;
-        flex-wrap: wrap;
-        white-space: normal;
     }
     .month-card .m-head {
         flex-wrap: wrap;

@@ -891,40 +891,71 @@ function renderLegend() {
             counts[t] = (counts[t] || 0) + 1;
         }
     }
-    const now = new Date();
-    const today = fmt(now);
+    const today = fmt(new Date());
     let urlaubGenommen = 0;
     let urlaubGeplant = 0;
     let krankJahr = 0;
     for (const iso of Object.keys(days)) {
-        if (parseISO(iso).getFullYear() !== now.getFullYear()) {
+        if (parseISO(iso).getFullYear() !== new Date().getFullYear()) {
             continue;
         }
         if (days[iso] === 'KRANKHEIT') {
             krankJahr++;
-        } else if (days[iso] === 'URLAUB') {
-            if (iso < today) {
-                urlaubGenommen++;
-            } else if (iso > today) {
-                urlaubGeplant++;
-            }
+        } else if (days[iso] !== 'URLAUB') {
+            continue;
+        }
+        if (days[iso] === 'URLAUB' && iso < today) {
+            urlaubGenommen++;
+        } else if (days[iso] === 'URLAUB' && iso > today) {
+            urlaubGeplant++;
         }
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
-    legendEl.innerHTML = WORK_TYPES.map(function (t) {
-        const label = t.key === 'URLAUB'
-            ? 'Urlaub <b>' + urlaubGenommen + '</b> genommen · <b>' + urlaubGeplant + '</b> geplant · <b>' + ungeplant + '</b> ungeplant'
-            : t.key === 'KRANKHEIT'
-                ? t.label + ' <b>' + (counts[t.key] || 0) + '</b> · Jahr <b>' + krankJahr + '</b>'
-                : t.label + ' <b>' + (counts[t.key] || 0) + '</b>';
+    const labelEl = document.getElementById('legendPeriodLabel');
+    if (labelEl) {
+        const ds = parseISO(periodStart).toLocaleDateString('de-DE');
+        const de = parseISO(periodEnd).toLocaleDateString('de-DE');
+        labelEl.textContent = 'Übersicht im Zeitraum ' + ds + ' - ' + de;
+    }
+    const byKey = {};
+    WORK_TYPES.forEach(function (t) {
+        byKey[t.key] = t;
+    });
+    function tile(t, inner, label) {
         const active = activeFilter === t.key ? ' active' : (activeFilter ? ' dimmed' : '');
         return '<button type="button" class="chip' + active + '"'
             + ' data-filter="' + t.key + '">'
-            + '<span class="sw" style="background:' + t.color + '"></span>'
+            + '<span class="tile-head">'
+            + '<span class="dot" style="background:' + t.color + '"></span>'
             + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
-            + label
+            + '<span class="tile-label">' + (label || t.label) + '</span>'
+            + '</span>'
+            + inner
             + '</button>';
-    }).join('');
+    }
+    function countTile(key, caption) {
+        const t = byKey[key];
+        const inner = '<span class="tile-value">' + (counts[key] || 0) + '</span>'
+            + (caption ? '<span class="tile-caption">' + caption + '</span>' : '');
+        return tile(t, inner);
+    }
+    const urlaubTile = tile(byKey.URLAUB,
+        '<span class="urlaub-breakdown">'
+            + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + '</span><span class="tile-caption">genommen</span></span>'
+            + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
+            + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
+            + '</span>',
+        'Urlaub im aktuellen Jahr ' + new Date().getFullYear());
+    legendEl.innerHTML =
+        '<div class="tile-row">'
+        + countTile('BUEROTAG') + countTile('HOMEOFFICE') + countTile('DIENSTREISE')
+        + '</div>'
+        + '<div class="tile-row">'
+        + urlaubTile + countTile('FEIERTAG') + countTile('KRANKHEIT', 'Jahr ' + krankJahr)
+        + '</div>'
+        + '<div class="tile-row tile-row-single">'
+        + countTile('FREIZEITTAG')
+        + '</div>';
 }
 
 // ---------- Dialog ----------
