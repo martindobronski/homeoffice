@@ -117,7 +117,9 @@ const printEnd = document.getElementById('printEnd');
 const printArtTypes = document.getElementById('printArtTypes');
 const printPeriod = document.getElementById('printPeriod');
 const printMonthSelect = document.getElementById('printMonthSelect');
+const printYearSelect = document.getElementById('printYearSelect');
 const printQuarterSelect = document.getElementById('printQuarterSelect');
+const printQuarterYearSelect = document.getElementById('printQuarterYearSelect');
 
 function pad(n) {
     return String(n).padStart(2, '0');
@@ -1801,10 +1803,26 @@ function fillPeriodSelects() {
     printMonthSelect.innerHTML = monate.map(function (name, i) {
         return '<option value="' + (i + 1) + '"' + (i === now.getMonth() ? ' selected' : '') + '>' + name + '</option>';
     }).join('');
+    const y = now.getFullYear();
+    fillPrintYearSelect(printYearSelect, y);
     var aktQ = Math.floor(now.getMonth() / 3) + 1;
     printQuarterSelect.innerHTML = [1, 2, 3, 4].map(function (q) {
         return '<option value="' + q + '"' + (q === aktQ ? ' selected' : '') + '>Q' + q + '</option>';
     }).join('');
+    fillPrintYearSelect(printQuarterYearSelect, y);
+}
+
+function fillPrintYearSelect(select, current) {
+    select.innerHTML = '';
+    for (let jy = current - 10; jy <= current + 10; jy++) {
+        const o = document.createElement('option');
+        o.value = String(jy);
+        o.textContent = String(jy);
+        if (jy === current) {
+            o.selected = true;
+        }
+        select.appendChild(o);
+    }
 }
 
 function setPrintDates(startISO, endISO) {
@@ -1823,11 +1841,13 @@ function applyPeriodSelection(type) {
         setPrintDates(firstOf(y, m), lastOf(y, m));
     } else if (type === 'monthSelect') {
         var sm = parseInt(printMonthSelect.value, 10) - 1;
-        setPrintDates(firstOf(y, sm), lastOf(y, sm));
+        var sy = parseInt(printYearSelect.value, 10);
+        setPrintDates(firstOf(sy, sm), lastOf(sy, sm));
     } else if (type === 'quarterSelect') {
         var q = parseInt(printQuarterSelect.value, 10);
+        var qy = parseInt(printQuarterYearSelect.value, 10);
         var qm = (q - 1) * 3;
-        setPrintDates(firstOf(y, qm), lastOf(y, qm + 2));
+        setPrintDates(firstOf(qy, qm), lastOf(qy, qm + 2));
     } else if (type === 'year') {
         setPrintDates(y + '-01-01', y + '-12-31');
     }
@@ -1840,12 +1860,16 @@ function selectPeriod(type) {
     });
     if (type === 'monthSelect') {
         printMonthSelect.value = String(now.getMonth() + 1);
+        printYearSelect.value = String(now.getFullYear());
     }
     if (type === 'quarterSelect') {
         printQuarterSelect.value = String(Math.floor(now.getMonth() / 3) + 1);
+        printQuarterYearSelect.value = String(now.getFullYear());
     }
     printMonthSelect.classList.toggle('hidden', type !== 'monthSelect');
+    printYearSelect.classList.toggle('hidden', type !== 'monthSelect');
     printQuarterSelect.classList.toggle('hidden', type !== 'quarterSelect');
+    printQuarterYearSelect.classList.toggle('hidden', type !== 'quarterSelect');
     applyPeriodSelection(type);
 }
 
@@ -1861,7 +1885,15 @@ printMonthSelect.addEventListener('change', function () {
     applyPeriodSelection('monthSelect');
 });
 
+printYearSelect.addEventListener('change', function () {
+    applyPeriodSelection('monthSelect');
+});
+
 printQuarterSelect.addEventListener('change', function () {
+    applyPeriodSelection('quarterSelect');
+});
+
+printQuarterYearSelect.addEventListener('change', function () {
     applyPeriodSelection('quarterSelect');
 });
 
@@ -2200,7 +2232,7 @@ function fillSelectionTypes() {
         if (t.key === 'BUEROTAG') {
             html += '<button type="button" class="sb-type" data-sbaction="gebucht">'
                 + '<span class="sw" style="background:#2F6B3F;border-radius:50%;"></span>'
-                + '<span class="chip-icon">☑</span> gebucht'
+                + '<span class="chip-icon">☑</span> Arbeitsplatz und/oder Parkplatz gebucht'
                 + '</button><span class="sb-break"></span>';
         }
     });
@@ -2233,6 +2265,7 @@ selectionTypesEl.addEventListener('click', function (e) {
         }
         saveDays();
         saveGebucht();
+        exitSelectionMode();
         render();
         showUndoable(allBooked
             ? n + ' Tag' + (n > 1 ? 'e' : '') + ' nicht mehr gebucht'

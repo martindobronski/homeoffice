@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.61">
+    <link rel="stylesheet" href="style.css?v=1.62">
 </head>
 <body>
 
@@ -63,7 +63,7 @@
             <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
-    <div id="version" class="version">Version 1.32 vom 27.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
+    <div id="version" class="version">Version 1.33 vom 27.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -86,7 +86,7 @@
                     <input type="date" id="dialogDate">
                     <label class="dialog-check" id="dialogGebuchtWrap">
                         <input type="checkbox" id="dialogGebucht">
-                        gebucht
+                        Arbeitsplatz und/oder Parkplatz gebucht
                     </label>
                 </div>
                 <div class="field-group">
@@ -179,10 +179,10 @@
                 <div class="field-group">
                     <label>Zeitraum:</label>
                     <div class="pa-period" id="printPeriod">
-                        <button type="button" class="pa-chip active" data-period="month">Aktueller Monat</button>
-                        <span class="pa-pair"><button type="button" class="pa-chip" data-period="monthSelect">Monat:</button><select id="printMonthSelect" class="pa-select hidden"></select></span>
-                        <span class="pa-pair"><button type="button" class="pa-chip" data-period="quarterSelect">Quartal:</button><select id="printQuarterSelect" class="pa-select hidden"></select></span>
                         <button type="button" class="pa-chip" data-period="year">Aktuelles Jahr</button>
+                        <button type="button" class="pa-chip active" data-period="month">Aktueller Monat</button>
+                        <span class="pa-pair"><button type="button" class="pa-chip" data-period="monthSelect">Monat:</button><select id="printMonthSelect" class="pa-select hidden"></select><select id="printYearSelect" class="pa-select hidden"></select></span>
+                        <span class="pa-pair"><button type="button" class="pa-chip" data-period="quarterSelect">Quartal:</button><select id="printQuarterSelect" class="pa-select hidden"></select><select id="printQuarterYearSelect" class="pa-select hidden"></select></span>
                     </div>
                 </div>
                 <div class="field-group field-dates">
@@ -225,7 +225,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.146"></script>
+    <script src="app.js?v=1.147"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.32 vom 27.08.2026)
+## Anwesenheits-Dashboard (Version 1.33 vom 27.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -111,8 +111,8 @@ Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und J
 
 - Am Desktop einen Tag mit gedrückter **Shift-**, **Strg-**- oder **Cmd-Taste** anklicken – das startet die Mehrfachauswahl und markiert den Tag mit blauem Ring. Solange die Auswahl aktiv ist, genügt ein einfacher Klick, um weitere Tage hinzuzufügen oder wieder abzuwählen (statt des Dialogs).
 - Auf Touch-Geräten: im Schnellauswahl-Menü (langer Druck auf einen Tag) **Mehrfachauswahl…** wählen – der angetippte Tag ist bereits markiert, jeder weitere Tipp wählt eine Zelle an oder ab.
-- Unten erscheint eine **Auswahl-Leiste** mit Zähler („x Tage ausgewählt"), den Buttons **gebucht** und **Bürotag** sowie daneben allen weiteren Arten (Homeoffice, Dienstreise, …) zum gemeinsamen Zuweisen sowie den Buttons **Löschen** und **Abbrechen**. Das Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓".
-- **gebucht** in der Auswahl-Leiste setzt die markierten Tage in einem einzigen Klick zugleich als **Bürotag** und als **gebucht** (grüner Haken) – es ist kein zweiter Klick auf „Bürotag" nötig, da nur Bürotage gebucht sein können. Sind die Tage bereits alle gebucht, wird der Haken durch erneuten Klick wieder entfernt (die Art bleibt dabei Bürotag). Das Zuweisen beendet die Auswahl mit dem Hinweis „x Tage als Bürotag gesetzt & gebucht ✓".
+- Unten erscheint eine **Auswahl-Leiste** mit Zähler („x Tage ausgewählt"), den Buttons **Arbeitsplatz und/oder Parkplatz gebucht** und **Bürotag** sowie daneben allen weiteren Arten (Homeoffice, Dienstreise, …) zum gemeinsamen Zuweisen sowie den Buttons **Löschen** und **Abbrechen**. Das Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓" und schließt die Leiste.
+- **Arbeitsplatz und/oder Parkplatz gebucht** in der Auswahl-Leiste setzt die markierten Tage in einem einzigen Klick zugleich als **Bürotag** und als **gebucht** (grüner Haken) und schließt die Leiste – es ist kein zweiter Klick auf „Bürotag" nötig, da nur Bürotage gebucht sein können. Sind die Tage bereits alle gebucht, wird der Haken durch erneuten Klick wieder entfernt (die Art bleibt dabei Bürotag). Das Zuweisen beendet die Auswahl mit dem Hinweis „x Tage als Bürotag gesetzt & gebucht ✓".
 - **Löschen** entfernt die Einträge aller markierten Tage; vorher erscheint ein Bestätigungsdialog. **Abbrechen** bzw. **ESC** verwirft die Auswahl – ist der Bestätigungsdialog offen, schließt das erste ESC nur diesen und das zweite ESC die Auswahl.
 - Die Auswahl darf Monate überspannen: Während der Mehrfachauswahl kann mit den Pfeilen bzw. Pfeiltasten geblättert werden, die Markierung bleibt über Monatswechsel hinweg erhalten.
 - Regeln: Wochenenden sind nicht wählbar (sie werden nicht dargestellt). Werden Nicht-Bürotage zugewiesen, verlieren diese Tage vorhandene gebucht-Haken; bei Bürotagen bleiben bestehende Haken unverändert. Weitere Arten (ab »Homeoffice«) werden in der Auswahl-Leiste unterhalb von Bürotag angezeigt. Die Tooltips ruhen während der Mehrfachauswahl. Ohne aktive Auswahl bleibt alles wie bisher – ein normaler Klick öffnet weiterhin den Dialog.
@@ -123,7 +123,7 @@ Im Dialog kannst du:
   - Ist das **Enddatum größer als das Startdatum**, wird beim Speichern der **gesamte Bereich** von Start- bis Enddatum mit der gewählten Art belegt – praktisch für Urlaub, Krankheit oder Dienstreisen über mehrere Tage.
   - Änderst du das Startdatum nachträglich, wird das Enddatum automatisch angepasst, falls es vor dem Startdatum läge.
 - **Art** aus der Liste wählen (siehe Farben unten).
-- **gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Das Feld **gebucht** wird nur angezeigt, wenn als Art **Bürotag** gewählt ist; bei anderen Arten verschwindet es und eine bereits gesetzte Markierung wird entfernt. Bei belegten Tagen erscheint ein grüner **Haken** unten rechts.
+- **Arbeitsplatz und/oder Parkplatz gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Das Feld **Arbeitsplatz und/oder Parkplatz gebucht** wird nur angezeigt, wenn als Art **Bürotag** gewählt ist; bei anderen Arten verschwindet es und eine bereits gesetzte Markierung wird entfernt. Bei belegten Tagen erscheint ein grüner **Haken** unten rechts.
 - über **OK** speichern,
 - über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen). Bei einem Bereich (Enddatum > Startdatum) wird der **gesamte Bereich** gelöscht; vor dem Löschen erscheint ein Bestätigungsdialog.
 - über **Abbrechen** den Dialog schließen, ohne etwas zu ändern.
@@ -236,7 +236,7 @@ Bei inhaltlichen Änderungen an Tagen (Setzen, Löschen, Zuweisen – auch über
 
 Der Button **„Übersicht drucken / PDF"** in der Fußzeile erzeugt ein aufbereitetes, seitenformatiertes Dokument (A4) für Abrechnungs- oder Nachweiszwecke – z. B. gegenüber dem Arbeitgeber:
 
-1. Klick auf den Button öffnet einen Dialog zur Wahl des **Berichtszeitraums**: Über die **Zeitraum-Auswahl** (Chip-Buttons) lassen sich schnell vordefinierte Zeiträume wählen – **Aktueller Monat** (Voreinstellung), **Monat** (mit Dropdown), **Quartal** (mit Dropdown) oder **Aktuelles Jahr**. Die Start- und Enddatum-Felder werden dabei automatisch befüllt, bleiben aber manuell nachjustierbar. Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt; **Abbrechen**, **ESC** oder ein Klick neben den Dialog schließen ihn ohne Aktion.
+1. Klick auf den Button öffnet einen Dialog zur Wahl des **Berichtszeitraums**: Über die **Zeitraum-Auswahl** (Chip-Buttons) lassen sich schnell vordefinierte Zeiträume wählen – **Aktuelles Jahr**, **Aktueller Monat** (Voreinstellung), **Monat** (mit Dropdown für Monat und Jahr, voreingestellt das aktuelle Jahr) oder **Quartal** (mit Dropdown für Quartal und Jahr, voreingestellt das aktuelle Jahr). So lassen sich z. B. schnell „September 2028" oder „Q4 2028" drucken. Die Start- und Enddatum-Felder werden dabei automatisch befüllt, bleiben aber manuell nachjustierbar. Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt; **Abbrechen**, **ESC** oder ein Klick neben den Dialog schließen ihn ohne Aktion.
 2. Nach **„Übersicht erstellen"** öffnet sich das Dokument in einem neuen Tab:
    - Am Desktop erscheint direkt der **Druckdialog** des Browsers – dort „Als PDF speichern" wählen ergibt eine PDF-Datei.
    - Auf Touch-Geräten zeigt das Dokument einen kurzen Hinweis; der Druck/PDF-Export erfolgt über das Browser-Menü (**Teilen → Drucken** bzw. **Drucken → Als PDF speichern**).
@@ -359,7 +359,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.32 vom 27.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.33 vom 27.08.2026`.
 
 ---
 

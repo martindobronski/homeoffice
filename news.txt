@@ -3,6 +3,22 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.33 vom 27.08.2026
+Änderungen gegenüber V1.32:
+
+- Druck/PDF – „Übersicht drucken": Die Schnellwahl der Zeiträume
+  überarbeitet. „Aktuelles Jahr" steht jetzt ganz vorne. Bei „Monat:"
+  und „Quartal:" lässt sich zusätzlich zum Monat/Quartal auch das Jahr
+  wählen (voreingestellt das aktuelle Jahr) – so sind z. B. schnell
+  „September 2028" oder „Q4 2028" druckbar.
+- Mehrfachauswahl: Der Button „gebucht" ist jetzt beschriftet mit
+  „Arbeitsplatz und/oder Parkplatz gebucht". Ein Klick darauf schließt
+  die Auswahlleiste (setzt zugleich Bürotag + gebucht).
+- Dialog „Eintrag hinzufügen/bearbeiten": Das Feld „gebucht" heißt jetzt
+  „Arbeitsplatz und/oder Parkplatz gebucht".
+
+--------------------------------------------------------------------------
+
 Version 1.32 vom 27.08.2026
 Änderungen gegenüber V1.31:
 
