@@ -103,8 +103,13 @@ const exportRange = document.getElementById('exportRange');
 const exportStart = document.getElementById('exportStart');
 const exportEnd = document.getElementById('exportEnd');
 const exportFormat = document.getElementById('exportFormat');
+const exportFileFormat = document.getElementById('exportFileFormat');
 const exportOk = document.getElementById('exportOk');
 const exportCancel = document.getElementById('exportCancel');
+const backupOverlay = document.getElementById('backupOverlay');
+const backupFormat = document.getElementById('backupFormat');
+const backupOk = document.getElementById('backupOk');
+const backupCancel = document.getElementById('backupCancel');
 
 const printOverlay = document.getElementById('printOverlay');
 const printStart = document.getElementById('printStart');
@@ -461,19 +466,42 @@ function parseBackupText(text) {
 }
 
 function exportBackup() {
-    const data = {
-        days: days,
-        period: { start: periodStart, end: periodEnd },
-        gebucht: gebucht
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = timestamp() + '-homeoffice_data.json';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(a.href);
+    backupFormat.value = 'json';
+    backupOverlay.classList.remove('hidden');
+}
+
+function exportBackupAs() {
+    const format = backupFormat.value;
+    backupOverlay.classList.add('hidden');
+    if (format === 'json') {
+        const data = {
+            days: days,
+            period: { start: periodStart, end: periodEnd },
+            gebucht: gebucht
+        };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = timestamp() + '-homeoffice_data.json';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    } else {
+        const rows = ['Datum,Art,Gebucht'];
+        const isos = Object.keys(days).sort();
+        for (const iso of isos) {
+            rows.push(iso + ',' + days[iso] + ',' + (gebucht[iso] ? 'true' : 'false'));
+        }
+        const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = timestamp() + '-homeoffice_data.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+    }
     storeSet('lastExport', new Date().toISOString());
     updateExportHint();
 }
@@ -1472,6 +1500,7 @@ function exportList() {
         return;
     }
     const mode = exportFormat.value;
+    const fileFormat = exportFileFormat.value;
     const isBooked = exportKind === 'GEBUCHT';
     const today = fmt(new Date());
     const entries = [];
@@ -1503,17 +1532,51 @@ function exportList() {
         return;
     }
     const baseLabel = exportLabel(exportKind, exportMode);
-    let header = baseLabel;
-    if (exportKind === 'URLAUB') {
-        header += ' (' + entries.length + (entries.length === 1 ? ' Tag' : ' Tage') + ')';
+    const fileBase = baseLabel.replace(/\s+/g, '') + '_' + range.start + '_bis_' + range.end;
+    let content;
+    let mimeType;
+    let ext;
+
+    if (fileFormat === 'json') {
+        const data = entries.map(function (e) {
+            const obj = { date: e.iso };
+            if (isBooked && e.label) {
+                obj.label = e.label;
+            }
+            return obj;
+        });
+        content = JSON.stringify(data, null, 2);
+        mimeType = 'application/json';
+        ext = 'json';
+    } else if (fileFormat === 'csv') {
+        const rows = isBooked ? ['Datum,Art'] : ['Datum'];
+        for (const e of entries) {
+            if (isBooked) {
+                rows.push(e.iso + ',' + e.label);
+            } else {
+                rows.push(e.iso);
+            }
+        }
+        content = rows.join('\n');
+        mimeType = 'text/csv;charset=utf-8';
+        ext = 'csv';
+    } else {
+        let header = baseLabel;
+        if (exportKind === 'URLAUB') {
+            header += ' (' + entries.length + (entries.length === 1 ? ' Tag' : ' Tage') + ')';
+        }
+        const lines = entries.map(function (e) {
+            return formatExportDate(e.iso, mode) + (isBooked && e.label ? ' · ' + e.label : '');
+        });
+        content = header + '\n' + lines.join('\n');
+        mimeType = 'text/plain;charset=utf-8';
+        ext = 'txt';
     }
-    const lines = entries.map(function (e) {
-        return formatExportDate(e.iso, mode) + (isBooked && e.label ? ' · ' + e.label : '');
-    });
-    const blob = new Blob([header + '\n' + lines.join('\n')], { type: 'text/plain;charset=utf-8' });
+
+    const blob = new Blob([content], { type: mimeType });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = baseLabel.replace(/\s+/g, '') + '_' + range.start + '_bis_' + range.end + '.txt';
+    a.download = fileBase + '.' + ext;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1527,6 +1590,16 @@ exportCancel.addEventListener('click', closeExportDialog);
 exportOverlay.addEventListener('click', function (e) {
     if (e.target === exportOverlay) {
         closeExportDialog();
+    }
+});
+
+backupOk.addEventListener('click', exportBackupAs);
+backupCancel.addEventListener('click', function () {
+    backupOverlay.classList.add('hidden');
+});
+backupOverlay.addEventListener('click', function (e) {
+    if (e.target === backupOverlay) {
+        backupOverlay.classList.add('hidden');
     }
 });
 

@@ -3,6 +3,20 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ==========================================================================
 
+Version 1.31 vom 26.08.2026
+Änderungen gegenüber V1.30:
+
+- Exportformate: Alle Exporte (Chip-Exporte aus der Legende sowie
+  Backup-Export) unterstützen jetzt wahlweise TXT, CSV und JSON.
+  Der Chip-Export-Dialog zeigt ein zusätzliches Dropdown „Dateiformat"
+  (TXT / CSV / JSON); der Backup-Button öffnet einen eigenen Dialog
+  mit Format-Wahl (JSON / CSV).
+- CSV-Export: Bürotage etc. als reine Datumsliste, Gebucht-Export
+  mit zusätzlicher Art-Spalte, Backup als Datum,Art,Gebucht-Tabelle.
+- JSON-Export: Strukturiertes Array mit Datums-Objekten.
+
+--------------------------------------------------------------------------
+
 Version 1.30 vom 26.08.2026
 Änderungen gegenüber V1.29:
 

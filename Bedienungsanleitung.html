@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.30-vom-26.08.2026">Anwesenheits-Dashboard
-(Version 1.30 vom 26.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.31-vom-26.08.2026">Anwesenheits-Dashboard
+(Version 1.31 vom 26.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -632,10 +632,11 @@ abgeblendet.</li>
 <li>Per Tooltip (Maus darüberhalten) wird die Funktion des jeweiligen
 Eintrags angezeigt.</li>
 </ul>
-<p><strong>Tage als Textdatei exportieren:</strong> Ein Rechtsklick auf
+<p><strong>Tage exportieren:</strong> Ein Rechtsklick auf
 einen Eintrag in der Legende öffnet ein Kontextmenü (auf Touch-Geräten:
 langer Druck auf den Eintrag). Damit kannst du die Tagesliste dieser Art
-(z. B. alle Bürotage) als Textdatei exportieren. Die Menüeinträge
+(z. B. alle Bürotage) als <strong>TXT-, CSV- oder JSON-Datei</strong>
+exportieren. Die Menüeinträge
 beginnen mit <strong>Export →</strong> und enden mit einem
 Ellipse-Zeichen <code>…</code> (es folgt ein Dialog). Beim
 Bürotag-Eintrag gibt es zusätzlich <strong>Export →
@@ -656,10 +657,15 @@ aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Enddatum). Bei
 <strong>Urlaub, Feiertag, Krankheit und Freizeittag</strong> ist
 „Aktuelles Jahr“ voreingestellt, sonst „Aktueller Monat“.</li>
 <li><strong>Datumsformat:</strong> <code>TT.MM.JJJJ</code> (lesbar) oder
-<code>JJJJ-MM-TT</code> (ISO, sortierbar).</li>
+<code>JJJJ-MM-TT</code> (ISO, sortierbar). Gilt für das TXT-Format; in
+CSV und JSON wird immer das ISO-Format verwendet.</li>
+<li><strong>Dateiformat:</strong> <code>TXT</code> (Kopfzeile + eine
+Datumszeile je Eintrag), <code>CSV</code> (spaltentrennwerte
+Textdatei) oder <code>JSON</code> (strukturierte Daten zur
+Weiterverarbeitung).</li>
 </ul>
-<p>Die Textdatei enthält eine Kopfzeile mit der Kategorie und danach ein
-Datum pro Zeile, z. B.:</p>
+<p>Die <strong>TXT-Datei</strong> enthält eine Kopfzeile mit der
+Kategorie und danach ein Datum pro Zeile, z. B.:</p>
 <pre><code>Bürotage
 01.09.2026
 04.09.2026
@@ -669,6 +675,18 @@ Gesamtzahl der Tage, z. B.
 <code>Alle eingetragenen Urlaubstage (20 Tage)</code>. Bei der
 „gebucht“-Liste steht zusätzlich die Art hinter dem Datum, z. B.
 <code>01.10.2026 · Urlaub</code>.</p>
+<p>Die <strong>CSV-Datei</strong> enthält eine Header-Zeile und danach
+einen Eintrag pro Zeile. Bei den Tageslisten (<code>Bürotage</code>,
+<code>Homeoffice-Tage</code> u. ä.) nur die Spalte <code>Datum</code>,
+bei der „gebucht“-Liste die Spalten <code>Datum,Art</code>:</p>
+<pre><code>Datum,Art
+2026-09-01,Bürotag
+2026-09-04,Mittag</code></pre>
+<p>Die <strong>JSON-Datei</strong> ist ein strukturiertes Array mit
+Datums-Objekten, z. B.
+<code>[{&quot;date&quot;:&quot;2026-09-01&quot;}]</code> bzw. bei
+„gebucht“ <code>[{&quot;date&quot;:&quot;2026-09-01&quot;,&quot;label&quot;:&quot;Bürotag&quot;}]</code>.
+Das Datum steht dabei immer im ISO-Format.</p>
 <p>Für Urlaub wird zusätzlich angezeigt:</p>
 <pre><code>Urlaub (genommen x / geplant y / ungeplant z)</code></pre>
 <ul>
@@ -903,9 +921,17 @@ Farbanimation).</p>
 Backup gibt es nicht – Export und Import erfolgen ausschließlich über
 die Buttons.</p>
 <h3 id="backup-exportieren">8.1 Backup exportieren</h3>
-<p>Klick auf <strong>Backup exportieren</strong> lädt eine JSON-Datei in
-den Download-Ordner des Browsers. Unterhalb der Buttons wird das Datum
-und die Uhrzeit des letzten Exports angezeigt (z. B.
+<p>Klick auf <strong>Backup exportieren</strong> öffnet einen Dialog zur
+Wahl des <strong>Dateiformats</strong>:</p>
+<ul>
+<li><strong>JSON:</strong> strukturierte Sicherung aller Daten (voller
+Wiederherstellungsumfang).</li>
+<li><strong>CSV:</strong> spaltentrennwerte Tabelle (z. B. zur
+Weiterverarbeitung in Tabellenkalkulationen).</li>
+</ul>
+<p>Nach der Auswahl lädt der Download in den Download-Ordner des
+Browsers. Unterhalb der Buttons wird das Datum und die Uhrzeit des
+letzten Exports angezeigt (z. B.
 <code>Zuletzt exportiert: 20.08.2026, 14:32</code>). Die Farbe des
 Hinweises ändert sich automatisch:</p>
 <ul>
@@ -914,9 +940,11 @@ Hinweises ändert sich automatisch:</p>
 <li><strong>Rot:</strong> Export älter als 30 Tage (Erinnerung an
 regelmäßige Datensicherung)</li>
 </ul>
-<pre><code>jjjj-mm-tt-hh-mm-ss-homeoffice_data.json</code></pre>
-<p>Die Datei enthält alle Tages-Einträge, die „gebucht”-Markierungen
-sowie den aktuell eingestellten Zeitraum. Beispiel:</p>
+<pre><code>jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
+jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv</code></pre>
+<p><strong>JSON:</strong> Die Datei enthält alle Tages-Einträge, die
+„gebucht”-Markierungen sowie den aktuell eingestellten Zeitraum.
+Beispiel:</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;days&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -931,6 +959,12 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
 <span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>CSV:</strong> Die Datei enthält je erfasstem Tag eine Zeile
+im Format <code>Datum,Art,Gebucht</code> (Gebucht-Wert
+<code>true</code>/<code>false</code>). Beispiel:</p>
+<pre><code>Datum,Art,Gebucht
+2026-09-01,BUEROTAG,true
+2026-09-02,HOMEOFFICE,false</code></pre>
 <h3 id="backup-importieren">8.2 Backup importieren</h3>
 <p>Klick auf <strong>Backup importieren</strong> öffnet den Dateidialog.
 Es werden ausschließlich JSON-Dateien im Format des Exports
@@ -949,7 +983,7 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B.
-<code>Version 1.30 vom 26.08.2026</code>.</p>
+<code>Version 1.31 vom 26.08.2026</code>.</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
 <p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein

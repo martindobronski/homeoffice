@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.30 vom 26.08.2026)
+## Anwesenheits-Dashboard (Version 1.31 vom 26.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -158,7 +158,7 @@ Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 - Ein erneuter Klick auf die aktive Art hebt den Filter wieder auf (alle Tage werden normal angezeigt).
 - Per Tooltip (Maus darüberhalten) wird die Funktion des jeweiligen Eintrags angezeigt.
 
-**Tage als Textdatei exportieren:** Ein Rechtsklick auf einen Eintrag in der Legende öffnet ein Kontextmenü (auf Touch-Geräten: langer Druck auf den Eintrag). Damit kannst du die Tagesliste dieser Art (z. B. alle Bürotage) als Textdatei exportieren. Die Menüeinträge beginnen mit **Export →** und enden mit einem Ellipse-Zeichen `…` (es folgt ein Dialog). Beim Bürotag-Eintrag gibt es zusätzlich **Export → gebucht-Tage…**. Beim Urlaub-Eintrag stehen drei Varianten zur Wahl:
+**Tage exportieren:** Ein Rechtsklick auf einen Eintrag in der Legende öffnet ein Kontextmenü (auf Touch-Geräten: langer Druck auf den Eintrag). Damit kannst du die Tagesliste dieser Art (z. B. alle Bürotage) als **TXT-, CSV- oder JSON-Datei** exportieren. Die Menüeinträge beginnen mit **Export →** und enden mit einem Ellipse-Zeichen `…` (es folgt ein Dialog). Beim Bürotag-Eintrag gibt es zusätzlich **Export → gebucht-Tage…**. Beim Urlaub-Eintrag stehen drei Varianten zur Wahl:
 
 - **Export → Genommene Urlaubstage…:** alle Urlaubstage im gewählten Zeitraum, die vor heute liegen.
 - **Export → Geplante Urlaubstage…:** alle Urlaubstage im gewählten Zeitraum, die nach heute liegen.
@@ -167,9 +167,10 @@ Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 Im Export-Dialog wählst du:
 
 - **Zeitraum:** aktueller Monat, aktuelles Quartal, aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Enddatum). Bei **Urlaub, Feiertag, Krankheit und Freizeittag** ist „Aktuelles Jahr“ voreingestellt, sonst „Aktueller Monat“.
-- **Datumsformat:** `TT.MM.JJJJ` (lesbar) oder `JJJJ-MM-TT` (ISO, sortierbar).
+- **Datumsformat:** `TT.MM.JJJJ` (lesbar) oder `JJJJ-MM-TT` (ISO, sortierbar). Gilt für das TXT-Format; in CSV und JSON wird immer das ISO-Format verwendet.
+- **Dateiformat:** `TXT` (Kopfzeile + eine Datumszeile je Eintrag), `CSV` (spaltentrennwerte Textdatei) oder `JSON` (strukturierte Daten für die Weiterverarbeitung).
 
-Die Textdatei enthält eine Kopfzeile mit der Kategorie und danach ein Datum pro Zeile, z. B.:
+Die **TXT-Datei** enthält eine Kopfzeile mit der Kategorie und danach ein Datum pro Zeile, z. B.:
 
 ```
 Bürotage
@@ -179,6 +180,16 @@ Bürotage
 ```
 
 Bei den Urlaub-Listen steht in der Kopfzeile zusätzlich die Gesamtzahl der Tage, z. B. `Alle eingetragenen Urlaubstage (20 Tage)`. Bei der „gebucht“-Liste steht zusätzlich die Art hinter dem Datum, z. B. `01.10.2026 · Urlaub`.
+
+Die **CSV-Datei** enthält eine Header-Zeile und danach einen Eintrag pro Zeile. Bei den Tageslisten (`Bürotage`, `Homeoffice-Tage` u. ä.) nur die Spalte `Datum`, bei der „gebucht“-Liste die Spalten `Datum,Art`:
+
+```csv
+Datum,Art
+2026-09-01,Bürotag
+2026-09-04,Mittag
+```
+
+Die **JSON-Datei** ist ein strukturiertes Array mit Datums-Objekten, z. B. `[{"date":"2026-09-01"}]` bzw. bei „gebucht“ `[{"date":"2026-09-01","label":"Bürotag"}]`. Das Datum steht dabei immer im ISO-Format.
 
 Für Urlaub wird zusätzlich angezeigt:
 
@@ -293,7 +304,12 @@ In der Fußzeile links befinden sich zwei Buttons. Ein automatisches Backup gibt
 
 ### 8.1 Backup exportieren
 
-Klick auf **Backup exportieren** lädt eine JSON-Datei in den Download-Ordner des Browsers. Unterhalb der Buttons wird das Datum und die Uhrzeit des letzten Exports angezeigt (z. B. `Zuletzt exportiert: 20.08.2026, 14:32`). Die Farbe des Hinweises ändert sich automatisch:
+Klick auf **Backup exportieren** öffnet einen Dialog zur Wahl des **Dateiformats**:
+
+- **JSON:** strukturierte Sicherung aller Daten (voller Wiederherstellungsumfang).
+- **CSV:** spaltentrennwerte Tabelle (z. B. für eine Weiterverarbeitung in Tabellenkalkulationen).
+
+Nach der Auswahl lädt der Download in den Download-Ordner des Browsers. Unterhalb der Buttons wird das Datum und die Uhrzeit des letzten Exports angezeigt (z. B. `Zuletzt exportiert: 20.08.2026, 14:32`). Die Farbe des Hinweises ändert sich automatisch:
 
 - **Grau:** Export weniger als 7 Tage alt
 - **Orange:** Export 7–30 Tage alt
@@ -301,9 +317,10 @@ Klick auf **Backup exportieren** lädt eine JSON-Datei in den Download-Ordner de
 
 ```
 jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
+jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv
 ```
 
-Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den aktuell eingestellten Zeitraum. Beispiel:
+**JSON:** Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den aktuell eingestellten Zeitraum. Beispiel:
 
 ```json
 {
@@ -321,6 +338,14 @@ Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den 
 }
 ```
 
+**CSV:** Die Datei enthält je erfasstem Tag eine Zeile im Format `Datum,Art,Gebucht` (Gebucht-Wert `true`/`false`). Beispiel:
+
+```csv
+Datum,Art,Gebucht
+2026-09-01,BUEROTAG,true
+2026-09-02,HOMEOFFICE,false
+```
+
 ### 8.2 Backup importieren
 
 Klick auf **Backup importieren** öffnet den Dateidialog. Es werden ausschließlich JSON-Dateien im Format des Exports unterstützt. Der Import übernimmt den Startmonat des Zeitraums; das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
@@ -333,7 +358,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.30 vom 26.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.31 vom 26.08.2026`.
 
 ---
 

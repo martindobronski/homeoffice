@@ -63,7 +63,7 @@
             <div class="export-hint" id="exportHint"></div>
         </div>
     </div>
-    <div id="version" class="version">Version 1.30 vom 26.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
+    <div id="version" class="version">Version 1.31 vom 26.08.2026 · <a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a><span class="pdf-link"> (<a href="Bedienungsanleitung.pdf" target="_blank">PDF</a>)</span></div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
     <div id="chipMenu" class="quick-menu hidden"></div>
@@ -156,6 +156,14 @@
                         <option value="iso">JJJJ-MM-TT</option>
                     </select>
                 </div>
+                <div class="field-group">
+                    <label for="exportFileFormat">Dateiformat:</label>
+                    <select id="exportFileFormat">
+                        <option value="txt">TXT</option>
+                        <option value="csv">CSV</option>
+                        <option value="json">JSON</option>
+                    </select>
+                </div>
             </div>
             <div class="dialog-buttons">
                 <button id="exportOk" class="btn btn-primary">Exportieren</button>
@@ -195,10 +203,29 @@
         </div>
     </div>
 
+    <div id="backupOverlay" class="overlay hidden">
+        <div class="dialog">
+            <h3>Backup exportieren</h3>
+            <div class="export-fields">
+                <div class="field-group">
+                    <label for="backupFormat">Dateiformat:</label>
+                    <select id="backupFormat">
+                        <option value="json">JSON</option>
+                        <option value="csv">CSV</option>
+                    </select>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <button id="backupOk" class="btn btn-primary">Exportieren</button>
+                <button id="backupCancel" class="btn btn-ghost">Abbrechen</button>
+            </div>
+        </div>
+    </div>
+
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.143"></script>
+    <script src="app.js?v=1.144"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
