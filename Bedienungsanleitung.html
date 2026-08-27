@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.31-vom-26.08.2026">Anwesenheits-Dashboard
-(Version 1.31 vom 26.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.32-vom-27.08.2026">Anwesenheits-Dashboard
+(Version 1.32 vom 27.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -491,9 +491,18 @@ Tage hinzuzufügen oder wieder abzuwählen (statt des Dialogs).</li>
 Tag) <strong>Mehrfachauswahl…</strong> wählen – der angetippte Tag ist
 bereits markiert, jeder weitere Tipp wählt eine Zelle an oder ab.</li>
 <li>Unten erscheint eine <strong>Auswahl-Leiste</strong> mit Zähler („x
-Tage ausgewählt”), allen sieben Arten zum gemeinsamen Zuweisen sowie den
-Buttons <strong>Löschen</strong> und <strong>Abbrechen</strong>. Das
-Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt
+Tage ausgewählt”), den Buttons <strong>gebucht</strong> und
+<strong>Bürotag</strong> sowie daneben allen weiteren Arten (Homeoffice,
+Dienstreise, …) zum gemeinsamen Zuweisen sowie den Buttons
+<strong>Löschen</strong> und <strong>Abbrechen</strong>. Das Zuweisen
+einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓“.</li>
+<li><strong>gebucht</strong> in der Auswahl-Leiste setzt die markierten
+Tage in einem einzigen Klick zugleich als <strong>Bürotag</strong> und
+als <strong>gebucht</strong> (grüner Haken) – es ist kein zweiter Klick
+auf „Bürotag” nötig, da nur Bürotage gebucht sein können. Sind die Tage
+bereits alle gebucht, wird der Haken durch erneuten Klick wieder
+entfernt (die Art bleibt dabei Bürotag). Das Zuweisen beendet die
+Auswahl mit dem Hinweis „x Tage als Bürotag gesetzt &amp; gebucht
 ✓“.</li>
 <li><strong>Löschen</strong> entfernt die Einträge aller markierten
 Tage; vorher erscheint ein Bestätigungsdialog.
@@ -506,9 +515,10 @@ bleibt über Monatswechsel hinweg erhalten.</li>
 <li>Regeln: Wochenenden sind nicht wählbar (sie werden nicht
 dargestellt). Werden Nicht-Bürotage zugewiesen, verlieren diese Tage
 vorhandene gebucht-Haken; bei Bürotagen bleiben bestehende Haken
-unverändert. Die Tooltips ruhen während der Mehrfachauswahl. Ohne aktive
-Auswahl bleibt alles wie bisher – ein normaler Klick öffnet weiterhin
-den Dialog.</li>
+unverändert. Weitere Arten (ab »Homeoffice«) werden in der
+Auswahl-Leiste unterhalb von Bürotag angezeigt. Die Tooltips ruhen
+während der Mehrfachauswahl. Ohne aktive Auswahl bleibt alles wie bisher
+– ein normaler Klick öffnet weiterhin den Dialog.</li>
 </ul>
 <p>Im Dialog kannst du:</p>
 <ul>
@@ -632,13 +642,12 @@ abgeblendet.</li>
 <li>Per Tooltip (Maus darüberhalten) wird die Funktion des jeweiligen
 Eintrags angezeigt.</li>
 </ul>
-<p><strong>Tage exportieren:</strong> Ein Rechtsklick auf
-einen Eintrag in der Legende öffnet ein Kontextmenü (auf Touch-Geräten:
-langer Druck auf den Eintrag). Damit kannst du die Tagesliste dieser Art
-(z. B. alle Bürotage) als <strong>TXT-, CSV- oder JSON-Datei</strong>
-exportieren. Die Menüeinträge
-beginnen mit <strong>Export →</strong> und enden mit einem
-Ellipse-Zeichen <code>…</code> (es folgt ein Dialog). Beim
+<p><strong>Tage exportieren:</strong> Ein Rechtsklick auf einen Eintrag
+in der Legende öffnet ein Kontextmenü (auf Touch-Geräten: langer Druck
+auf den Eintrag). Damit kannst du die Tagesliste dieser Art (z. B. alle
+Bürotage) als <strong>TXT-, CSV- oder JSON-Datei</strong> exportieren.
+Die Menüeinträge beginnen mit <strong>Export →</strong> und enden mit
+einem Ellipse-Zeichen <code>…</code> (es folgt ein Dialog). Beim
 Bürotag-Eintrag gibt es zusätzlich <strong>Export →
 gebucht-Tage…</strong>. Beim Urlaub-Eintrag stehen drei Varianten zur
 Wahl:</p>
@@ -660,8 +669,8 @@ aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Enddatum). Bei
 <code>JJJJ-MM-TT</code> (ISO, sortierbar). Gilt für das TXT-Format; in
 CSV und JSON wird immer das ISO-Format verwendet.</li>
 <li><strong>Dateiformat:</strong> <code>TXT</code> (Kopfzeile + eine
-Datumszeile je Eintrag), <code>CSV</code> (spaltentrennwerte
-Textdatei) oder <code>JSON</code> (strukturierte Daten zur
+Datumszeile je Eintrag), <code>CSV</code> (spaltentrennwerte Textdatei)
+oder <code>JSON</code> (strukturierte Daten für die
 Weiterverarbeitung).</li>
 </ul>
 <p>Die <strong>TXT-Datei</strong> enthält eine Kopfzeile mit der
@@ -679,14 +688,13 @@ Gesamtzahl der Tage, z. B.
 einen Eintrag pro Zeile. Bei den Tageslisten (<code>Bürotage</code>,
 <code>Homeoffice-Tage</code> u. ä.) nur die Spalte <code>Datum</code>,
 bei der „gebucht“-Liste die Spalten <code>Datum,Art</code>:</p>
-<pre><code>Datum,Art
+<pre class="csv"><code>Datum,Art
 2026-09-01,Bürotag
 2026-09-04,Mittag</code></pre>
 <p>Die <strong>JSON-Datei</strong> ist ein strukturiertes Array mit
-Datums-Objekten, z. B.
-<code>[{&quot;date&quot;:&quot;2026-09-01&quot;}]</code> bzw. bei
-„gebucht“ <code>[{&quot;date&quot;:&quot;2026-09-01&quot;,&quot;label&quot;:&quot;Bürotag&quot;}]</code>.
-Das Datum steht dabei immer im ISO-Format.</p>
+Datums-Objekten, z. B. <code>[{"date":"2026-09-01"}]</code> bzw. bei
+„gebucht“ <code>[{"date":"2026-09-01","label":"Bürotag"}]</code>. Das
+Datum steht dabei immer im ISO-Format.</p>
 <p>Für Urlaub wird zusätzlich angezeigt:</p>
 <pre><code>Urlaub (genommen x / geplant y / ungeplant z)</code></pre>
 <ul>
@@ -783,10 +791,10 @@ vordefinierte Zeiträume wählen – <strong>Aktueller Monat</strong>
 (Voreinstellung), <strong>Monat</strong> (mit Dropdown),
 <strong>Quartal</strong> (mit Dropdown) oder <strong>Aktuelles
 Jahr</strong>. Die Start- und Enddatum-Felder werden dabei automatisch
-befüllt, bleiben aber manuell nachjustierbar. Ungültige oder
-umgekehrte Datumsangaben werden mit Hinweis abgelehnt;
-<strong>Abbrechen</strong>, <strong>ESC</strong> oder ein Klick neben
-den Dialog schließen ihn ohne Aktion.</li>
+befüllt, bleiben aber manuell nachjustierbar. Ungültige oder umgekehrte
+Datumsangaben werden mit Hinweis abgelehnt; <strong>Abbrechen</strong>,
+<strong>ESC</strong> oder ein Klick neben den Dialog schließen ihn ohne
+Aktion.</li>
 <li>Nach <strong>„Übersicht erstellen”</strong> öffnet sich das Dokument
 in einem neuen Tab:
 <ul>
@@ -926,7 +934,7 @@ Wahl des <strong>Dateiformats</strong>:</p>
 <ul>
 <li><strong>JSON:</strong> strukturierte Sicherung aller Daten (voller
 Wiederherstellungsumfang).</li>
-<li><strong>CSV:</strong> spaltentrennwerte Tabelle (z. B. zur
+<li><strong>CSV:</strong> spaltentrennwerte Tabelle (z. B. für eine
 Weiterverarbeitung in Tabellenkalkulationen).</li>
 </ul>
 <p>Nach der Auswahl lädt der Download in den Download-Ordner des
@@ -945,31 +953,31 @@ jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv</code></pre>
 <p><strong>JSON:</strong> Die Datei enthält alle Tages-Einträge, die
 „gebucht”-Markierungen sowie den aktuell eingestellten Zeitraum.
 Beispiel:</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;days&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="st">&quot;BUEROTAG&quot;</span><span class="fu">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-02&quot;</span><span class="fu">:</span> <span class="st">&quot;HOMEOFFICE&quot;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;period&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-09-01&quot;</span><span class="fu">,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="st">&quot;2027-08-31&quot;</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;gebucht&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;days&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="st">&quot;BUEROTAG&quot;</span><span class="fu">,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-02&quot;</span><span class="fu">:</span> <span class="st">&quot;HOMEOFFICE&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;period&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;start&quot;</span><span class="fu">:</span> <span class="st">&quot;2026-09-01&quot;</span><span class="fu">,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;end&quot;</span><span class="fu">:</span> <span class="st">&quot;2027-08-31&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;gebucht&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>CSV:</strong> Die Datei enthält je erfasstem Tag eine Zeile
 im Format <code>Datum,Art,Gebucht</code> (Gebucht-Wert
 <code>true</code>/<code>false</code>). Beispiel:</p>
-<pre><code>Datum,Art,Gebucht
+<pre class="csv"><code>Datum,Art,Gebucht
 2026-09-01,BUEROTAG,true
 2026-09-02,HOMEOFFICE,false</code></pre>
 <h3 id="backup-importieren">8.2 Backup importieren</h3>
 <p>Klick auf <strong>Backup importieren</strong> öffnet den Dateidialog.
-Es werden ausschließlich JSON-Dateien im Format des Exports
-unterstützt. Der Import übernimmt den Startmonat des Zeitraums; das
-Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.</p>
+Es werden ausschließlich JSON-Dateien im Format des Exports unterstützt.
+Der Import übernimmt den Startmonat des Zeitraums; das Ende wird wieder
+auf den vollen 12-Monats-Zeitraum gesetzt.</p>
 <p>Der Import <strong>überschreibt</strong> alle aktuellen Einträge.
 Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge
 angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
@@ -983,7 +991,7 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B.
-<code>Version 1.31 vom 26.08.2026</code>.</p>
+<code>Version 1.32 vom 27.08.2026</code>.</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
 <p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein
@@ -1012,8 +1020,8 @@ wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.</p>
 Arbeitgeber?</strong> Über <strong>„Übersicht drucken / PDF”</strong> in
 der Fußzeile (Kapitel 6.4): Zeitraum per Klick auf eine der Optionen
 wählen (Voreinstellung: aktueller Monat) oder Start-/Enddatum frei
-eintragen, dann im Druckdialog „Als PDF speichern” wählen.
-Das Dokument enthält Zusammenfassung und taggenaue Monatstabellen.</p>
+eintragen, dann im Druckdialog „Als PDF speichern” wählen. Das Dokument
+enthält Zusammenfassung und taggenaue Monatstabellen.</p>
 <p><strong>Funktioniert die App auch ohne Internet?</strong> Ja, wenn
 sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft
 sie vollständig offline; neue Versionen werden automatisch geladen,

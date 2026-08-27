@@ -2191,21 +2191,55 @@ function updateSelectionBar() {
 }
 
 function fillSelectionTypes() {
-    selectionTypesEl.innerHTML = WORK_TYPES.map(function (t) {
-        return '<button type="button" class="sb-type" data-sbtype="' + t.key + '">'
+    let html = '';
+    WORK_TYPES.forEach(function (t) {
+        html += '<button type="button" class="sb-type" data-sbtype="' + t.key + '">'
             + '<span class="sw" style="background:' + t.color + '"></span>'
             + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>' + t.label
             + '</button>';
-    }).join('');
+        if (t.key === 'BUEROTAG') {
+            html += '<button type="button" class="sb-type" data-sbaction="gebucht">'
+                + '<span class="sw" style="background:#2F6B3F;border-radius:50%;"></span>'
+                + '<span class="chip-icon">☑</span> gebucht'
+                + '</button><span class="sb-break"></span>';
+        }
+    });
+    selectionTypesEl.innerHTML = html;
 }
 
 selectionTypesEl.addEventListener('click', function (e) {
     const item = e.target.closest('[data-sbtype]');
-    if (!item || selection.size === 0) {
+    const gebuchtBtn = e.target.closest('[data-sbaction="gebucht"]');
+    if ((!item && !gebuchtBtn) || selection.size === 0) {
+        return;
+    }
+    beginChange();
+    if (gebuchtBtn) {
+        let allBooked = true;
+        for (const iso of selection) {
+            if (!gebucht[iso]) {
+                allBooked = false;
+                break;
+            }
+        }
+        const n = selection.size;
+        for (const iso of selection) {
+            days[iso] = 'BUEROTAG';
+            if (allBooked) {
+                delete gebucht[iso];
+            } else {
+                gebucht[iso] = true;
+            }
+        }
+        saveDays();
+        saveGebucht();
+        render();
+        showUndoable(allBooked
+            ? n + ' Tag' + (n > 1 ? 'e' : '') + ' nicht mehr gebucht'
+            : n + ' Tag' + (n > 1 ? 'e' : '') + ' als Bürotag gesetzt & gebucht ✓');
         return;
     }
     const type = item.getAttribute('data-sbtype');
-    beginChange();
     for (const iso of selection) {
         days[iso] = type;
         if (type !== 'BUEROTAG') {

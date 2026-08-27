@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.31 vom 26.08.2026)
+## Anwesenheits-Dashboard (Version 1.32 vom 27.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -111,10 +111,11 @@ Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und J
 
 - Am Desktop einen Tag mit gedrückter **Shift-**, **Strg-**- oder **Cmd-Taste** anklicken – das startet die Mehrfachauswahl und markiert den Tag mit blauem Ring. Solange die Auswahl aktiv ist, genügt ein einfacher Klick, um weitere Tage hinzuzufügen oder wieder abzuwählen (statt des Dialogs).
 - Auf Touch-Geräten: im Schnellauswahl-Menü (langer Druck auf einen Tag) **Mehrfachauswahl…** wählen – der angetippte Tag ist bereits markiert, jeder weitere Tipp wählt eine Zelle an oder ab.
-- Unten erscheint eine **Auswahl-Leiste** mit Zähler („x Tage ausgewählt"), allen sieben Arten zum gemeinsamen Zuweisen sowie den Buttons **Löschen** und **Abbrechen**. Das Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓".
+- Unten erscheint eine **Auswahl-Leiste** mit Zähler („x Tage ausgewählt"), den Buttons **gebucht** und **Bürotag** sowie daneben allen weiteren Arten (Homeoffice, Dienstreise, …) zum gemeinsamen Zuweisen sowie den Buttons **Löschen** und **Abbrechen**. Das Zuweisen einer Art beendet die Auswahl mit dem Hinweis „x Tage gesetzt ✓".
+- **gebucht** in der Auswahl-Leiste setzt die markierten Tage in einem einzigen Klick zugleich als **Bürotag** und als **gebucht** (grüner Haken) – es ist kein zweiter Klick auf „Bürotag" nötig, da nur Bürotage gebucht sein können. Sind die Tage bereits alle gebucht, wird der Haken durch erneuten Klick wieder entfernt (die Art bleibt dabei Bürotag). Das Zuweisen beendet die Auswahl mit dem Hinweis „x Tage als Bürotag gesetzt & gebucht ✓".
 - **Löschen** entfernt die Einträge aller markierten Tage; vorher erscheint ein Bestätigungsdialog. **Abbrechen** bzw. **ESC** verwirft die Auswahl – ist der Bestätigungsdialog offen, schließt das erste ESC nur diesen und das zweite ESC die Auswahl.
 - Die Auswahl darf Monate überspannen: Während der Mehrfachauswahl kann mit den Pfeilen bzw. Pfeiltasten geblättert werden, die Markierung bleibt über Monatswechsel hinweg erhalten.
-- Regeln: Wochenenden sind nicht wählbar (sie werden nicht dargestellt). Werden Nicht-Bürotage zugewiesen, verlieren diese Tage vorhandene gebucht-Haken; bei Bürotagen bleiben bestehende Haken unverändert. Die Tooltips ruhen während der Mehrfachauswahl. Ohne aktive Auswahl bleibt alles wie bisher – ein normaler Klick öffnet weiterhin den Dialog.
+- Regeln: Wochenenden sind nicht wählbar (sie werden nicht dargestellt). Werden Nicht-Bürotage zugewiesen, verlieren diese Tage vorhandene gebucht-Haken; bei Bürotagen bleiben bestehende Haken unverändert. Weitere Arten (ab »Homeoffice«) werden in der Auswahl-Leiste unterhalb von Bürotag angezeigt. Die Tooltips ruhen während der Mehrfachauswahl. Ohne aktive Auswahl bleibt alles wie bisher – ein normaler Klick öffnet weiterhin den Dialog.
 
 Im Dialog kannst du:
 
@@ -358,7 +359,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.31 vom 26.08.2026`.
+Unten in der Fußzeile wird die aktuelle Version angezeigt, z. B. `Version 1.32 vom 27.08.2026`.
 
 ---
 
