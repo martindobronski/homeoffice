@@ -84,16 +84,10 @@ h4 {
 
 .topbar {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: nowrap;
-    gap: 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
     margin-bottom: 28px;
-}
-
-.topbar > div:first-child {
-    flex: 0 1 auto;
-    min-width: 0;
 }
 
 .eyebrow {
@@ -114,10 +108,9 @@ h1 {
 .zeitraum-card {
     display: flex;
     align-items: flex-start;
+    justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
-    flex: 1 1 auto;
-    min-width: 0;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
@@ -1492,11 +1485,7 @@ select:focus-visible {
     .hero .cell-icon {
         font-size: 18px;
     }
-    .topbar {
-        flex-wrap: wrap;
-    }
     .zeitraum-card {
-        flex-basis: 100%;
         justify-content: center;
         gap: 14px;
         border-radius: var(--radius-md);
