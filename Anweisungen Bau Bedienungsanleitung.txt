@@ -3,19 +3,16 @@ ANWEISUNGEN ZUM AKTUALISIEREN DER BEDIENUNGSANLEITUNG
 
 WICHTIG: Diese Datei bei jeder Aktualisierung der Bedienungsanleitung einlesen.
 Die Bedienungsanleitung wird NUR auf ausdrückliche Anforderung des Benutzers
-aktualisiert, nicht automatisch als Teil anderer Änderungen. Dabei werden
-Bedienungsanleitung.md, Bedienungsanleitung.html und Bedienungsanleitung.pdf
-IMMER zusammen aktualisiert: alle Schritte in dieser Reihenfolge ausführen.
+aktualisiert, nicht automatisch als Teil anderer Änderungen. Aktualisiert
+werden Bedienungsanleitung.md und die daraus generierte Bedienungsanleitung.html
+(und nur diese). Eine PDF-Variante wird seit V1.47 NICHT mehr erstellt und auch
+nicht mehr verteilt – alle Schritte in dieser Reihenfolge ausführen.
 
 
 VORAUSSETZUNGEN
 ---------------
-- pandoc (kMDItemCreator des PDF = "pandoc")
-- LuaLaTeX (lualatex) aus TeX Live 2026
-- lualatex-math.sty ist im TeX-Install NICHT vorhanden und kann nicht
-  installiert werden (keine Admin-Rechte) -> es wird ein LEERER STUB genutzt
-  (siehe Schritt 3). Das Dokument nutzt kein LaTeX-Mathe, daher ist der Stub
-  ausreichend.
+- pandoc (konvertiert Markdown -> HTML)
+- LuaLaTeX / lualatex-math.sty / TeX Live werden für die PDF NICHT mehr benötigt.
 
 
 SCHRITT 1: Markdown aktualisieren
@@ -32,7 +29,7 @@ SCHRITT 2: index.html anpassen
 ------------------------------
 - Versions-Fußzeile unten anheben, Format:
     <div id="version" class="version">Version X.Y vom TT.MM.JJJJ · ...</div>
-- Cache-Buster in Zeile 10 und 96 erhöhen (damit der Browser keine alte
+- Cache-Buster in style.css und app.js erhöhen (damit der Browser keine alte
   CSS/JS-Datei aus dem Cache nimmt):
     style.css?v=1.27  ->  style.css?v=1.28  (jeweils +0.01)
     app.js?v=1.30     ->  app.js?v=1.31
@@ -40,41 +37,10 @@ SCHRITT 2: index.html anpassen
   IDENTISCH sein.
 
 
-SCHRITT 3: Build-Verzeichnis + Header anlegen (einmalig pro Build)
------------------------------------------------------------------
-    mkdir -p /tmp/opencode_pdfbuild
-    touch /tmp/opencode_pdfbuild/lualatex-math.sty   # leerer Stub
-
-Header-Datei mit Emoji-Fallback anlegen (nötig für 🏢🏠🏃✈️🎉🤒🏖️ ✓ →):
-
-    cat > /tmp/opencode_pdfbuild/pdf-header.tex <<'EOF'
-    \directlua{
-      luaotfload.add_fallback("emojifallback", {
-        "Apple Color Emoji:mode=harf",
-        "Hiragino Mincho ProN:mode=harf",
-      })
-    }
-    \setmainfont{Times New Roman}[RawFeature={fallback=emojifallback}]
-    \setmonofont{Menlo}[RawFeature={fallback=emojifallback}]
-    EOF
-
-
-SCHRITT 4: Markdown -> LaTeX (pandoc)
--------------------------------------
-    pandoc Bedienungsanleitung.md -o /tmp/opencode_pdfbuild/anleitung.tex \
-      -H /tmp/opencode_pdfbuild/pdf-header.tex \
-      -V geometry:margin=2cm \
-      --metadata title="Bedienungsanleitung Anwesenheits-Dashboard"
-
-Hinweis: Den Schritt 4 bewusst OHNE PDF-Erzeugung ausführen. NICHT direkt
-`pandoc ... -o anleitung.pdf` aufrufen! Pandoc ruft lualatex mit
--halt-on-error auf; die (harmlose) luaotfload node-filter-Warnung bricht den
-Build dann mit "Fatal error occurred" ab.
-
-
-SCHRITT 4B: Markdown -> HTML (pandoc)
--------------------------------------
-Header-Fragment mit App-Look anlegen:
+SCHRITT 3: Markdown -> HTML (pandoc)
+------------------------------------
+Header-Fragment mit App-Look anlegen (falls noch nicht vorhanden unter
+/tmp/opencode_pdfbuild/html-header.html):
 
     cat > /tmp/opencode_pdfbuild/html-header.html <<'EOF'
     <style>
@@ -98,53 +64,20 @@ Header-Fragment mit App-Look anlegen:
       --include-in-header=/tmp/opencode_pdfbuild/html-header.html \
       --metadata title="Bedienungsanleitung Anwesenheits-Dashboard"
 
-Die HTML-Fassung ist die PRIMÄRE Anzeige in der App (Footer-Link in
-index.html): PDF-Links öffnen auf Android aus einer installierten PWA oft den
-Download-/externen Viewer-Pfad, der am Service Worker vorbeiläuft und eine
-statische Kopie stehen lässt. Die HTML-Seite ist eine normale Navigation und
-wird network-first geladen; sie steht zusätzlich im SW-PRECACHE (Offline).
+Die HTML-Fassung ist die EINZIGE verteilte Form der Bedienungsanleitung und
+die PRIMÄRE Anzeige in der App (Footer-Link in index.html). Sie wird vom
+Service Worker mit cache-first (offline-first) geladen und steht zusätzlich im
+SW-PRECACHE (Offline).
 
 
-SCHRITT 5: LaTeX -> PDF (lualatex, zwei Durchgänge nicht nötig)
---------------------------------------------------------------
-    export TEXINPUTS="/tmp/opencode_pdfbuild:"
-    cd /tmp/opencode_pdfbuild
-    lualatex -interaction=nonstopmode anleitung.tex
-
-Der Parameter -interaction=nonstopmode ist WICHTIG: Er ignoriert die harmlose
-Warnung "warning (node filter): error: ... luaotfload-harf-plug.lua ...
-attempt to index a nil value (local 'character')". Der Build wird trotzdem
-sauber abgeschlossen, und die Farb-Emojis werden korrekt gerendert.
-
-    cp /tmp/opencode_pdfbuild/anleitung.pdf /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf
-
-
-SCHRITT 6: Prüfung
+SCHRITT 4: Prüfung
 ------------------
-    pdfinfo  /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf \
-      | grep -iE "Pages|Producer"
-        -> "Producer: LuaTeX-1.24.0", Pages sinnvoll (ca. 5)
-
-    pdffonts /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf
-        -> MUSS enthalten: TimesNewRoman, Menlo, AppleColorEmoji, HiraMinProN
-
-    grep -c "Missing character" /tmp/opencode_pdfbuild/anleitung.log
-        -> muss 0 ergeben (alle Zeichen inkl. Emojis wurden gefunden)
-
-    pdftotext /Users/martin/dev/HTML/homeoffice/Bedienungsanleitung.pdf - \
-      | grep "Version"
-        -> zeigt die neue Versionsnummer
-
-Optional visuelle Kontrolle der Farb-Emojis (per Pixel-Analyse, da kein
-Bild-Viewer):
-    pdftoppm -f 4 -l 4 -png -r 150 anleitung.pdf /tmp/chk
-    # Seiten MIT Emoji müssen deutlich mehr "farbige" Pixel (R/G/B-Differenz > 40)
-    # enthalten als eine Seite ohne Emoji.
+    grep -q "Version X.Y vom" Bedienungsanleitung.html && echo "Version OK"
+    # sowie visuelle/semantische Kontrolle des Inhalts im Browser.
 
 
 ALLGEMEINE HINWEISE
 -------------------
-- Nach Abschluss: Bedienungsanleitung.md, Bedienungsanleitung.html,
-  Bedienungsanleitung.pdf und index.html zusammen committen.
-- Die PDF-Generierung erfolgt immer zweistufig (pandoc -> .tex, dann
-  lualatex -> .pdf), niemals direkt über `pandoc -o x.pdf`.
+- Nach Abschluss: Bedienungsanleitung.md und Bedienungsanleitung.html
+  zusammen committen (die PDF-Datei wird nicht mehr erstellt bzw. gepflegt).
+- Keine PDF-Variante mehr erzeugen (weder pandoc noch lualatex).

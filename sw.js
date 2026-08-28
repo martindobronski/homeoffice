@@ -1,7 +1,9 @@
 /* Service Worker – Anwesenheits-Dashboard
    Strategie:
-   - HTML/Navigation und Bedienungsanleitung.pdf (unversioniert!): network-first
-     (Updates sofort sichtbar), Offline-Fallback auf Cache bzw. index.html
+   - Bedienungsanleitung.html: cache-first (offline-first) – ist via PRECACHE
+     je Release gecacht und sofort auch ohne Netzverfügbarkeit einsehbar.
+   - HTML/Navigation: network-first (Updates sofort sichtbar),
+     Offline-Fallback auf Cache bzw. index.html
    - übrige gleiche-Origin-Assets: stale-while-revalidate (Cache zuerst, im Hintergrund aktualisieren)
    Bei einem Release CACHE_NAME zusammen mit den Cache-Bustern in index.html erhöhen. */
 
@@ -16,8 +18,7 @@ const PRECACHE = [
     'manifest.json',
     'icon-192.png',
     'icon-512.png',
-    'Bedienungsanleitung.html',
-    'Bedienungsanleitung.pdf'
+    'Bedienungsanleitung.html'
 ];
 
 self.addEventListener('install', function (e) {
@@ -52,11 +53,25 @@ self.addEventListener('fetch', function (e) {
         return;
     }
     const url = new URL(req.url);
-    // Das PDF ist als einziger Asset unversioniert und würde bei
-    // stale-while-revalidate beim ersten Öffnen nach einem Release die
-    // Vorversion zeigen - daher network-first wie die Navigation.
-    if (req.mode === 'navigate' || req.destination === 'document'
-        || url.pathname.endsWith('/Bedienungsanleitung.pdf')) {
+    // Bedienungsanleitung.html: cache-first (offline-first) – die gecachte
+    // Version (via PRECACHE je Release) ist sofort auch ohne Netz verfügbar;
+    // nur beim allerersten Öffnen ohne Cache-Hit wird das Netzwerk gefragt.
+    if (url.pathname.endsWith('/Bedienungsanleitung.html')) {
+        e.respondWith(
+            caches.match(req).then(function (hit) {
+                if (hit) return hit;
+                return fetch(req).then(function (res) {
+                    const copy = res.clone();
+                    caches.open(CACHE_NAME).then(function (cache) {
+                        cache.put(req, copy);
+                    });
+                    return res;
+                });
+            })
+        );
+        return;
+    }
+    if (req.mode === 'navigate' || req.destination === 'document') {
         e.respondWith(
             fetch(req).then(function (res) {
                 const copy = res.clone();

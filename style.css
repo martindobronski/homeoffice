@@ -1446,9 +1446,6 @@ select:focus-visible {
     .check::after {
         display: none;
     }
-    .pdf-link {
-        display: none;
-    }
 }
 
 .toast {
