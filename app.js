@@ -204,11 +204,14 @@ function syncDauerUi() {
     }
 }
 
-// Stellt nach Dauer-Änderung das Dauer-UI sowie die Statistik (Ring + Kacheln) neu dar.
+// Stellt nach Dauer-Änderung das Dauer-UI sowie Statistik (Ring + Kacheln)
+// und die Jahresübersicht (Monatskarten) neu dar.
 function applyAuswertung() {
     syncDauerUi();
+    updateDashboardTitle();
     renderKpis();
     renderLegend();
+    renderMonths();
 }
 
 // ---------- Speicher ----------
@@ -2527,11 +2530,15 @@ document.addEventListener('contextmenu', function (e) {
 
 // ---------- Initialisierung ----------
 
-function render() {
+function updateDashboardTitle() {
     const az = getAuswertungZeitraum();
     const startYear = parseISO(az.start).getFullYear();
     const endYear = parseISO(az.end).getFullYear();
     dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + (startYear === endYear ? startYear : startYear + '/' + endYear);
+}
+
+function render() {
+    updateDashboardTitle();
     syncQuickSelection();
     syncDauerUi();
     renderKpis();
