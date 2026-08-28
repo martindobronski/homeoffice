@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.36 vom 28.08.2026)
+## Anwesenheits-Dashboard (Version 1.47 vom 28.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -35,7 +35,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
-- **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl mit Checkbox „24./31.12. frei") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
+- **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.
 
@@ -64,7 +64,7 @@ Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„�
 - **Monatsname und Jahr**, z. B. `August 2026`.
 - **Werktage:** Anzahl der Arbeitstage (Montag bis Freitag) im Monat.
 - **Bürotage (Soll):** erfasste Bürotage im Verhältnis zu den Pflichttagen, z. B. `1 / 12`, mit **Fortschrittsbalken** und farbigem **Prozent-Badge**.
-- Den Wochenkalender (Mo – Di – Mi – Do – Fr) mit größeren Tageszellen.
+- Den Wochenkalender mit größeren Tageszellen. Auf größeren Bildschirmen sind die Wochentage ausgeschrieben (Montag – Dienstag – Mittwoch – Donnerstag – Freitag), auf schmalen Smartphone-Displays erscheinen die kurzen Abkürzungen (Mo–Fr).
 
 ### 4.2 Jahresübersicht
 
@@ -202,15 +202,15 @@ Urlaub (genommen x / geplant y / ungeplant z)
 - *geplant:* Urlaubstage in diesem Jahr, die in der Zukunft liegen.
 - *ungeplant:* verbleibende Tage bis zum eingestellten Jahreskontingent.
 
-**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. Unten links im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben und mit **OK** bestätigen. Vor der Übernahme erscheint ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den neuen Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. In der Einstellungs-Karte im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben – die Änderung greift **sofort**, sobald das Feld verlassen oder die Enter-Taste gedrückt wird (ein OK-Button ist nicht nötig). Nur wenn das neue Kontingent **unter die bereits genommenen bzw. geplanten Urlaubstage** sinkt, erscheint zur Sicherheit ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ### 6.1 Bundesland und Feiertage
 
-Im Footer-Bereich befindet sich ein Dropdown **Bundesland** mit allen 16 deutschen Bundesländern. Die Auswahl bestimmt, welche gesetzlichen Feiertage automatisch erkannt werden:
+Im Footer-Bereich befindet sich ein Dropdown **Bundesland (Feiertage)** mit allen 16 deutschen Bundesländern. Die Auswahl bestimmt, welche gesetzlichen Feiertage automatisch erkannt werden:
 
 - **9 bundeseinheitliche Feiertage** (Neujahr, Karfreitag, Ostermontag, Tag der Arbeit, Christi Himmelfahrt, Pfingstmontag, Tag der Deutschen Einheit, 1. und 2. Weihnachtstag) gelten in allen Bundesländern.
 - **Zusätzliche Feiertage** je nach Bundesland: Reformationstag (31.10.), Allerheiligen (1.11.), Fronleichnam, Buß- und Bettag.
-- **24./31.12. frei:** Per Checkbox aktivierbar – Heiligabend und Silvester werden als arbeitsfreie Sondertage geführt (keine gesetzlichen Feiertage, aber betrieblich arbeitsfrei). Die Checkbox ist unabhängig vom Bundesland.
+- **24./31.12. (arbeitsfreie Tage):** Per Checkbox aktivierbar – Heiligabend und Silvester werden als arbeitsfreie Sondertage geführt (keine gesetzlichen Feiertage, aber betrieblich arbeitsfrei). Die Checkbox ist unabhängig vom Bundesland.
 
 **Beim Wechsel des Bundeslandes** werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst: Tage, die im neuen BL ein Feiertag sind, werden überschrieben; ehemalige Feiertage, die im neuen BL nicht mehr gelten, werden entfernt. Eine kurze Meldung zeigt die Anzahl der angepassten Einträge.
 
@@ -359,7 +359,7 @@ Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.36 vom 28.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML/PDF).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.47 vom 28.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML/PDF).
 
 ---
 

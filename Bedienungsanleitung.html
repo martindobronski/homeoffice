@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.36-vom-28.08.2026">Anwesenheits-Dashboard
-(Version 1.36 vom 28.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.47-vom-28.08.2026">Anwesenheits-Dashboard
+(Version 1.47 vom 28.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -318,11 +318,11 @@ weiteren Monate des Zeitraums als kompakte Mini-Karten in einer
 Jahresübersicht.</li>
 <li><strong>Fußzeile:</strong> Zwei Karten –
 <strong>„Einstellungen”</strong> (Urlaubskontingent, Bundesland-Auswahl
-mit Checkbox „24./31.12. frei”) und <strong>„Daten”</strong> (Übersicht
-drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:“,
-Backup importieren) – sowie darunter links der Link zur
-Bedienungsanleitung und rechts die Versionsangabe mit Copyright („©
-2026”).</li>
+„Bundesland (Feiertage)” mit Checkbox „24./31.12. (arbeitsfreie Tage)“)
+und <strong>„Daten”</strong> (Übersicht drucken / PDF, Backup
+exportieren mit Hinweis „Zuletzt exportiert:”, Backup importieren) –
+sowie darunter links der Link zur Bedienungsanleitung und rechts die
+Versionsangabe mit Copyright („© 2026”).</li>
 </ul>
 <p>Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3
 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf
@@ -369,8 +369,10 @@ Freitag) im Monat.</li>
 den Pflichttagen, z. B. <code>1 / 12</code>, mit
 <strong>Fortschrittsbalken</strong> und farbigem
 <strong>Prozent-Badge</strong>.</li>
-<li>Den Wochenkalender (Mo – Di – Mi – Do – Fr) mit größeren
-Tageszellen.</li>
+<li>Den Wochenkalender mit größeren Tageszellen. Auf größeren
+Bildschirmen sind die Wochentage ausgeschrieben (Montag – Dienstag –
+Mittwoch – Donnerstag – Freitag), auf schmalen Smartphone-Displays
+erscheinen die kurzen Abkürzungen (Mo–Fr).</li>
 </ul>
 <h3 id="jahresübersicht">4.2 Jahresübersicht</h3>
 <p>Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als
@@ -712,18 +714,21 @@ liegen.</li>
 Jahreskontingent.</li>
 </ul>
 <p><strong>Urlaubskontingent einstellen:</strong> Das Jahreskontingent
-ist frei einstellbar und auf <strong>30 Tage</strong> voreingestellt.
-Unten links im Feld <code>Urlaubskontingent</code> die gewünschte Anzahl
-eingeben und mit <strong>OK</strong> bestätigen. Vor der Übernahme
-erscheint ein <strong>Bestätigungsdialog</strong> („Kontingent von x auf
-y Tage ändern?“); erst ein Klick auf <strong>Ändern</strong> übernimmt
-den neuen Wert, <strong>Abbrechen</strong> verwirft ihn. Die Einstellung
-wird gespeichert und beim nächsten Öffnen wiederhergestellt.</p>
+ist frei einstellbar und auf <strong>30 Tage</strong> voreingestellt. In
+der Einstellungs-Karte im Feld <code>Urlaubskontingent</code> die
+gewünschte Anzahl eingeben – die Änderung greift
+<strong>sofort</strong>, sobald das Feld verlassen oder die Enter-Taste
+gedrückt wird (ein OK-Button ist nicht nötig). Nur wenn das neue
+Kontingent <strong>unter die bereits genommenen bzw. geplanten
+Urlaubstage</strong> sinkt, erscheint zur Sicherheit ein
+<strong>Bestätigungsdialog</strong> („Kontingent von x auf y Tage
+ändern?“); erst ein Klick auf <strong>Ändern</strong> übernimmt den
+Wert, <strong>Abbrechen</strong> verwirft ihn. Die Einstellung wird
+gespeichert und beim nächsten Öffnen wiederhergestellt.</p>
 <h3 id="bundesland-und-feiertage">6.1 Bundesland und Feiertage</h3>
-<p>Im Footer-Bereich befindet sich ein Dropdown
-<strong>Bundesland</strong> mit allen 16 deutschen Bundesländern. Die
-Auswahl bestimmt, welche gesetzlichen Feiertage automatisch erkannt
-werden:</p>
+<p>Im Footer-Bereich befindet sich ein Dropdown <strong>Bundesland
+(Feiertage)</strong> mit allen 16 deutschen Bundesländern. Die Auswahl
+bestimmt, welche gesetzlichen Feiertage automatisch erkannt werden:</p>
 <ul>
 <li><strong>9 bundeseinheitliche Feiertage</strong> (Neujahr,
 Karfreitag, Ostermontag, Tag der Arbeit, Christi Himmelfahrt,
@@ -732,10 +737,10 @@ gelten in allen Bundesländern.</li>
 <li><strong>Zusätzliche Feiertage</strong> je nach Bundesland:
 Reformationstag (31.10.), Allerheiligen (1.11.), Fronleichnam, Buß- und
 Bettag.</li>
-<li><strong>24./31.12. frei:</strong> Per Checkbox aktivierbar –
-Heiligabend und Silvester werden als arbeitsfreie Sondertage geführt
-(keine gesetzlichen Feiertage, aber betrieblich arbeitsfrei). Die
-Checkbox ist unabhängig vom Bundesland.</li>
+<li><strong>24./31.12. (arbeitsfreie Tage):</strong> Per Checkbox
+aktivierbar – Heiligabend und Silvester werden als arbeitsfreie
+Sondertage geführt (keine gesetzlichen Feiertage, aber betrieblich
+arbeitsfrei). Die Checkbox ist unabhängig vom Bundesland.</li>
 </ul>
 <p><strong>Beim Wechsel des Bundeslandes</strong> werden vorhandene
 Feiertags-Einträge automatisch an die neue Liste angepasst: Tage, die im
@@ -1001,7 +1006,7 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright
-angezeigt, z. B. <code>Version 1.36 vom 28.08.2026 · © 2026</code>.
+angezeigt, z. B. <code>Version 1.47 vom 28.08.2026 · © 2026</code>.
 Links steht der Link zur Bedienungsanleitung (HTML/PDF).</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
