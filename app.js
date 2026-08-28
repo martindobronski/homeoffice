@@ -2608,14 +2608,8 @@ function init() {
         }
     });
     resetPeriodButton.addEventListener('click', function () {
-        const today = new Date();
-        periodStart = fmt(new Date(today.getFullYear(), 0, 1));
-        periodEnd = add12mMinusDay(periodStart);
         dauer = 12;
-        savePeriod();
-        syncQuickSelection();
-        render();
-        syncDauerUi();
+        applyAuswertung();
     });
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
