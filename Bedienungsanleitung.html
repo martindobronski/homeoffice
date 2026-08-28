@@ -328,28 +328,42 @@ Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf
 Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.</p>
 <hr />
 <h2 id="zeitraum-wählen">3. Zeitraum wählen</h2>
-<p>Der Anzeigezeitraum umfasst immer ein ganzes Jahr (12 Monate). Er
-beginnt mit dem gewählten Startmonat und endet automatisch 12 Monate
-später (Start + 12 Monate – 1 Tag). Ein eigenes Enddatum gibt es
-nicht.</p>
+<p>Der Kalender (Monatskarten) zeigt immer ein ganzes Jahr (12 Monate)
+ab dem gewählten Startmonat (Start + 12 Monate – 1 Tag). Für die
+<strong>Statistik-Auswertung</strong> (Kacheln und Verhältnis-Ring)
+lässt sich die Dauer separat auf <strong>1–24 Monate</strong> einstellen
+– siehe unten.</p>
 <ul>
 <li><strong>Startmonat wählen:</strong> Über die beiden Auswahlfelder
 <code>[Monat] [Jahr]</code> in der Kopfzeile legst du den Startmonat des
-Jahreszeitraums fest. Die Auswahl wirkt <strong>sofort</strong> – ein
+Zeitraums fest. Die Auswahl wirkt <strong>sofort</strong> – ein
 zusätzlicher „Übernehmen“-Klick ist nicht nötig. Beispiel: Startmonat
-<code>September</code> und Jahr <code>2026</code> ergibt den Zeitraum
-<strong>September 2026 – August 2027</strong>.</li>
+<code>September</code> und Jahr <code>2026</code> ergibt den
+Kalenderzeitraum <strong>September 2026 – August 2027</strong>.</li>
 <li><strong>Vor- und zurückblättern:</strong> Mit den Pfeilen
 <strong>‹</strong> und <strong>›</strong> neben den Auswahlfeldern
 verschiebst du den Zeitraum um jeweils einen Monat. Dasselbe geht per
 Tastatur mit den <strong>Pfeiltasten links/rechts</strong>.</li>
 <li><strong>Heute:</strong> Der Button <strong>Heute</strong> setzt den
 Zeitraum direkt auf den aktuellen Monat zurück.</li>
+<li><strong>Dauer (Monate):</strong> Neben dem Startmonat lässt sich die
+<strong>Länge</strong> der Statistik-Auswertung über die Pfeile
+<strong>‹</strong>/<strong>›</strong> auf <strong>1–24 Monate</strong>
+einstellen (Standard: 12). Die danebenstehende Anzeige nennt immer den
+exakten ausgewerteten Zeitraum (z. B.
+<code>Zeitraum: Oktober 2026 – November 2026</code> bei Start Oktober
+und Dauer 2, oder <code>Zeitraum: September 2026</code> bei Dauer 1).
+Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026,
+Dauer 3 → November 2026 – Januar 2027). Der
+<strong>Zurücksetzen</strong>-Link setzt Startmonat auf Januar des
+aktuellen Jahres und Dauer auf 12 zurück. Die Dauer wird
+<strong>nicht</strong> gespeichert und beim nächsten Öffnen wieder auf
+12 gesetzt.</li>
 <li><strong>Jahresauswahl:</strong> Die Liste reicht von mehreren Jahren
 in der Vergangenheit bis einschließlich <strong>2030</strong>. Liegen
 Einträge in späteren Jahren vor, wird die Auswahl automatisch
 erweitert.</li>
-<li>Die Auswahl wird gespeichert und beim nächsten Öffnen
+<li>Die Startmonat-Auswahl wird gespeichert und beim nächsten Öffnen
 wiederhergestellt.</li>
 </ul>
 <hr />
@@ -627,9 +641,10 @@ Fenster neben dem Dialog schließt ihn ebenfalls.</li>
 </table>
 <p>Die <strong>Legende</strong> unterhalb der Jahresübersicht zeigt für
 jede Art den Farbklecks, das <strong>Icon</strong> und die Anzahl im
-gewählten Zeitraum, z. B. <code>Bürotag (10)</code>. Zwei Arten sind
-Sonderfälle: Beim <strong>Urlaub</strong> steht statt der Zeitraumzahl
-der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim
+gewählten Auswertungszeitraum (Startmonat + Dauer), z. B.
+<code>Bürotag (10)</code>. Zwei Arten sind Sonderfälle: Beim
+<strong>Urlaub</strong> steht statt der Zeitraumzahl der Jahresstand
+(genommen/geplant/ungeplant, siehe unten), beim
 <strong>Krankheitstag</strong> die Zahl im gewählten Zeitraum
 <strong>plus die Jahreszahl</strong>, z. B.
 <code>Krankheitstage 2 · Jahr 9</code> – so bleibt sichtbar, wie viele
@@ -1080,11 +1095,13 @@ Links steht der Link zur Bedienungsanleitung (HTML).</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
 <p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein
-vollständiger Monat (alle Werktage erfasst) im gewählten Zeitraum
-liegt.</p>
-<p><strong>Warum gibt es kein Enddatum?</strong> Der Zeitraum umfasst
-immer genau 12 Monate ab dem gewählten Startmonat (Start + 12 Monate – 1
-Tag). Ein eigenes Enddatum ist deshalb nicht erforderlich.</p>
+vollständiger Monat (alle Werktage erfasst) im gewählten
+Auswertungszeitraum liegt.</p>
+<p><strong>Warum gibt es kein Enddatum?</strong> Der Kalender zeigt
+immer 12 Monate ab dem gewählten Startmonat (Start + 12 Monate – 1 Tag);
+die Statistik-Auswertung lässt sich über die <strong>Dauer</strong>
+getrennt auf 1–24 Monate einstellen. Ein separates Enddatum ist deshalb
+nicht erforderlich.</p>
 <p><strong>Wo werden meine Daten gespeichert?</strong> Im Browser
 (localStorage). Andere Browser, Computer oder das Löschen der
 Browserdaten löschen auch die Einträge – deshalb regelmäßig

@@ -224,6 +224,49 @@ select:focus-visible {
     background: #eef0ef;
 }
 
+.btn-icon:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Dauer-Steuerung in der Topbar */
+.dauer-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 8px;
+}
+
+.dauer-value {
+    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    min-width: 72px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.zeitraum-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+    padding: 0 4px;
+    border-left: 1px solid var(--border);
+    margin-left: 4px;
+}
+
 /* ---------- KPI strip ---------- */
 
 .kpi-strip {

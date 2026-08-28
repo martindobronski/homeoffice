@@ -53,6 +53,7 @@ let days = {};
 let gebucht = {};
 let periodStart;
 let periodEnd;
+let dauer = 12;
 let dialogOrigDate = null;
 let pendingDelete = null;
 let activeFilter = null;
@@ -68,6 +69,11 @@ const yearBox = document.getElementById('yearBox');
 const prevMonthButton = document.getElementById('prevMonthButton');
 const nextMonthButton = document.getElementById('nextMonthButton');
 const todayButton = document.getElementById('todayButton');
+const dauerDownButton = document.getElementById('dauerDown');
+const dauerUpButton = document.getElementById('dauerUp');
+const dauerValueEl = document.getElementById('dauerValue');
+const zeitraumLabelEl = document.getElementById('zeitraumLabel');
+const resetPeriodButton = document.getElementById('resetPeriodButton');
 
 const heroEl = document.getElementById('hero');
 const heroTitleEl = document.getElementById('heroTitle');
@@ -163,6 +169,46 @@ function getDayType(iso) {
 function add12mMinusDay(isoStr) {
     const d = parseISO(isoStr);
     return fmt(new Date(d.getFullYear(), d.getMonth() + 12, d.getDate() - 1));
+}
+
+// Auswertungszeitraum aus Start-Monat (periodStart) + Dauer (volle Monate).
+// Berechnet den ersten Tag des Start-Monats bis zum letzten Tag des End-Monats.
+function getAuswertungZeitraum() {
+    const s = parseISO(periodStart);
+    const start = fmt(new Date(s.getFullYear(), s.getMonth(), 1));
+    const end = fmt(new Date(s.getFullYear(), s.getMonth() + dauer, 0));
+    return { start: start, end: end };
+}
+
+// Aktualisiert Anzeige von Dauer-Wert, Zeitraum-Text und Grenz-Pfeiltasten.
+function syncDauerUi() {
+    if (dauerValueEl) {
+        dauerValueEl.textContent = dauer + ' Monat' + (dauer === 1 ? '' : 'e');
+    }
+    if (dauerDownButton) {
+        dauerDownButton.disabled = dauer <= 1;
+    }
+    if (dauerUpButton) {
+        dauerUpButton.disabled = dauer >= 24;
+    }
+    if (zeitraumLabelEl) {
+        const z = getAuswertungZeitraum();
+        const a = parseISO(z.start);
+        const b = parseISO(z.end);
+        const fmtMonat = function (d) {
+            return d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
+        };
+        zeitraumLabelEl.textContent = dauer === 1
+            ? 'Zeitraum: ' + fmtMonat(a)
+            : 'Zeitraum: ' + fmtMonat(a) + ' – ' + fmtMonat(b);
+    }
+}
+
+// Stellt nach Dauer-Änderung das Dauer-UI sowie die Statistik (Ring + Kacheln) neu dar.
+function applyAuswertung() {
+    syncDauerUi();
+    renderKpis();
+    renderLegend();
 }
 
 // ---------- Speicher ----------
@@ -744,7 +790,8 @@ function kpiCard(label, value, sub, pct, color, tip, ampel, ringPct, target, inv
 
 function renderKpis() {
     const strip = document.getElementById('kpiStrip');
-    const q = periodQuota(periodStart, periodEnd);
+    const az = getAuswertungZeitraum();
+    const q = periodQuota(az.start, az.end);
     const basis = q.office + q.homeoffice;
     const now = new Date();
     const st = monthStat(now.getFullYear(), now.getMonth() + 1);
@@ -924,8 +971,9 @@ function renderMonths() {
 // ---------- Legende ----------
 
 function renderLegend() {
-    const start = parseISO(periodStart);
-    const end = parseISO(periodEnd);
+    const az = getAuswertungZeitraum();
+    const start = parseISO(az.start);
+    const end = parseISO(az.end);
     const counts = {};
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         if (isWeekend(d)) {
@@ -959,8 +1007,8 @@ function renderLegend() {
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
     const labelEl = document.getElementById('legendPeriodLabel');
     if (labelEl) {
-        const ds = parseISO(periodStart).toLocaleDateString('de-DE');
-        const de = parseISO(periodEnd).toLocaleDateString('de-DE');
+        const ds = parseISO(az.start).toLocaleDateString('de-DE');
+        const de = parseISO(az.end).toLocaleDateString('de-DE');
         labelEl.textContent = 'Übersicht im Zeitraum ' + ds + ' - ' + de;
     }
     const byKey = {};
@@ -2483,6 +2531,7 @@ function render() {
     const endYear = parseISO(periodEnd).getFullYear();
     dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + (startYear === endYear ? startYear : startYear + '/' + endYear);
     syncQuickSelection();
+    syncDauerUi();
     renderKpis();
     renderMonths();
     renderLegend();
@@ -2537,6 +2586,28 @@ function init() {
     prevMonthButton.addEventListener('click', function () { shiftPeriod(-1); });
     nextMonthButton.addEventListener('click', function () { shiftPeriod(1); });
     todayButton.addEventListener('click', goToToday);
+    dauerDownButton.addEventListener('click', function () {
+        if (dauer > 1) {
+            dauer--;
+            applyAuswertung();
+        }
+    });
+    dauerUpButton.addEventListener('click', function () {
+        if (dauer < 24) {
+            dauer++;
+            applyAuswertung();
+        }
+    });
+    resetPeriodButton.addEventListener('click', function () {
+        const today = new Date();
+        periodStart = fmt(new Date(today.getFullYear(), 0, 1));
+        periodEnd = add12mMinusDay(periodStart);
+        dauer = 12;
+        savePeriod();
+        syncQuickSelection();
+        render();
+        syncDauerUi();
+    });
     heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
