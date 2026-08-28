@@ -106,20 +106,114 @@ h1 {
     letter-spacing: -0.01em;
 }
 
-.range-controls {
+.zeitraum-card {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 8px 8px 8px 18px;
+    border-radius: 14px;
+    padding: 14px 16px;
     box-shadow: 0 1px 2px rgba(20, 20, 30, .03);
 }
 
-.range-controls label {
-    font-size: 12px;
+.zeitraum-block .block-label {
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-faint, #8a8983);
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+
+.month-picker {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.icon-btn {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+    cursor: pointer;
     color: var(--text-soft);
+    font-size: 16px;
+    line-height: 1;
+}
+
+.icon-btn:hover {
+    background: var(--surface-muted);
+}
+
+.zeitraum-card select.month-select,
+.zeitraum-card select.year-select {
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-muted);
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 6px;
+    box-sizing: border-box;
+}
+
+.zeitraum-card select.month-select {
+    width: 112px;
+}
+
+.zeitraum-card select.year-select {
+    width: 76px;
+}
+
+.arrow-divider {
+    color: var(--text-soft);
+    font-size: 16px;
+    padding-top: 26px;
+    line-height: 1;
+}
+
+.duration-badge {
+    align-self: center;
+    background: var(--surface-muted);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: var(--text);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.reset-btn {
+    align-self: center;
+    margin-left: auto;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--surface);
+    cursor: pointer;
+    color: var(--text-soft);
+    font-size: 18px;
+    line-height: 1;
+}
+
+.reset-btn:hover {
+    background: var(--surface-muted);
 }
 
 input[type="date"],
@@ -234,27 +328,6 @@ select:focus-visible {
     opacity: .4;
     cursor: not-allowed;
     transform: none;
-}
-
-/* Dauer-Steuerung in der Topbar */
-.dauer-controls {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    padding: 4px 8px;
-}
-
-.dauer-value {
-    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: var(--text);
-    min-width: 72px;
-    text-align: center;
-    white-space: nowrap;
 }
 
 /* ---------- KPI strip ---------- */
@@ -1412,21 +1485,15 @@ select:focus-visible {
     .hero .cell-icon {
         font-size: 18px;
     }
-    .range-controls {
+    .zeitraum-card {
         width: 100%;
-        flex-wrap: wrap;
         justify-content: center;
-        gap: 6px;
+        gap: 14px;
         border-radius: var(--radius-md);
-        padding: 8px 10px;
+        padding: 12px;
     }
-    .range-controls .range-label {
+    .zeitraum-card .arrow-divider {
         display: none;
-    }
-    #monthBox,
-    #yearBox {
-        min-width: 0;
-        flex: 1 1 auto;
     }
     .dialog {
         min-width: 0;

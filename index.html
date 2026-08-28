@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.83">
+    <link rel="stylesheet" href="style.css?v=1.84">
 </head>
 <body>
 
@@ -23,20 +23,28 @@
             <div class="eyebrow">Anwesenheit · Jahresansicht</div>
             <h1 id="dashboardTitle">Anwesenheits-Dashboard</h1>
         </div>
-        <div class="range-controls">
-            <label class="range-label">Start</label>
-            <button class="btn btn-icon" id="prevMonthButton" aria-label="Vorheriger Monat">‹</button>
-
-            <select id="monthBox"></select>
-            <select id="yearBox"></select>
-            <button class="btn btn-icon" id="nextMonthButton" aria-label="Nächster Monat">›</button>
-            <button class="btn btn-ghost" id="todayButton">Heute</button> 
-            <span class="dauer-controls">
-                <button type="button" class="btn btn-icon" id="dauerDown" aria-label="Dauer verkürzen">‹</button>
-                <span class="dauer-value" id="dauerValue">12 Monate</span>
-                <button type="button" class="btn btn-icon" id="dauerUp" aria-label="Dauer verlängern">›</button>
-                <button type="button" class="btn btn-ghost" id="resetPeriodButton">Zurücksetzen</button>
-            </span>
+        <div class="zeitraum-card">
+            <div class="zeitraum-block">
+                <p class="block-label">Start</p>
+                <div class="month-picker">
+                    <button type="button" class="icon-btn" id="startPrev" aria-label="Startmonat: einen Monat zurück">‹</button>
+                    <select class="month-select" id="startMonth"></select>
+                    <select class="year-select" id="startYear"></select>
+                    <button type="button" class="icon-btn" id="startNext" aria-label="Startmonat: einen Monat vor">›</button>
+                </div>
+            </div>
+            <div class="arrow-divider">→</div>
+            <div class="zeitraum-block">
+                <p class="block-label">Ende</p>
+                <div class="month-picker">
+                    <button type="button" class="icon-btn" id="endPrev" aria-label="Endmonat: einen Monat zurück">‹</button>
+                    <select class="month-select" id="endMonth"></select>
+                    <select class="year-select" id="endYear"></select>
+                    <button type="button" class="icon-btn" id="endNext" aria-label="Endmonat: einen Monat vor">›</button>
+                </div>
+            </div>
+            <div class="duration-badge" id="durationBadge">12 Monate</div>
+            <button type="button" class="reset-btn" id="resetPeriodButton" aria-label="Zurücksetzen auf 12 Monate ab aktuellem Monat" title="Zurücksetzen">↻</button>
         </div>
     </div>
 
@@ -265,7 +273,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.167"></script>
+    <script src="app.js?v=1.168"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

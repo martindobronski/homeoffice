@@ -43,14 +43,17 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 ## 3. Zeitraum wählen
 
-Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten Startmonat und erstreckt sich über die eingestellte **Dauer** (Standard: 12 Monate). Startmonat und Dauer ergeben zusammen den Auswertungs- und Anzeigezeitraum – ein eigenes Enddatum gibt es nicht.
+Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten **Start-Monat** und endet mit dem gewählten **End-Monat**. Damit lässt sich jeder beliebige Zeitraum von 1 Monat bis zu mehreren Jahren festlegen (Standard: **12 Monate**).
 
-- **Startmonat wählen:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile legst du den Startmonat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig. Beispiel: Startmonat `September` und Jahr `2026` ergibt den Kalenderzeitraum **September 2026 – August 2027**.
-- **Vor- und zurückblättern:** Mit den Pfeilen **‹** und **›** neben den Auswahlfeldern verschiebst du den Zeitraum um jeweils einen Monat. Dasselbe geht per Tastatur mit den **Pfeiltasten links/rechts**.
-- **Heute:** Der Button **Heute** setzt den Zeitraum direkt auf den aktuellen Monat zurück.
-- **Dauer (Monate):** Neben dem Startmonat lässt sich die **Länge** des Zeitraums über die Pfeile **‹**/**›** auf **1–24 Monate** einstellen (Standard: 12). Die Überschrift der Jahresübersicht nennt immer den exakten Zeitraum (z. B. `Oktober 2026 – November 2026` bei Start Oktober und Dauer 2, oder `September 2026` bei Dauer 1). Bei der Standard-Dauer von 12 Monaten steht zusätzlich „Jahresübersicht:" davor (z. B. `Jahresübersicht: Januar 2026 – Dezember 2026`). Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026, Dauer 3 → November 2026 – Januar 2027). Die Jahresübersicht zeigt nur die Monate dieses Zeitraums; der **Zurücksetzen**-Link setzt lediglich die Dauer wieder auf 12 zurück (das Startdatum bleibt unverändert). Die Dauer wird **nicht** gespeichert und beim nächsten Öffnen wieder auf 12 gesetzt.
-- **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einschließlich **2030**. Liegen Einträge in späteren Jahren vor, wird die Auswahl automatisch erweitert.
-- Die Startmonat-Auswahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+- **Start und Ende wählen:** In der Kopfzeile gibt es zwei Blöcke – **Start** und **Ende** –, jeweils mit den Auswahlfeldern `[Monat] [Jahr]` und zwei Pfeilen **‹**/**›**. Über die Dropdowns oder die Pfeiltasten legst du den ersten bzw. letzten Monat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig.
+- **Ende folgt Start:** Solange du das Ende nicht selbst geändert hast, folgt es dem Start automatisch um **11 Monate (wieder 12 Monate Zeitraum)**. Änderst du den Start, wandert das Ende mit. Sobald du den End-Monat einmal selbst verstellst, bleibt das Ende fixiert.
+- **Vor- und zurückblättern:** Die Pfeile **‹**/**›** an jedem Block verschieben den jeweiligen Monat um einen Monat. Über die Pfeile **‹**/**›** des Start-Blocks (oder die Tastatur-Pfeiltasten links/rechts) blätterst du durch den Zeitraum; dabei bleibt ein nicht manuell gesetztes Ende synchron.
+- **Dauer-Anzeige:** Zwischen beiden Blöcken zeigt ein Badge die **Dauer** des Zeitraums an (z. B. `12 Monate` bei Start Januar 2026 bis Ende Dezember 2026). Diese Anzeige ist rein informativ und wird automatisch aus Start und Ende berechnet.
+- **Validierung:** Das Ende darf nicht vor dem Start liegen. Wird es vor den Start gesetzt, wird es automatisch auf den Start-Monat korrigiert (Mindestdauer 1 Monat).
+- **Zurücksetzen:** Der Pfeil-Button **↻** am rechten Rand setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück.
+- **Überschriften:** Die Jahresübersicht nennt immer den exakten Zeitraum (z. B. `Oktober 2026 – November 2026` bei Start Oktober und Ende November, oder `September 2026` bei Start = Ende). Bei einer Dauer von 12 Monaten steht zusätzlich „Jahresübersicht:“ davor (z. B. `Jahresübersicht: Januar 2026 – Dezember 2026`). Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026, Ende Januar 2027 → November 2026 – Januar 2027).
+- **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einige Jahre in die Zukunft; sie wird bei Einträgen in späteren Jahren automatisch erweitert.
+- Start- und Endmonat werden gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ---
 
@@ -85,7 +88,7 @@ Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Kart
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
 - **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, **Mehrfachauswahl…**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog, **Mehrfachauswahl…** startet die Mehrfachauswahl (siehe Kapitel 5) und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet) funktioniert die Schnellauswahl über einen **langen Druck** auf den Tag – siehe Kapitel 4.4.
-- **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Das rote **?-Badge** auf leeren Tagen zeigt beim Überfahren den Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden." Auch die Legenden-Einträge sowie die Buttons und das Label „Zeitraum Start-Monat" zeigen solche Tooltips.
+- **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Das rote **?-Badge** auf leeren Tagen zeigt beim Überfahren den Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden." Auch die Legenden-Einträge sowie die Buttons zeigen solche Tooltips.
 - **Automatische Feiertage:** Gesetzliche Feiertage des gewählten Bundeslandes (alle 16 Bundesländer wählbar) und optional arbeitsfreie Sondertage (24./31.12., per Checkbox aktivierbar) werden automatisch erkannt und im Kalender angezeigt (🎉 Icon, violette Farbe), ohne dass du sie manuell erfassen musst. Ein manueller Eintrag hat dabei immer Vorrang – setzt du z. B. an einem Feiertag „Homeoffice", wird dieser Eintrag angezeigt statt des Feiertags. Beim Wechsel des Bundeslandes werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst. Die automatischen Feiertage werden nicht in den Browser-Daten gespeichert.
 - **Leere Tage:** Werktage ohne Eintrag zeigen ein rotes **?-Badge** oben rechts in der Tageszelle. Der Tooltip weist darauf hin, dass diesem Tag eine Anwesenheitsart zugeordnet werden sollte. Das ?-Badge erscheint nur in Monaten mit mindestens einem erfüllten Solltag.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
@@ -151,7 +154,7 @@ Hinweise:
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat + Dauer), z. B. `Bürotag (10)`. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** die Zahl im gewählten Zeitraum **plus die Jahreszahl**, z. B. `Krankheitstage 2 · Jahr 9` – so bleibt sichtbar, wie viele Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat), z. B. `Bürotag (10)`. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** die Zahl im gewählten Zeitraum **plus die Jahreszahl**, z. B. `Krankheitstage 2 · Jahr 9` – so bleibt sichtbar, wie viele Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
 Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
@@ -392,8 +395,8 @@ Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt,
 **Warum zeigt die Quote „–"?**
 Weil noch kein vollständiger Monat (alle Werktage erfasst) im gewählten Auswertungszeitraum liegt.
 
-**Warum gibt es kein Enddatum?**
-Der Zeitraum beginnt mit dem Startmonat und erstreckt sich über die eingestellte **Dauer** (1–24 Monate, Standard 12). Startmonat und Dauer ergeben den Zeitraum automatisch, ein separates Enddatum ist deshalb nicht erforderlich.
+**Wie lege ich den Auswertungszeitraum fest?**
+Über die beiden Blöcke **Start** und **Ende** in der Kopfzeile (Kapitel 3). Solange das Ende nicht selbst geändert wird, folgt es dem Start um 11 Monate (also ein Zeitraum von 12 Monaten). Sobald das Ende manuell verstellt wird, bleibt es fixiert. Das **↻**‑Symbol setzt auf den aktuellen Monat mit 12 Monaten Dauer zurück.
 
 **Wo werden meine Daten gespeichert?**
 Im Browser (localStorage). Andere Browser, Computer oder das Löschen der Browserdaten löschen auch die Einträge – deshalb regelmäßig exportieren.
