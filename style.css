@@ -995,18 +995,23 @@ select:focus-visible {
 }
 
 .export-wrap {
-    display: block;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
     margin-bottom: 8px;
 }
 
 .export-wrap .btn-action {
     margin-bottom: 4px;
+    flex: 0 1 auto;
+    min-width: 0;
+    width: auto;
 }
 
 .export-meta {
     font-size: 12px;
     color: var(--text-faint);
-    margin: 0 0 0 24px;
+    margin: 0 0 4px 12px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -3,6 +3,17 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.44 vom 28.08.2026
+Änderungen gegenüber V1.43:
+
+- Daten-Karte: Die Hinweiszeile "Zuletzt exportiert: ..." steht jetzt in
+  derselben Zeile hinter dem Button "Backup exportieren", wenn genug
+  Platz ist, und bricht andernfalls sauber auf eine neue Zeile um.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
 Version 1.43 vom 28.08.2026
 Änderungen gegenüber V1.42:
 
