@@ -43,12 +43,12 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 ## 3. Zeitraum wählen
 
-Der Kalender (Monatskarten) zeigt immer ein ganzes Jahr (12 Monate) ab dem gewählten Startmonat (Start + 12 Monate – 1 Tag). Für die **Statistik-Auswertung** (Kacheln und Verhältnis-Ring) lässt sich die Dauer separat auf **1–24 Monate** einstellen – siehe unten.
+Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten Startmonat und erstreckt sich über die eingestellte **Dauer** (Standard: 12 Monate). Startmonat und Dauer ergeben zusammen den Auswertungs- und Anzeigezeitraum – ein eigenes Enddatum gibt es nicht.
 
 - **Startmonat wählen:** Über die beiden Auswahlfelder `[Monat] [Jahr]` in der Kopfzeile legst du den Startmonat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig. Beispiel: Startmonat `September` und Jahr `2026` ergibt den Kalenderzeitraum **September 2026 – August 2027**.
 - **Vor- und zurückblättern:** Mit den Pfeilen **‹** und **›** neben den Auswahlfeldern verschiebst du den Zeitraum um jeweils einen Monat. Dasselbe geht per Tastatur mit den **Pfeiltasten links/rechts**.
 - **Heute:** Der Button **Heute** setzt den Zeitraum direkt auf den aktuellen Monat zurück.
-- **Dauer (Monate):** Neben dem Startmonat lässt sich die **Länge** der Statistik-Auswertung über die Pfeile **‹**/**›** auf **1–24 Monate** einstellen (Standard: 12). Die danebenstehende Anzeige nennt immer den exakten ausgewerteten Zeitraum (z. B. `Zeitraum: Oktober 2026 – November 2026` bei Start Oktober und Dauer 2, oder `Zeitraum: September 2026` bei Dauer 1). Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026, Dauer 3 → November 2026 – Januar 2027). Der **Zurücksetzen**-Link setzt Startmonat auf Januar des aktuellen Jahres und Dauer auf 12 zurück. Die Dauer wird **nicht** gespeichert und beim nächsten Öffnen wieder auf 12 gesetzt.
+- **Dauer (Monate):** Neben dem Startmonat lässt sich die **Länge** des Zeitraums über die Pfeile **‹**/**›** auf **1–24 Monate** einstellen (Standard: 12). Die danebenstehende Anzeige nennt immer den exakten Zeitraum (z. B. `Zeitraum: Oktober 2026 – November 2026` bei Start Oktober und Dauer 2, oder `Zeitraum: September 2026` bei Dauer 1). Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026, Dauer 3 → November 2026 – Januar 2027). Die Jahresübersicht zeigt nur die Monate dieses Zeitraums; der **Zurücksetzen**-Link setzt Startmonat auf Januar des aktuellen Jahres und Dauer auf 12 zurück. Die Dauer wird **nicht** gespeichert und beim nächsten Öffnen wieder auf 12 gesetzt.
 - **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einschließlich **2030**. Liegen Einträge in späteren Jahren vor, wird die Auswahl automatisch erweitert.
 - Die Startmonat-Auswahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
@@ -393,7 +393,7 @@ Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt,
 Weil noch kein vollständiger Monat (alle Werktage erfasst) im gewählten Auswertungszeitraum liegt.
 
 **Warum gibt es kein Enddatum?**
-Der Kalender zeigt immer 12 Monate ab dem gewählten Startmonat (Start + 12 Monate – 1 Tag); die Statistik-Auswertung lässt sich über die **Dauer** getrennt auf 1–24 Monate einstellen. Ein separates Enddatum ist deshalb nicht erforderlich.
+Der Zeitraum beginnt mit dem Startmonat und erstreckt sich über die eingestellte **Dauer** (1–24 Monate, Standard 12). Startmonat und Dauer ergeben den Zeitraum automatisch, ein separates Enddatum ist deshalb nicht erforderlich.
 
 **Wo werden meine Daten gespeichert?**
 Im Browser (localStorage). Andere Browser, Computer oder das Löschen der Browserdaten löschen auch die Einträge – deshalb regelmäßig exportieren.

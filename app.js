@@ -937,8 +937,9 @@ function cardHTML(year, month, showYear) {
 }
 
 function renderMonths() {
-    const start = parseISO(periodStart);
-    const end = parseISO(periodEnd);
+    const az = getAuswertungZeitraum();
+    const start = parseISO(az.start);
+    const end = parseISO(az.end);
     const endAnchor = new Date(end.getFullYear(), end.getMonth(), 1);
     const now = new Date();
     const curAnchor = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -2527,8 +2528,9 @@ document.addEventListener('contextmenu', function (e) {
 // ---------- Initialisierung ----------
 
 function render() {
-    const startYear = parseISO(periodStart).getFullYear();
-    const endYear = parseISO(periodEnd).getFullYear();
+    const az = getAuswertungZeitraum();
+    const startYear = parseISO(az.start).getFullYear();
+    const endYear = parseISO(az.end).getFullYear();
     dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + (startYear === endYear ? startYear : startYear + '/' + endYear);
     syncQuickSelection();
     syncDauerUi();
