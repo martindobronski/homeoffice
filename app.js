@@ -831,7 +831,7 @@ function heroHTML(year, month) {
         + '</div>'
         + '</div>'
         + '</div>'
-                + renderCalGrid(year, month, st.office > 0, true);
+                + renderCalGrid(year, month, st.office > 0, window.innerWidth > 640);
 }
 
 function cardHTML(year, month, showYear) {
