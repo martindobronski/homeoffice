@@ -73,6 +73,8 @@ const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
 const kpiStripEl = document.getElementById('kpiStrip');
 const quotaWrapEl = document.querySelector('.quota-input');
+const bundeslandWrapEl = document.querySelector('.bundesland-select');
+const sonderfreiWrapEl = document.querySelector('.sonderfrei-select');
 const footerActionsEl = document.querySelector('.footer-actions');
 const todayButtonEl = document.getElementById('todayButton');
 const rangeControlsEl = document.querySelector('.range-controls');
@@ -2013,19 +2015,21 @@ function showDayTip(e) {
     const cell = e.target.closest('.day[data-date]');
     const chip = cell ? null : e.target.closest('.chip[data-filter]');
     const quota = (!cell && !chip) ? e.target.closest('.quota-input') : null;
-    const btn = (!cell && !chip && !quota) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
-    const today = (!cell && !chip && !quota && !btn) ? e.target.closest('#todayButton') : null;
-    const nav = (!cell && !chip && !quota && !btn && !today) ? e.target.closest('#prevMonthButton, #nextMonthButton') : null;
-    const rangeLabel = (!cell && !chip && !quota && !btn && !today && !nav) ? e.target.closest('.range-label') : null;
-    const kpiCard = (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel) ? e.target.closest('.kpi-card[data-tip]') : null;
-    if (!cell && !chip && !quota && !btn && !today && !nav && !rangeLabel && !kpiCard) {
+    const bundesland = (!cell && !chip && !quota) ? e.target.closest('.bundesland-select') : null;
+    const sonderfrei = (!cell && !chip && !quota && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
+    const btn = (!cell && !chip && !quota && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
+    const today = (!cell && !chip && !quota && !bundesland && !sonderfrei && !btn) ? e.target.closest('#todayButton') : null;
+    const nav = (!cell && !chip && !quota && !bundesland && !sonderfrei && !btn && !today) ? e.target.closest('#prevMonthButton, #nextMonthButton') : null;
+    const rangeLabel = (!cell && !chip && !quota && !bundesland && !sonderfrei && !btn && !today && !nav) ? e.target.closest('.range-label') : null;
+    const kpiCard = (!cell && !chip && !quota && !bundesland && !sonderfrei && !btn && !today && !nav && !rangeLabel) ? e.target.closest('.kpi-card[data-tip]') : null;
+    if (!cell && !chip && !quota && !bundesland && !sonderfrei && !btn && !today && !nav && !rangeLabel && !kpiCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || quota || btn || today || nav || rangeLabel || kpiCard).getBoundingClientRect();
+    const rect = (cell || chip || quota || bundesland || sonderfrei || btn || today || nav || rangeLabel || kpiCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2053,6 +2057,12 @@ function showDayTip(e) {
     } else if (quota) {
         html = 'Urlaubskontingent'
             + '<div class="day-tip-hints">Hier kann das jährliche Urlaubskontingent angepasst werden.</div>';
+    } else if (bundesland) {
+        html = 'Bundesland (Feiertage)'
+            + '<div class="day-tip-hints">Die gesetzlichen Feiertage werden anhand des ausgewählten Bundeslandes ermittelt und angerechnet.</div>';
+    } else if (sonderfrei) {
+        html = '24./31.12. (arbeitsfreie Tage)'
+            + '<div class="day-tip-hints">Heiligabend (24.12.) und Silvester (31.12.) können als arbeitsfreie Tage berücksichtigt werden.</div>';
     } else if (btn) {
         html = (btn.id === 'exportButton' ? 'Backup exportieren'
             : btn.id === 'importButton' ? 'Backup importieren' : 'Übersicht drucken / PDF')
@@ -2075,7 +2085,7 @@ function showDayTip(e) {
         html = kpiCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || btn || today || rangeLabel || kpiCard));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || bundesland || sonderfrei || btn || today || rangeLabel || kpiCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
@@ -2337,6 +2347,8 @@ if (!IS_TOUCH) {
     kpiStripEl.addEventListener('mouseover', showDayTip);
     legendEl.addEventListener('mouseover', showDayTip);
     quotaWrapEl.addEventListener('mouseover', showDayTip);
+    bundeslandWrapEl.addEventListener('mouseover', showDayTip);
+    sonderfreiWrapEl.addEventListener('mouseover', showDayTip);
     footerActionsEl.addEventListener('mouseover', showDayTip);
     todayButtonEl.addEventListener('mouseover', showDayTip);
     rangeControlsEl.addEventListener('mouseover', showDayTip);
@@ -2345,6 +2357,8 @@ if (!IS_TOUCH) {
     kpiStripEl.addEventListener('mouseout', hideDayTip);
     legendEl.addEventListener('mouseout', hideDayTip);
     quotaWrapEl.addEventListener('mouseout', hideDayTip);
+    bundeslandWrapEl.addEventListener('mouseout', hideDayTip);
+    sonderfreiWrapEl.addEventListener('mouseout', hideDayTip);
     footerActionsEl.addEventListener('mouseout', hideDayTip);
     todayButtonEl.addEventListener('mouseout', hideDayTip);
     rangeControlsEl.addEventListener('mouseout', hideDayTip);

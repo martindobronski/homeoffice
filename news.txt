@@ -3,6 +3,29 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.36 vom 28.08.2026
+Änderungen gegenüber V1.35:
+
+- Smartphone-Layout: Auf schmalen Bildschirmen läuft die Seite nicht
+  mehr horizontal über. Die Fußzeile (Bedienungsanleitung links, Version
+  mit Copyright rechts) bricht auf kleinen Displaybreiten jetzt auf eine
+  zweite Zeile um, sodass nichts mehr abgeschnitten oder über den Rand
+  hinausgeschoben wird. Die Statistik-Kacheln stapeln sich weiterhin
+  sauber in einer Spalte.
+- Bundesland-Namensgebung: Das Einstellungs-Label lautet jetzt
+  "Bundesland (Feiertage)". Beim Überfahren mit der Maus erscheint ein
+  Hinweistooltip (wie beim Urlaubskontingent), der erklärt, dass die
+  gesetzlichen Feiertage anhand des gewählten Bundeslandes ermittelt und
+  angerechnet werden.
+- 24./31.12.-Hinweis: Auch die Einstellung "24./31.12. (arbeitsfreie
+  Tage)" zeigt beim Überfahren mit der Maus einen Hinweistooltip, der
+  erklärt, dass der 24. und 31.12. als arbeitsfreie Tage berücksichtigt
+  werden können.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
 Version 1.35 vom 27.08.2026
 Änderungen gegenüber V1.34:
 
