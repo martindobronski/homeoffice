@@ -1227,18 +1227,44 @@ const urlaubConfirmOverlay = document.getElementById('urlaubConfirmOverlay');
 const urlaubConfirmText = document.getElementById('urlaubConfirmText');
 let pendingUrlaub = null;
 
-document.getElementById('urlaubApply').addEventListener('click', function () {
-    const v = parseInt(document.getElementById('urlaubInput').value, 10);
+const urlaubInputEl = document.getElementById('urlaubInput');
+urlaubInputEl.addEventListener('change', function () {
+    const v = parseInt(urlaubInputEl.value, 10);
     if (!Number.isFinite(v) || v < 0) {
         alert('Bitte eine gültige Anzahl Urlaubstage eingeben.');
+        urlaubInputEl.value = urlaubTotal;
         return;
     }
     if (v === urlaubTotal) {
+        urlaubInputEl.value = urlaubTotal;
         return;
     }
-    pendingUrlaub = v;
-    urlaubConfirmText.innerHTML = 'Kontingent von <b>' + urlaubTotal + '</b> auf <b>' + v + '</b> Tage ändern?';
-    urlaubConfirmOverlay.classList.remove('hidden');
+    const today = fmt(new Date());
+    const jahr = new Date().getFullYear();
+    let genommen = 0;
+    let geplant = 0;
+    for (const iso of Object.keys(days)) {
+        if (parseISO(iso).getFullYear() !== jahr) {
+            continue;
+        }
+        if (days[iso] !== 'URLAUB') {
+            continue;
+        }
+        if (iso < today) {
+            genommen++;
+        } else if (iso > today) {
+            geplant++;
+        }
+    }
+    if (v < genommen + geplant) {
+        pendingUrlaub = v;
+        urlaubConfirmText.innerHTML = 'Kontingent von <b>' + urlaubTotal + '</b> auf <b>' + v + '</b> Tage ändern?';
+        urlaubConfirmOverlay.classList.remove('hidden');
+    } else {
+        urlaubTotal = v;
+        saveUrlaub();
+        render();
+    }
 });
 
 urlaubConfirmOverlay.addEventListener('click', function (e) {

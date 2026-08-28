@@ -3,6 +3,74 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.43 vom 28.08.2026
+Änderungen gegenüber V1.42:
+
+- Bundesland-Auswahl: Der Rahmen des Dropdowns ist jetzt deutlich
+  hervorgehoben (kräftigere Farbe, 1px), passend zu Checkbox und
+  Urlaubskontingent-Feld.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
+Version 1.42 vom 28.08.2026
+Änderungen gegenüber V1.41:
+
+- Urlaubskontingent-Eingabefeld: Der Rahmen ist jetzt deutlich
+  hervorgehoben (kräftigere Farbe, 1px), passend zur Checkbox.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
+Version 1.41 vom 28.08.2026
+Änderungen gegenüber V1.40:
+
+- Checkbox "24./31.12. (arbeitsfreie Tage)": Der Rahmen der Box ist jetzt
+  deutlich hervorgehoben (kräftigere Farbe, 1px), damit sie gut
+  erkennbar ist.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
+Version 1.40 vom 28.08.2026
+Änderungen gegenüber V1.39:
+
+- Checkbox "24./31.12. (arbeitsfreie Tage)": Neu als eigene Darstellung
+  umgesetzt – der Hintergrund der Box bleibt unabhängig vom Zustand
+  gleich (kein Schwarz/Grau), es wird nur der Haken beim Aktivieren
+  eingeblendet.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
+Version 1.39 vom 28.08.2026
+Änderungen gegenüber V1.38:
+
+- Checkbox "24./31.12. (arbeitsfreie Tage)": Beim Aktivieren wird der
+  Haken gesetzt, der Hintergrund der Box bleibt jedoch in einer
+  gedeckten grauen Farbe statt schwarz.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
+Version 1.38 vom 28.08.2026
+Änderungen gegenüber V1.37:
+
+- Urlaubskontingent: Der OK-Button wurde entfernt. Der eingegebene Wert
+  greift jetzt sofort, sobald das Feld verlassen oder die Enter-Taste
+  gedrückt wird. Eine Bestätigungsabfrage erscheint nur noch, wenn das
+  neue Kontingent unter die bereits genommenen bzw. geplanten
+  Urlaubstage sinkt.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
 Version 1.37 vom 28.08.2026
 Änderungen gegenüber V1.36:
 
