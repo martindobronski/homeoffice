@@ -202,7 +202,7 @@ Urlaub (genommen x / geplant y / ungeplant z)
 - *geplant:* Urlaubstage in diesem Jahr, die in der Zukunft liegen.
 - *ungeplant:* verbleibende Tage bis zum eingestellten Jahreskontingent.
 
-**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. In der Einstellungs-Karte im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben – die Änderung greift **sofort**, sobald das Feld verlassen oder die Enter-Taste gedrückt wird (ein OK-Button ist nicht nötig). Nur wenn das neue Kontingent **unter die bereits genommenen bzw. geplanten Urlaubstage** sinkt, erscheint zur Sicherheit ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+**Urlaubskontingent einstellen:** Das Jahreskontingent ist frei einstellbar und auf **30 Tage** voreingestellt. In der Einstellungs-Karte im Feld `Urlaubskontingent` die gewünschte Anzahl eingeben und mit dem **OK**-Button bestätigen – die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Nur wenn das neue Kontingent **unter die bereits genommenen bzw. geplanten Urlaubstage** sinkt, erscheint zur Sicherheit ein **Bestätigungsdialog** („Kontingent von x auf y Tage ändern?"); erst ein Klick auf **Ändern** übernimmt den Wert, **Abbrechen** verwirft ihn. Die Einstellung wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ### 6.1 Bundesland und Feiertage
 

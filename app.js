@@ -1271,8 +1271,9 @@ const urlaubConfirmText = document.getElementById('urlaubConfirmText');
 let pendingUrlaub = null;
 
 const urlaubInputEl = document.getElementById('urlaubInput');
-urlaubInputEl.addEventListener('change', function () {
-    const v = parseInt(urlaubInputEl.value, 10);
+
+function applyUrlaub(value) {
+    const v = parseInt(value, 10);
     if (!Number.isFinite(v) || v < 0) {
         alert('Bitte eine gültige Anzahl Urlaubstage eingeben.');
         urlaubInputEl.value = urlaubTotal;
@@ -1308,6 +1309,10 @@ urlaubInputEl.addEventListener('change', function () {
         saveUrlaub();
         render();
     }
+}
+
+document.getElementById('urlaubOk').addEventListener('click', function () {
+    applyUrlaub(urlaubInputEl.value);
 });
 
 urlaubConfirmOverlay.addEventListener('click', function (e) {

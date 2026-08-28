@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.79">
+    <link rel="stylesheet" href="style.css?v=1.80">
 </head>
 <body>
 
@@ -56,13 +56,14 @@
                 <label for="bueroAnteilInput">Büro-Anteil (%)</label>
                 <div class="field-inline">
                     <input type="number" id="bueroAnteilInput" min="0" max="100" step="1">
-                    <button type="button" id="bueroAnteilOk" class="btn btn-primary btn-sm">OK</button>
+                    <button type="button" id="bueroAnteilOk" class="btn-ok">OK</button>
                 </div>
             </div>
             <div class="setting-row quota-input">
                 <label for="urlaubInput">Urlaubskontingent</label>
                 <div class="field-inline">
                     <input type="number" id="urlaubInput" min="0" max="365" step="1">
+                    <button type="button" id="urlaubOk" class="btn-ok">OK</button>
                 </div>
             </div>
             <div class="setting-row bundesland-select">
@@ -258,7 +259,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.159"></script>
+    <script src="app.js?v=1.160"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {
