@@ -3,6 +3,18 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.46 vom 28.08.2026
+Änderungen gegenüber V1.45:
+
+- Hero-Kachel: Die Wochentage werden in der großen oberen Monatskachel
+  jetzt ausgeschrieben (Montag, Dienstag, Mittwoch, Donnerstag, Freitag)
+  statt abgekürzt. Die kleinen Monatskarten darunter behalten weiterhin
+  die kurzen Abkürzungen.
+- Cache-Update: Cache-Name und Cache-Buster wurden erhöht, damit alle
+  Geräte die korrigierten Dateien laden.
+
+--------------------------------------------------------------------------------------
+
 Version 1.45 vom 28.08.2026
 Änderungen gegenüber V1.44:
 

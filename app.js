@@ -762,11 +762,14 @@ function buildMonthCells(year, month) {
     return { cells: cells, rows: row + 1, workdays: cells.length };
 }
 
-function renderCalGrid(year, month, showEmpty) {
+function renderCalGrid(year, month, showEmpty, fullWeekday) {
     const { cells, rows } = buildMonthCells(year, month);
     const todayIso = fmt(new Date());
+    const wdLabels = fullWeekday
+        ? ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag']
+        : ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
     let html = '<div class="cal-grid" style="grid-template-rows:auto repeat(' + rows + ',1fr)">';
-    for (const wd of ['Mo', 'Di', 'Mi', 'Do', 'Fr']) {
+    for (const wd of wdLabels) {
         html += '<div class="cal-head">' + wd + '</div>';
     }
     const grid = Array.from({ length: rows }, function () { return Array(5).fill(null); });
@@ -828,7 +831,7 @@ function heroHTML(year, month) {
         + '</div>'
         + '</div>'
         + '</div>'
-                + renderCalGrid(year, month, st.office > 0);
+                + renderCalGrid(year, month, st.office > 0, true);
 }
 
 function cardHTML(year, month, showYear) {

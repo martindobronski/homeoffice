@@ -401,6 +401,12 @@ select:focus-visible {
     padding-bottom: 4px;
 }
 
+.hero .cal-head {
+    font-size: 12px;
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 .hero .cal-grid .day {
     aspect-ratio: 1.5 / 1;
     font-size: 17px;
