@@ -75,6 +75,7 @@ const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
 const kpiStripEl = document.getElementById('kpiStrip');
 const quotaWrapEl = document.querySelector('.quota-input');
+const bueroAnteilWrapEl = document.querySelector('.buero-anteil');
 const bundeslandWrapEl = document.querySelector('.bundesland-select');
 const sonderfreiWrapEl = document.querySelector('.sonderfrei-select');
 const footerActionsEl = document.querySelector('.footer-actions');
@@ -2435,6 +2436,7 @@ if (!IS_TOUCH) {
     kpiStripEl.addEventListener('mouseover', showDayTip);
     legendEl.addEventListener('mouseover', showDayTip);
     quotaWrapEl.addEventListener('mouseover', showDayTip);
+    bueroAnteilWrapEl.addEventListener('mouseover', showDayTip);
     bundeslandWrapEl.addEventListener('mouseover', showDayTip);
     sonderfreiWrapEl.addEventListener('mouseover', showDayTip);
     footerActionsEl.addEventListener('mouseover', showDayTip);
@@ -2445,6 +2447,7 @@ if (!IS_TOUCH) {
     kpiStripEl.addEventListener('mouseout', hideDayTip);
     legendEl.addEventListener('mouseout', hideDayTip);
     quotaWrapEl.addEventListener('mouseout', hideDayTip);
+    bueroAnteilWrapEl.addEventListener('mouseout', hideDayTip);
     bundeslandWrapEl.addEventListener('mouseout', hideDayTip);
     sonderfreiWrapEl.addEventListener('mouseout', hideDayTip);
     footerActionsEl.addEventListener('mouseout', hideDayTip);

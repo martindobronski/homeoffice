@@ -979,26 +979,6 @@ select:focus-visible {
     transform: rotate(45deg);
 }
 
-.btn-ok {
-    height: 36px;
-    padding: 0 14px;
-    font-size: 14px;
-    font-weight: 500;
-    border: 0.5px solid var(--border);
-    border-radius: var(--radius-sm);
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-}
-
-.btn-ok:hover {
-    background: var(--surface-muted);
-}
-
-.btn-ok:active {
-    transform: scale(0.98);
-}
-
 .footer-actions {
     display: block;
 }
