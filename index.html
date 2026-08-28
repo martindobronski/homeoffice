@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=1.82">
+    <link rel="stylesheet" href="style.css?v=1.83">
 </head>
 <body>
 
@@ -35,7 +35,6 @@
                 <button type="button" class="btn btn-icon" id="dauerDown" aria-label="Dauer verkürzen">‹</button>
                 <span class="dauer-value" id="dauerValue">12 Monate</span>
                 <button type="button" class="btn btn-icon" id="dauerUp" aria-label="Dauer verlängern">›</button>
-                <span class="zeitraum-label" id="zeitraumLabel">Zeitraum</span>
                 <button type="button" class="btn btn-ghost" id="resetPeriodButton">Zurücksetzen</button>
             </span>
         </div>
@@ -46,7 +45,7 @@
     <div class="section-title" id="heroTitle"><h2>Aktueller Monat</h2></div>
     <div class="hero" id="hero"></div>
 
-    <div class="section-title"><h2>Jahresübersicht</h2></div>
+    <div class="section-title"><h2 id="yearGridTitle">Jahresübersicht</h2></div>
     <div class="year-grid" id="yearGrid"></div>
 
     <div class="stats-section">
@@ -266,7 +265,7 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.166"></script>
+    <script src="app.js?v=1.167"></script>
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function () {

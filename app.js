@@ -72,7 +72,7 @@ const todayButton = document.getElementById('todayButton');
 const dauerDownButton = document.getElementById('dauerDown');
 const dauerUpButton = document.getElementById('dauerUp');
 const dauerValueEl = document.getElementById('dauerValue');
-const zeitraumLabelEl = document.getElementById('zeitraumLabel');
+const yearGridTitleEl = document.getElementById('yearGridTitle');
 const resetPeriodButton = document.getElementById('resetPeriodButton');
 
 const heroEl = document.getElementById('hero');
@@ -180,7 +180,7 @@ function getAuswertungZeitraum() {
     return { start: start, end: end };
 }
 
-// Aktualisiert Anzeige von Dauer-Wert, Zeitraum-Text und Grenz-Pfeiltasten.
+// Aktualisiert Anzeige von Dauer-Wert, Grenz-Pfeiltasten und der Zeitraum-Überschrift.
 function syncDauerUi() {
     if (dauerValueEl) {
         dauerValueEl.textContent = dauer + ' Monat' + (dauer === 1 ? '' : 'e');
@@ -191,16 +191,19 @@ function syncDauerUi() {
     if (dauerUpButton) {
         dauerUpButton.disabled = dauer >= 24;
     }
-    if (zeitraumLabelEl) {
+    if (yearGridTitleEl) {
         const z = getAuswertungZeitraum();
         const a = parseISO(z.start);
         const b = parseISO(z.end);
         const fmtMonat = function (d) {
             return d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' });
         };
-        zeitraumLabelEl.textContent = dauer === 1
-            ? 'Zeitraum: ' + fmtMonat(a)
-            : 'Zeitraum: ' + fmtMonat(a) + ' – ' + fmtMonat(b);
+        const zeitraum = dauer === 1
+            ? fmtMonat(a)
+            : fmtMonat(a) + ' – ' + fmtMonat(b);
+        yearGridTitleEl.textContent = dauer === 12
+            ? 'Jahresübersicht: ' + zeitraum
+            : zeitraum;
     }
 }
 

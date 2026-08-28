@@ -257,16 +257,6 @@ select:focus-visible {
     white-space: nowrap;
 }
 
-.zeitraum-label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--accent);
-    white-space: nowrap;
-    padding: 0 4px;
-    border-left: 1px solid var(--border);
-    margin-left: 4px;
-}
-
 /* ---------- KPI strip ---------- */
 
 .kpi-strip {
