@@ -270,8 +270,8 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick. Jede Karte zeigt einen **Ampel-Indikator**: Die Farbe des Rings und des Prozentwerts signalisiert den Status auf einen Blick.
 
 - **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den Prozentwert direkt (Ziel: 100 %).
-- **Verhältnis Büro/Homeoffice:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf 60 % als Zielwert (60 % = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als visuelles Signal.
-- **Verhältnis Homeoffice/Büro:** Anteil der Homeoffice-Tage. Der Ring skaliert auf 40 % als Zielwert (40 % = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring.
+- **Verhältnis Büro/Homeoffice:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den eingestellten **Büro-Anteil** als Zielwert (dieser = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als visuelles Signal.
+- **Verhältnis Homeoffice/Büro:** Anteil der Homeoffice-Tage. Der Ring skaliert auf den Homeoffice-Anteil (100 − Büro-Anteil) als Zielwert. Überschreitet das Verhältnis den Zielwert, pulsiert der Ring.
 - **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig verbraucht, Rot = alles aufgebraucht (100 %).
 
 > **Wichtige Abgrenzung:** Die beiden **„Verhältnis"-Karten** messen nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht**-Karte zeigt korrekt **10/10 = 100 %** (Solltage erfüllt), während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt – die 60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind fachlich korrekt, beantworten aber verschiedene Fragen.
@@ -281,9 +281,11 @@ Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent)
 | Karte | Grün | Gelb | Rot |
 |-------|------|------|-----|
 | Büropflicht | ≥100 % | ≥80 % | <80 % |
-| Verhältnis Büro/Homeoffice | ≥60 % | ≥45 % | <45 % |
-| Verhältnis Homeoffice/Büro | ≥40 % | ≥30 % | <30 % |
+| Verhältnis Büro/Homeoffice | ≥ Büro-Anteil | ≥75 % des Büro-Anteils | darunter |
+| Verhältnis Homeoffice/Büro | ≥ Homeoffice-Anteil | ≥75 % des Homeoffice-Anteils | darunter |
 | Urlaub | <60 % verbraucht | 60–99 % verbraucht | 100 % verbraucht |
+
+> Die Ampel-Schwellen der beiden Verhältnis-Karten richten sich automatisch nach dem eingestellten Zielwert (Kapitel 7.3). Bei Standardwert 60/40 entsprechen sie den früheren festen Werten (Büro ≥60 %/≥45 %, Homeoffice ≥40 %/≥30 %).
 
 Regeln:
 
@@ -297,7 +299,18 @@ Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Bas
 
 **Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
 
-**Ringskalierung:** Die beiden Verhältnis-Karten verwenden eine relative Skalierung: **Verhältnis Büro/Homeoffice** (60 % = voller Kreis) und **Verhältnis Homeoffice/Büro** (40 % = voller Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
+**Ringskalierung:** Die beiden Verhältnis-Karten verwenden eine relative Skalierung: **Verhältnis Büro/Homeoffice** (eingestellter Büro-Anteil = voller Kreis) und **Verhältnis Homeoffice/Büro** (100 − Büro-Anteil = voller Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
+
+### 7.3 Büro-Anteil einstellen
+
+Der Büro-Anteil bestimmt zwei Dinge:
+
+- **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim Standardwert 60 % sind das z. B. `(Werktage − Neutrale Tage) × 0,6` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
+- **Das Ziel der Verhältnis-Karten:** Der Ring der Karte **„Verhältnis Büro/Homeoffice"** zeigt volle Erfüllung beim eingestellten Büro-Anteil; die Karte **„Verhältnis Homeoffice/Büro"** zielt auf den Rest (100 − Büro-Anteil).
+
+**So stellst du ihn ein:** In der Einstellungen-Karte (Fußzeile) im Feld **„Büro-Anteil (%)"** den gewünschten Wert (0–100) eingeben und mit **OK** bestätigen. Die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Der Homeoffice-Anteil ergibt sich automatisch als `100 − Büro-Anteil` – es gibt dafür keine zweite Eingabe. Der Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+
+**Randwerte:** Bei **100 %** gilt ausschließlich Büropflicht (Homeoffice-Ziel 0 %), bei **0 %** umgekehrt. Ungültige Eingaben (Text, leere Eingabe, Werte außerhalb 0–100) werden auf den gültigen Bereich begrenzt bzw. auf den Standardwert zurückgesetzt – es kommt zu keinem Fehler oder Absturz. Der Büro-Anteil wird zusammen mit den übrigen Einstellungen über den Backup-Export/-Import gesichert (Kapitel 8).
 
 ---
 
@@ -323,7 +336,7 @@ jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
 jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv
 ```
 
-**JSON:** Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen sowie den aktuell eingestellten Zeitraum. Beispiel:
+**JSON:** Die Datei enthält alle Tages-Einträge, die „gebucht"-Markierungen, den aktuell eingestellten Zeitraum sowie die Konfiguration (Büro-Anteil, Urlaubskontingent, Bundesland, 24./31.12.-Einstellung). Beispiel:
 
 ```json
 {
@@ -337,6 +350,12 @@ jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv
   },
   "gebucht": {
     "2026-09-01": true
+  },
+  "config": {
+    "bueroAnteil": 60,
+    "urlaub": 30,
+    "bundesland": "HH",
+    "sonderfrei": true
   }
 }
 ```
@@ -354,6 +373,8 @@ Datum,Art,Gebucht
 Klick auf **Backup importieren** öffnet den Dateidialog. Es werden ausschließlich JSON-Dateien im Format des Exports unterstützt. Der Import übernimmt den Startmonat des Zeitraums; das Ende wird wieder auf den vollen 12-Monats-Zeitraum gesetzt.
 
 Der Import **überschreibt** alle aktuellen Einträge. Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt. Der importierte Datenstand lässt sich unmittelbar danach über **Rückgängig** zurücknehmen (Kapitel 6.3).
+
+Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland, 24./31.12.) wird ebenfalls übernommen. Enthält ein älteres Backup keine Konfiguration, bleiben die bisherigen Einstellungen unverändert bzw. fehlende Werte fallen sauber auf ihre Standardwerte zurück (Büro-Anteil 60, Kontingent 30) – es entsteht kein Fehler oder undefinierter Zustand.
 
 > **Tipp:** Erstelle regelmäßig einen Export, um bei Verlust der Browserdaten (z. B. nach dem Leeren des Caches) deine Daten wiederherstellen zu können.
 

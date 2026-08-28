@@ -1,6 +1,7 @@
 'use strict';
 
 let urlaubTotal = 30;
+let bueroAnteil = 60;
 
 const WORK_TYPES = [
     { key: 'BUEROTAG', label: 'Bürotag', color: '#185FA5' },
@@ -46,6 +47,7 @@ const DAYS_KEY = 'homeoffice.days';
 const PERIOD_KEY = 'homeoffice.period';
 const URLAUB_KEY = 'homeoffice.urlaub';
 const GEBUCHT_KEY = 'homeoffice.gebucht';
+const BUERO_ANTEIL_KEY = 'homeoffice.bueroAnteil';
 
 let days = {};
 let gebucht = {};
@@ -413,6 +415,15 @@ function saveUrlaub() {
     storeSet(URLAUB_KEY, String(urlaubTotal));
 }
 
+function loadBueroAnteil() {
+    const v = parseInt(storeGet(BUERO_ANTEIL_KEY), 10);
+    bueroAnteil = Number.isFinite(v) ? Math.max(0, Math.min(100, v)) : 60;
+}
+
+function saveBueroAnteil() {
+    storeSet(BUERO_ANTEIL_KEY, String(bueroAnteil));
+}
+
 // ---------- Export / Import ----------
 
 function timestamp() {
@@ -464,7 +475,7 @@ function parseBackupText(text) {
                 throw new Error('ungültiger Eintrag');
             }
         }
-        return { days: data.days, period: data.period, gebucht: data.gebucht };
+        return { days: data.days, period: data.period, gebucht: data.gebucht, config: data.config };
     }
     return { days: csvToDays(text), period: null, gebucht: {} };
 }
@@ -481,7 +492,13 @@ function exportBackupAs() {
         const data = {
             days: days,
             period: { start: periodStart, end: periodEnd },
-            gebucht: gebucht
+            gebucht: gebucht,
+            config: {
+                bueroAnteil: bueroAnteil,
+                urlaub: urlaubTotal,
+                bundesland: window.Feiertage ? Feiertage.getBundesland() : undefined,
+                sonderfrei: window.Feiertage ? Feiertage.getSonderfrei() : undefined
+            }
         };
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
@@ -525,6 +542,28 @@ function handleImportFile(file) {
             }
             saveDays();
             saveGebucht();
+            if (data.config && typeof data.config === 'object') {
+                if (Number.isFinite(parseInt(data.config.bueroAnteil, 10))) {
+                    bueroAnteil = Math.max(0, Math.min(100, parseInt(data.config.bueroAnteil, 10)));
+                }
+                if (Number.isFinite(parseInt(data.config.urlaub, 10))) {
+                    urlaubTotal = Math.max(0, parseInt(data.config.urlaub, 10));
+                }
+                if (window.Feiertage && data.config.bundesland) {
+                    try { Feiertage.setBundesland(data.config.bundesland); } catch (e) {}
+                }
+                if (window.Feiertage && typeof data.config.sonderfrei === 'boolean') {
+                    Feiertage.setSonderfrei(data.config.sonderfrei);
+                }
+                saveBueroAnteil();
+                saveUrlaub();
+                var bls = document.getElementById('blSelect');
+                var sf = document.getElementById('sonderfreiCheck');
+                if (window.Feiertage && bls) bls.value = Feiertage.getBundesland();
+                if (sf) sf.checked = window.Feiertage ? Feiertage.getSonderfrei() : false;
+                var bai = document.getElementById('bueroAnteilInput');
+                if (bai) bai.value = bueroAnteil;
+            }
             populateQuick();
             render();
             alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
@@ -580,7 +619,7 @@ function monthStat(year, month) {
         recorded: recorded,
         neutral: neutral,
         basis: basis,
-        pflicht: Math.floor(basis * 0.6),
+        pflicht: Math.floor(basis * (bueroAnteil / 100)),
         complete: recordedTotal === workdays
     };
 }
@@ -720,16 +759,17 @@ function renderKpis() {
     let html = '';
     html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
         'Bürotage erfasst', pflichtPct, '#185FA5',
-        'Erfüllungsgrad der Büropflicht in ' + monatName + ': ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60 % der Werktage, abgerundet). Kann vom Verhältnis Büro/Homeoffice rechts abweichen, da hier gerundet wird und nur ' + monatName + ' zählt.', true);
+        'Erfüllungsgrad der Büropflicht in ' + monatName + ': ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + ' % der Werktage, abgerundet). Kann vom Verhältnis Büro/Homeoffice rechts abweichen, da hier gerundet wird und nur ' + monatName + ' zählt.', true);
     if (basis > 0) {
+        const homeAnteil = 100 - bueroAnteil;
         const officePct = Math.round(q.office * 100 / basis);
-        const officeRingPct = Math.min(100, Math.round(officePct * 100 / 60));
+        const officeRingPct = bueroAnteil > 0 ? Math.min(100, Math.round(officePct * 100 / bueroAnteil)) : 0;
         const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-        const homeofficeRingPct = Math.min(100, Math.round(homeofficePct * 100 / 40));
+        const homeofficeRingPct = homeAnteil > 0 ? Math.min(100, Math.round(homeofficePct * 100 / homeAnteil)) : 0;
         html += kpiCard('Verhältnis Büro/Homeoffice', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#185FA5',
-            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel: 60 %).', true, officeRingPct, 60);
+            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel: ' + bueroAnteil + ' %).', true, officeRingPct, bueroAnteil);
         html += kpiCard('Verhältnis Homeoffice/Büro', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#3B6D11',
-            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Homeoffice-Tage an allen Büro+Homeoffice-Tagen (Ziel: 40 %).', true, homeofficeRingPct, 40);
+            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Homeoffice-Tage an allen Büro+Homeoffice-Tagen (Ziel: ' + homeAnteil + ' %).', true, homeofficeRingPct, homeAnteil);
     } else {
         html += kpiCard('Verhältnis Büro/Homeoffice', '–', 'keine vollständigen Monate', 0, '#185FA5', 'Noch keine vollständigen Monate vorhanden', true);
         html += kpiCard('Verhältnis Homeoffice/Büro', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
@@ -825,7 +865,7 @@ function heroHTML(year, month) {
         + '<div class="l">Werktage</div>'
         + '</div>'
         + '<div class="hero-stat">'
-        + '<div class="n" title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
+        + '<div class="n" title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
         + '<div class="l" style="text-align:left">Bürotage (Ist/Soll)</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + '</div>'
@@ -841,7 +881,7 @@ function cardHTML(year, month, showYear) {
     return '<div class="month-card">'
         + '<div class="m-head">'
         + '<h4>' + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
-        + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (60% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
+        + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + renderCalGrid(year, month, st.office > 0)
@@ -1291,6 +1331,16 @@ document.getElementById('urlaubConfirmOk').addEventListener('click', function ()
 document.getElementById('urlaubConfirmCancel').addEventListener('click', function () {
     pendingUrlaub = null;
     urlaubConfirmOverlay.classList.add('hidden');
+});
+
+// Büro-Anteil (%) – Übernahme erst über den OK-Button, nicht bei Tastendruck
+const bueroAnteilInputEl = document.getElementById('bueroAnteilInput');
+document.getElementById('bueroAnteilOk').addEventListener('click', function () {
+    const v = parseInt(bueroAnteilInputEl.value, 10);
+    bueroAnteil = Number.isFinite(v) ? Math.max(0, Math.min(100, v)) : 60;
+    bueroAnteilInputEl.value = bueroAnteil;
+    saveBueroAnteil();
+    render();
 });
 
 // ---------- Ereignis-Delegation ----------
@@ -2430,8 +2480,10 @@ function init() {
     loadDays();
     loadPeriod();
     loadUrlaub();
+    loadBueroAnteil();
     loadGebucht();
     document.getElementById('urlaubInput').value = urlaubTotal;
+    document.getElementById('bueroAnteilInput').value = bueroAnteil;
 
     // Bundesland-Dropdown füllen
     var blSelect = document.getElementById('blSelect');

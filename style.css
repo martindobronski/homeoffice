@@ -149,6 +149,12 @@ select {
     transform: translateY(-1px);
 }
 
+.btn-sm {
+    padding: 0 12px;
+    height: 36px;
+    font-size: 13px;
+}
+
 .btn-primary {
     background: var(--accent);
     color: #fff;
@@ -853,6 +859,14 @@ select:focus-visible {
 
 /* .quota-input/`-` bleibt als Tooltip-Hook erhalten (nur Detektion, kein Lock) */
 .setting-row.quota-input {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+}
+
+/* .buero-anteil bleibt als Tooltip-Hook erhalten (nur Detektion, kein Lock) */
+.setting-row.buero-anteil {
     background: transparent;
     border: none;
     border-radius: 0;

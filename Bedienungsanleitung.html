@@ -867,13 +867,14 @@ Blick.</p>
 Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den
 Prozentwert direkt (Ziel: 100 %).</li>
 <li><strong>Verhältnis Büro/Homeoffice:</strong> Anteil der Bürotage an
-allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf 60 % als
-Zielwert (60 % = voller Kreis). Überschreitet das Verhältnis den
-Zielwert, pulsiert der Ring als visuelles Signal.</li>
+allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den
+eingestellten <strong>Büro-Anteil</strong> als Zielwert (dieser = voller
+Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als
+visuelles Signal.</li>
 <li><strong>Verhältnis Homeoffice/Büro:</strong> Anteil der
-Homeoffice-Tage. Der Ring skaliert auf 40 % als Zielwert (40 % = voller
-Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der
-Ring.</li>
+Homeoffice-Tage. Der Ring skaliert auf den Homeoffice-Anteil (100 −
+Büro-Anteil) als Zielwert. Überschreitet das Verhältnis den Zielwert,
+pulsiert der Ring.</li>
 <li><strong>Urlaub (Jahr):</strong> genommene Urlaubstage im Verhältnis
 zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig
 verbraucht, Rot = alles aufgebraucht (100 %).</li>
@@ -893,6 +894,12 @@ fachlich korrekt, beantworten aber verschiedene Fragen.</p>
 </blockquote>
 <p><strong>Ampel-Farben:</strong></p>
 <table>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 20%" />
+</colgroup>
 <thead>
 <tr>
 <th>Karte</th>
@@ -910,15 +917,15 @@ fachlich korrekt, beantworten aber verschiedene Fragen.</p>
 </tr>
 <tr>
 <td>Verhältnis Büro/Homeoffice</td>
-<td>≥60 %</td>
-<td>≥45 %</td>
-<td>&lt;45 %</td>
+<td>≥ Büro-Anteil</td>
+<td>≥75 % des Büro-Anteils</td>
+<td>darunter</td>
 </tr>
 <tr>
 <td>Verhältnis Homeoffice/Büro</td>
-<td>≥40 %</td>
-<td>≥30 %</td>
-<td>&lt;30 %</td>
+<td>≥ Homeoffice-Anteil</td>
+<td>≥75 % des Homeoffice-Anteils</td>
+<td>darunter</td>
 </tr>
 <tr>
 <td>Urlaub</td>
@@ -928,6 +935,12 @@ fachlich korrekt, beantworten aber verschiedene Fragen.</p>
 </tr>
 </tbody>
 </table>
+<blockquote>
+<p>Die Ampel-Schwellen der beiden Verhältnis-Karten richten sich
+automatisch nach dem eingestellten Zielwert (Kapitel 7.3). Bei
+Standardwert 60/40 entsprechen sie den früheren festen Werten (Büro ≥60
+%/≥45 %, Homeoffice ≥40 %/≥30 %).</p>
+</blockquote>
 <p>Regeln:</p>
 <ul>
 <li><strong>Berechnung nur aus vollständigen Monaten:</strong> Ein Monat
@@ -949,9 +962,38 @@ unabhängig von der Ring-Farbe.</p>
 Maus erscheint ein informativer Tooltip mit Details zur Berechnung.</p>
 <p><strong>Ringskalierung:</strong> Die beiden Verhältnis-Karten
 verwenden eine relative Skalierung: <strong>Verhältnis
-Büro/Homeoffice</strong> (60 % = voller Kreis) und <strong>Verhältnis
-Homeoffice/Büro</strong> (40 % = voller Kreis). Werte über dem Zielwert
-lassen den Ring pulsen (helle Farbanimation).</p>
+Büro/Homeoffice</strong> (eingestellter Büro-Anteil = voller Kreis) und
+<strong>Verhältnis Homeoffice/Büro</strong> (100 − Büro-Anteil = voller
+Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle
+Farbanimation).</p>
+<h3 id="büro-anteil-einstellen">7.3 Büro-Anteil einstellen</h3>
+<p>Der Büro-Anteil bestimmt zwei Dinge:</p>
+<ul>
+<li><strong>Die Büropflicht-Solltage:</strong> Die erforderlichen
+Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der
+neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim
+Standardwert 60 % sind das z. B.
+<code>(Werktage − Neutrale Tage) × 0,6</code> – erhöhst du den Anteil
+auf 75 %, steigen die Solltage entsprechend.</li>
+<li><strong>Das Ziel der Verhältnis-Karten:</strong> Der Ring der Karte
+<strong>„Verhältnis Büro/Homeoffice”</strong> zeigt volle Erfüllung beim
+eingestellten Büro-Anteil; die Karte <strong>„Verhältnis
+Homeoffice/Büro”</strong> zielt auf den Rest (100 − Büro-Anteil).</li>
+</ul>
+<p><strong>So stellst du ihn ein:</strong> In der Einstellungen-Karte
+(Fußzeile) im Feld <strong>„Büro-Anteil (%)“</strong> den gewünschten
+Wert (0–100) eingeben und mit <strong>OK</strong> bestätigen. Die
+Übernahme erfolgt erst über den OK-Button, nicht während des Tippens.
+Der Homeoffice-Anteil ergibt sich automatisch als
+<code>100 − Büro-Anteil</code> – es gibt dafür keine zweite Eingabe. Der
+Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.</p>
+<p><strong>Randwerte:</strong> Bei <strong>100 %</strong> gilt
+ausschließlich Büropflicht (Homeoffice-Ziel 0 %), bei <strong>0
+%</strong> umgekehrt. Ungültige Eingaben (Text, leere Eingabe, Werte
+außerhalb 0–100) werden auf den gültigen Bereich begrenzt bzw. auf den
+Standardwert zurückgesetzt – es kommt zu keinem Fehler oder Absturz. Der
+Büro-Anteil wird zusammen mit den übrigen Einstellungen über den
+Backup-Export/-Import gesichert (Kapitel 8).</p>
 <hr />
 <h2 id="backup-export-und-import">8. Backup: Export und Import</h2>
 <p>In der Fußzeile links befinden sich zwei Buttons. Ein automatisches
@@ -980,8 +1022,9 @@ regelmäßige Datensicherung)</li>
 <pre><code>jjjj-mm-tt-hh-mm-ss-homeoffice_data.json
 jjjj-mm-tt-hh-mm-ss-homeoffice_data.csv</code></pre>
 <p><strong>JSON:</strong> Die Datei enthält alle Tages-Einträge, die
-„gebucht”-Markierungen sowie den aktuell eingestellten Zeitraum.
-Beispiel:</p>
+„gebucht”-Markierungen, den aktuell eingestellten Zeitraum sowie die
+Konfiguration (Büro-Anteil, Urlaubskontingent, Bundesland,
+24./31.12.-Einstellung). Beispiel:</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;days&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
@@ -994,8 +1037,14 @@ class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;gebucht&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;2026-09-01&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;config&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bueroAnteil&quot;</span><span class="fu">:</span> <span class="dv">60</span><span class="fu">,</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;urlaub&quot;</span><span class="fu">:</span> <span class="dv">30</span><span class="fu">,</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;bundesland&quot;</span><span class="fu">:</span> <span class="st">&quot;HH&quot;</span><span class="fu">,</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;sonderfrei&quot;</span><span class="fu">:</span> <span class="kw">true</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 <p><strong>CSV:</strong> Die Datei enthält je erfasstem Tag eine Zeile
 im Format <code>Datum,Art,Gebucht</code> (Gebucht-Wert
 <code>true</code>/<code>false</code>). Beispiel:</p>
@@ -1012,6 +1061,12 @@ Nach erfolgreichem Import wird die Anzahl der übernommenen Einträge
 angezeigt. Ungültige Dateien werden mit einer Fehlermeldung abgelehnt.
 Der importierte Datenstand lässt sich unmittelbar danach über
 <strong>Rückgängig</strong> zurücknehmen (Kapitel 6.3).</p>
+<p>Die gespeicherte <strong>Konfiguration</strong> (Büro-Anteil,
+Urlaubskontingent, Bundesland, 24./31.12.) wird ebenfalls übernommen.
+Enthält ein älteres Backup keine Konfiguration, bleiben die bisherigen
+Einstellungen unverändert bzw. fehlende Werte fallen sauber auf ihre
+Standardwerte zurück (Büro-Anteil 60, Kontingent 30) – es entsteht kein
+Fehler oder undefinierter Zustand.</p>
 <blockquote>
 <p><strong>Tipp:</strong> Erstelle regelmäßig einen Export, um bei
 Verlust der Browserdaten (z. B. nach dem Leeren des Caches) deine Daten
