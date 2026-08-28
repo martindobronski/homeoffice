@@ -13,7 +13,7 @@ const PRECACHE = [
     './',
     'index.html',
     'style.css?v=1.78',
-    'app.js?v=1.157',
+    'app.js?v=1.158',
     'feiertage.js?v=2.0',
     'manifest.json',
     'icon-192.png',

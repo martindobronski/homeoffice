@@ -33,7 +33,7 @@ Eigenschaften des App-Modus:
 Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
-- **KPI-Karten:** Büroquote, Homeofficequote, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
+- **KPI-Karten:** Verhältnis Büro/Homeoffice, Verhältnis Homeoffice/Büro, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
@@ -270,24 +270,26 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick. Jede Karte zeigt einen **Ampel-Indikator**: Die Farbe des Rings und des Prozentwerts signalisiert den Status auf einen Blick.
 
 - **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den Prozentwert direkt (Ziel: 100 %).
-- **Büroquote:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf 60 % als Zielwert (60 % = voller Kreis). Überschreitet die Quote den Zielwert, pulsiert der Ring als visuelles Signal.
-- **Homeofficequote:** Anteil der Homeoffice-Tage. Der Ring skaliert auf 40 % als Zielwert (40 % = voller Kreis). Überschreitet die Quote den Zielwert, pulsiert der Ring.
+- **Verhältnis Büro/Homeoffice:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf 60 % als Zielwert (60 % = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als visuelles Signal.
+- **Verhältnis Homeoffice/Büro:** Anteil der Homeoffice-Tage. Der Ring skaliert auf 40 % als Zielwert (40 % = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring.
 - **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig verbraucht, Rot = alles aufgebraucht (100 %).
+
+> **Wichtige Abgrenzung:** Die beiden **„Verhältnis"-Karten** messen nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht**-Karte zeigt korrekt **10/10 = 100 %** (Solltage erfüllt), während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt – die 60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind fachlich korrekt, beantworten aber verschiedene Fragen.
 
 **Ampel-Farben:**
 
 | Karte | Grün | Gelb | Rot |
 |-------|------|------|-----|
 | Büropflicht | ≥100 % | ≥80 % | <80 % |
-| Büroquote | ≥60 % | ≥45 % | <45 % |
-| Homeoffice-Quote | ≥40 % | ≥30 % | <30 % |
+| Verhältnis Büro/Homeoffice | ≥60 % | ≥45 % | <45 % |
+| Verhältnis Homeoffice/Büro | ≥40 % | ≥30 % | <30 % |
 | Urlaub | <60 % verbraucht | 60–99 % verbraucht | 100 % verbraucht |
 
 Regeln:
 
 - **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Teilweise erfasste Monate werden nicht mitgezählt.
 - Die Prozentwerte werden ganzzahlig gerundet.
-- Sind keine vollständigen Monate vorhanden, zeigen Büro- und Homeofficequote **„–"**.
+- Sind keine vollständigen Monate vorhanden, zeigen beide Verhältnis-Karten **„–"**.
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 
@@ -295,7 +297,7 @@ Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Bas
 
 **Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
 
-**Ringskalierung:** Die Büroquote (60 % = voller Kreis) und Homeoffice-Quote (40 % = voller Kreis) verwenden eine relative Skalierung. Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
+**Ringskalierung:** Die beiden Verhältnis-Karten verwenden eine relative Skalierung: **Verhältnis Büro/Homeoffice** (60 % = voller Kreis) und **Verhältnis Homeoffice/Büro** (40 % = voller Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
 
 ---
 
