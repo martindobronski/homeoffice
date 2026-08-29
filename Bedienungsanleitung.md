@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.48 vom 29.08.2026)
+## Anwesenheits-Dashboard (Version 1.49 vom 29.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -32,7 +32,7 @@ Eigenschaften des App-Modus:
 
 Das Fenster ist in vier Bereiche gegliedert:
 
-- **Kopfzeile:** Überschrift „Anwesenheits-Dashboard" und daneben die Zeitraum-Auswahl (Start/Ende, Kapitel 3).
+- **Kopfzeile:** Überschrift „Anwesenheits-Dashboard" mit der Jahresangabe des Zeitraums (z. B. `2026` oder `2026/2027`) und daneben die Zeitraum-Auswahl (Kapitel 3).
 - **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist durch ein blaues **„Aktiv"-Label** im Monatskopf und einen blauen Rahmen markiert.
 - **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Bürotage, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln, wobei **Bürotage** und **Homeoffice** direkt nebeneinander stehen; die Quoten (Büropflicht-Quote, Homeoffice-Quote) als Kachel mit **Fortschrittsring + Ampel-Farbe**, beschreibendem Wert (z. B. `Bürotage: 131 von 143 Solltagen`) und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant) und **Resturlaub-Ring**.
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
@@ -45,13 +45,13 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten **Start-Monat** und endet mit dem gewählten **Ende-Monat**. Damit lässt sich jeder beliebige Zeitraum von 1 Monat bis zu mehreren Jahren festlegen (Standard: **12 Monate**).
 
-- **Start und Ende wählen:** In der Kopfzeile gibt es zwei Blöcke – **Start** und **Ende** –, jeweils mit den Auswahlfeldern `[Monat] [Jahr]` und zwei Pfeilen **‹**/**›**. Über die Dropdowns oder die Pfeiltasten legst du den ersten bzw. letzten Monat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig.
+- **Start und Ende wählen:** In der Kopfzeile gibt es zwei Blöcke – **Zeitraum-Startmonat** und **Zeitraum-Endemonat** –, jeweils mit den Auswahlfeldern `[Monat] [Jahr]` und zwei Pfeilen **‹**/**›**. Über die Dropdowns oder die Pfeiltasten legst du den ersten bzw. letzten Monat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig.
 - **Ende folgt Start:** Solange du das Ende nicht selbst geändert hast, folgt es dem Start automatisch um **11 Monate (wieder 12 Monate Zeitraum)**. Änderst du den Start, wandert das Ende mit. Sobald du den Ende-Monat einmal selbst verstellst, bleibt das Ende fixiert.
 - **Vor- und zurückblättern:** Die Pfeile **‹**/**›** an jedem Block verschieben den jeweiligen Monat um einen Monat. Über die Pfeile **‹**/**›** des Start-Blocks (oder die Tastatur-Pfeiltasten links/rechts) blätterst du durch den Zeitraum; dabei bleibt ein nicht manuell gesetztes Ende synchron. Beim Überfahren zeigen die Pfeile einen Tooltip („Vorheriger Monat" bzw. „Nächster Monat").
 - **Dauer-Anzeige:** Zwischen beiden Blöcken zeigt ein Badge die **Dauer** des Zeitraums an (z. B. `Zeitraum-Dauer: 12 Monate` bei Start Januar 2026 bis Ende Dezember 2026). Diese Anzeige ist rein informativ und wird automatisch aus Start und Ende berechnet; ein Hovertipp auf den Badge zeigt den Hinweis „Dauer des eingestellten Zeitraums".
 - **Validierung:** Das Ende darf nicht vor dem Start liegen. Wird es vor den Start gesetzt, wird es automatisch auf den Start-Monat korrigiert (Mindestdauer 1 Monat).
-- **Zurücksetzen:** Der Pfeil-Button **↻** am rechten Rand setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück.
-- **Überschriften:** Die Jahresübersicht nennt immer den exakten Zeitraum (z. B. `Oktober 2026 – November 2026` bei Start Oktober und Ende November, oder `September 2026` bei Start = Ende). Bei einer Dauer von 12 Monaten steht zusätzlich „Jahresübersicht:“ davor (z. B. `Jahresübersicht: Januar 2026 – Dezember 2026`). Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026, Ende Januar 2027 → November 2026 – Januar 2027).
+- **Zurücksetzen:** Der Pfeil-Button **↻** (auf dem Desktop direkt neben dem Dauer-Badge, auf dem Smartphone rechtsbündig) setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück.
+- **Überschriften:** Die Überschrift oben nennt das Jahr bzw. die Jahreszahlen des Zeitraums (z. B. `Anwesenheits-Dashboard 2026` bei einem Jahr, `Anwesenheits-Dashboard 2026/2027` bei einem Jahreswechsel). Die Monatskarten-Sektion selbst trägt keine separate Überschrift mehr. Jahreswechsel werden von der Monatsdarstellung korrekt berücksichtigt (z. B. Start November 2026, Ende Januar 2027).
 - **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einige Jahre in die Zukunft; sie wird bei Einträgen in späteren Jahren automatisch erweitert.
 - Start- und Endmonat werden gespeichert und beim nächsten Öffnen wiederhergestellt.
 
@@ -375,7 +375,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.48 vom 29.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.49 vom 29.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 
