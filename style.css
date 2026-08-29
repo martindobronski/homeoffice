@@ -670,6 +670,10 @@ select:focus-visible {
     margin-bottom: 10px;
 }
 
+.tile-row-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
 .tile-row:last-child {
     margin-bottom: 0;
 }
@@ -849,6 +853,9 @@ select:focus-visible {
         grid-template-columns: 1fr;
     }
     .tile-row {
+        grid-template-columns: 1fr;
+    }
+    .tile-row-4 {
         grid-template-columns: 1fr;
     }
     .urlaub-breakdown {

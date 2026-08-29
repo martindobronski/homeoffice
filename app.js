@@ -1186,11 +1186,11 @@ function renderLegend() {
             + inner
             + '</button>';
     }
-    function countTile(key, caption) {
+    function countTile(key, caption, label) {
         const t = byKey[key];
         const inner = '<span class="tile-value">' + (counts[key] || 0) + '</span>'
             + (caption ? '<span class="tile-caption">' + caption + '</span>' : '');
-        return tile(t, inner);
+        return tile(t, inner, label);
     }
 
     // Ring-Kachel: Kombiniert Ring (Erfüllungsgrad/Anteil) und zugehörige Zahl.
@@ -1249,17 +1249,16 @@ function renderLegend() {
         homeofficeCaption,
         homeofficeTip);
 
-    // Redundanz: Der Bürotag-Grundwert steckt bereits in der Büropflicht-Quote-
-    // Kachel, der Homeoffice-Grundwert in der neuen Homeoffice-Quote-Kachel. Da
-    // der Homeoffice-Grundwert als Einzelzahl für den Nutzer schneller lesbar
-    // ist als aus der Quote herauszurechnen, bleibt die Homeoffice-Zahlkachel
-    // eigenständig bestehen (Bürotag hat bewusst keine eigene Zahlkachel mehr).
+    // Bürotage und Homeoffice werden zusätzlich als eigenständige Zahlen-Kacheln
+    // nebeneinander geführt, damit der Nutzer Anwesenheitszahlen im Zeitraum auf
+    // einen Blick sieht. Die Ring-Kacheln (Büropflicht-/Homeoffice-Quote) ergänzen
+    // das um die jeweilige Soll-Erfüllung.
     legendEl.innerHTML =
         '<div class="tile-row">'
         + pflichtTile + homeofficeTileHtml + urlaubTile
         + '</div>'
-        + '<div class="tile-row">'
-        + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
+        + '<div class="tile-row tile-row-4">'
+        + countTile('BUEROTAG', null, 'Bürotage') + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
         + '</div>'
         + '<div class="tile-row">'
         + countTile('KRANKHEIT') + countTile('FREIZEITTAG')
