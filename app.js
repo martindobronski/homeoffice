@@ -81,7 +81,6 @@ const zeitraumCardEl = document.querySelector('.zeitraum-card');
 
 const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
-const kpiStripEl = document.getElementById('kpiStrip');
 const quotaWrapEl = document.querySelector('.quota-input');
 const bueroAnteilWrapEl = document.querySelector('.buero-anteil');
 const bundeslandWrapEl = document.querySelector('.bundesland-select');
@@ -232,11 +231,10 @@ function syncEndeDropdowns() {
 }
 
 // Stellt nach Änderung von Start/Ende das Zeitraum-UI sowie Statistik
-// (Ring + Kacheln) und Jahresübersicht (Monatskarten) neu dar.
+// und Jahresübersicht (Monatskarten) neu dar.
 function applyAuswertung() {
     syncZeitraumUi();
     updateDashboardTitle();
-    renderKpis();
     renderLegend();
     renderMonths();
 }
@@ -925,76 +923,31 @@ function populateQuick() {
 
 // ---------- KPI-Karten ----------
 
-function kpiCard(label, value, sub, pct, color, tip, ampel, ringPct, target, invert) {
-    const dispPct = ringPct != null ? ringPct : pct;
-    const t = target || 100;
-    let ampelColor = '';
-    let ringColor = '';
-    if (ampel) {
-        if (invert) {
-            ampelColor = pct > 100 ? '#dc2626' : pct >= 100 ? '#dc2626' : pct >= 60 ? '#eab308' : '#16a34a';
-            ringColor = pct > 100 ? '#dc2626' : pct >= 100 ? '#9CA3AF' : pct >= 60 ? '#eab308' : '#16a34a';
-        } else {
-            const greenAt = t;
-            const yellowAt = Math.round(t * 0.75);
-            ampelColor = pct >= greenAt ? '#16a34a' : pct >= yellowAt ? '#eab308' : '#dc2626';
-            ringColor = ampelColor;
+// Summiert Bürotage (Ist) und Büropflicht (Soll) über den gesamten gewählten
+// Zeitraum – nur vollständige Monate, konsistent mit periodQuota().
+function periodPflichtQuota(fromIso, toIso) {
+    const from = parseISO(fromIso);
+    const to = parseISO(toIso);
+    const endAnchor = new Date(to.getFullYear(), to.getMonth(), 1);
+    let y = from.getFullYear();
+    let m = from.getMonth() + 1;
+    let office = 0;
+    let pflicht = 0;
+    while (new Date(y, m - 1, 1) <= endAnchor) {
+        const st = monthStat(y, m);
+        if (st.complete) {
+            office += st.office;
+            pflicht += st.pflicht;
+        }
+        m++;
+        if (m === 13) {
+            m = 1;
+            y++;
         }
     }
-    const overflow = (!invert && t < 100 && pct > t) ? pct - t : 0;
-    const isOverflow = overflow > 0;
-    return '<div class="kpi-card"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
-        + '<div class="ring-wrap">'
-        + '<div class="ring' + (isOverflow ? ' ring-pulse' : '') + '" style="--pct:' + dispPct + ';--ring-color:' + (ampel ? ringColor : color) + '"></div>'
-        + '<div class="ring-pct" style="color:var(--text)">' + pct + '%</div>'
-        + '</div>'
-        + '<div class="kpi-text">'
-        + '<div class="kpi-value">' + value + '</div>'
-        + '<div class="kpi-label">' + label + '</div>'
-        + '<div class="kpi-label" style="color:var(--text-faint)">' + sub + '</div>'
-        + '</div>'
-        + '</div>';
+    return { office: office, pflicht: pflicht };
 }
 
-function renderKpis() {
-    const strip = document.getElementById('kpiStrip');
-    const az = getAuswertungZeitraum();
-    const q = periodQuota(az.start, az.end);
-    const basis = q.office + q.homeoffice;
-    const now = new Date();
-    const st = monthStat(now.getFullYear(), now.getMonth() + 1);
-    const monatName = new Date(now.getFullYear(), now.getMonth(), 1).toLocaleDateString('de-DE', { month: 'long' });
-    const pflichtPct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
-    let urlaubYear = 0;
-    for (const iso of Object.keys(days)) {
-        if (parseISO(iso).getFullYear() === now.getFullYear() && days[iso] === 'URLAUB') {
-            urlaubYear++;
-        }
-    }
-    const urlaubPct = urlaubTotal > 0 ? Math.round(urlaubYear / urlaubTotal * 100) : 0;
-    let html = '';
-    html += kpiCard('Büropflicht (' + monatName + ')', st.office + ' / ' + st.pflicht + ' Tage',
-        'Bürotage erfasst', pflichtPct, '#185FA5',
-        'Erfüllungsgrad der Büropflicht in ' + monatName + ': ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + ' % der Werktage, abgerundet). Kann vom Verhältnis Büro/Homeoffice rechts abweichen, da hier gerundet wird und nur ' + monatName + ' zählt.', true);
-    if (basis > 0) {
-        const homeAnteil = 100 - bueroAnteil;
-        const officePct = Math.round(q.office * 100 / basis);
-        const officeRingPct = bueroAnteil > 0 ? Math.min(100, Math.round(officePct * 100 / bueroAnteil)) : 0;
-        const homeofficePct = Math.round(q.homeoffice * 100 / basis);
-        const homeofficeRingPct = homeAnteil > 0 ? Math.min(100, Math.round(homeofficePct * 100 / homeAnteil)) : 0;
-        html += kpiCard('Verhältnis Büro/Homeoffice', q.office + ' / ' + basis, 'Ist-Anwesenheit im Büro', officePct, '#185FA5',
-            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel: ' + bueroAnteil + ' %).', true, officeRingPct, bueroAnteil);
-        html += kpiCard('Verhältnis Homeoffice/Büro', q.homeoffice + ' / ' + basis, 'Ist-Anwesenheit remote', homeofficePct, '#3B6D11',
-            'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate):<br>Anteil Homeoffice-Tage an allen Büro+Homeoffice-Tagen (Ziel: ' + homeAnteil + ' %).', true, homeofficeRingPct, homeAnteil);
-    } else {
-        html += kpiCard('Verhältnis Büro/Homeoffice', '–', 'keine vollständigen Monate', 0, '#185FA5', 'Noch keine vollständigen Monate vorhanden', true);
-        html += kpiCard('Verhältnis Homeoffice/Büro', '–', 'keine vollständigen Monate', 0, '#3B6D11', 'Noch keine vollständigen Monate vorhanden', true);
-    }
-    html += kpiCard('Urlaub (' + now.getFullYear() + ')', urlaubYear + ' / ' + urlaubTotal + ' Tage',
-        'Kontingent verbraucht', urlaubPct, '#D4853C',
-        'Verbrauchtes Urlaubskontingent im laufenden Kalenderjahr ' + now.getFullYear() + ' (' + urlaubYear + ' von ' + urlaubTotal + ' Tagen). Bezieht sich immer auf das echte Kalenderjahr, unabhängig vom gewählten Anzeigezeitraum.', true, null, 100, true);
-    strip.innerHTML = html;
-}
 
 // ---------- Monatskalender ----------
 
@@ -1109,6 +1062,8 @@ function renderLegend() {
     const az = getAuswertungZeitraum();
     const start = parseISO(az.start);
     const end = parseISO(az.end);
+    const today = fmt(new Date());
+    const now = new Date();
     const counts = {};
     for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         if (isWeekend(d)) {
@@ -1120,12 +1075,13 @@ function renderLegend() {
             counts[t] = (counts[t] || 0) + 1;
         }
     }
-    const today = fmt(new Date());
+
+    // Urlaub im Kalenderjahr + Krankheitstage im Jahr.
     let urlaubGenommen = 0;
     let urlaubGeplant = 0;
     let krankJahr = 0;
     for (const iso of Object.keys(days)) {
-        if (parseISO(iso).getFullYear() !== new Date().getFullYear()) {
+        if (parseISO(iso).getFullYear() !== now.getFullYear()) {
             continue;
         }
         if (days[iso] === 'KRANKHEIT') {
@@ -1140,12 +1096,21 @@ function renderLegend() {
         }
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
+
+    // Quoten über den gesamten gewählten Zeitraum.
+    const p = periodPflichtQuota(az.start, az.end);
+    const q = periodQuota(az.start, az.end);
+    const basis = q.office + q.homeoffice;
+    const pflichtPct = p.pflicht > 0 ? Math.round(p.office / p.pflicht * 100) : 0;
+    const homeAnteil = 100 - bueroAnteil;
+    const officePct = basis > 0 ? Math.round(q.office * 100 / basis) : 0;
+    const officeRingPct = basis > 0 ? Math.min(100, Math.round(officePct * 100 / bueroAnteil)) : 0;
+
     const labelEl = document.getElementById('legendPeriodLabel');
     if (labelEl) {
-        const ds = parseISO(az.start).toLocaleDateString('de-DE');
-        const de = parseISO(az.end).toLocaleDateString('de-DE');
-        labelEl.textContent = 'Übersicht im Zeitraum ' + ds + ' - ' + de;
+        labelEl.textContent = 'Statistik im Zeitraum ' + start.toLocaleDateString('de-DE') + ' - ' + end.toLocaleDateString('de-DE');
     }
+
     const byKey = {};
     WORK_TYPES.forEach(function (t) {
         byKey[t.key] = t;
@@ -1168,22 +1133,61 @@ function renderLegend() {
             + (caption ? '<span class="tile-caption">' + caption + '</span>' : '');
         return tile(t, inner);
     }
+
+    // Ring-Kachel: Kombiniert Ring (Erfüllungsgrad/Anteil) und zugehörige Zahl.
+    function ratioTile(value, pct, label, caption, tip) {
+        const t = 100;
+        let ringColor = pct >= t ? '#16a34a' : pct >= Math.round(t * 0.75) ? '#eab308' : '#dc2626';
+        return '<div class="chip ratio-chip"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
+            + '<span class="tile-head">'
+            + '<span class="ratio-ring" style="--pct:' + pct + ';--ring-color:' + ringColor + '"><span>' + pct + '%</span></span>'
+            + '<span class="tile-label">' + label + '</span>'
+            + '</span>'
+            + '<span class="tile-value" style="font-size:16px">' + value + '</span>'
+            + (caption ? '<span class="tile-caption">' + caption + '</span>' : '')
+            + '</div>';
+    }
+
     const urlaubTile = tile(byKey.URLAUB,
         '<span class="urlaub-breakdown">'
             + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + '</span><span class="tile-caption">genommen</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
             + '</span>',
-        'Urlaub im aktuellen Jahr ' + new Date().getFullYear());
+        'Urlaub (Jahr ' + now.getFullYear() + ') · verplant = genommen + geplant');
+
+    const pflichtCaption = basis > 0
+        ? 'Bürotage erfasst von ' + bueroAnteil + ' % Soll (vollst. Monate)'
+        : 'Bürotage erfasst';
+    const pflichtTip = 'Erfüllungsgrad der Büropflicht über den gesamten gewählten Zeitraum (nur vollständige Monate): ' + p.office + ' erfasste Bürotage von ' + p.pflicht + ' Pflichttagen. Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
+    const ratioTip = basis > 0
+        ? 'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate): Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel ' + bueroAnteil + ' %).'
+        : 'Noch keine vollständigen Monate für das Büro/Homeoffice-Verhältnis vorhanden.';
+
+    const pflichtTile = ratioTile(
+        p.office + ' / ' + p.pflicht + ' Tage',
+        pflichtPct,
+        'Büropflicht-Quote',
+        pflichtCaption,
+        pflichtTip);
+
+    const ratioValue = basis > 0 ? q.office + ' / ' + basis : '– / –';
+    const ratioTileHtml = ratioTile(
+        ratioValue,
+        officeRingPct,
+        'Büro/Homeoffice-Verhältnis',
+        (basis > 0 ? 'Ist-Anwesenheit im Büro' : 'keine vollständigen Monate'),
+        ratioTip);
+
     legendEl.innerHTML =
         '<div class="tile-row">'
+        + pflichtTile + ratioTileHtml + urlaubTile
+        + '</div>'
+        + '<div class="tile-row">'
         + countTile('BUEROTAG') + countTile('HOMEOFFICE') + countTile('DIENSTREISE')
         + '</div>'
         + '<div class="tile-row">'
-        + urlaubTile + countTile('FEIERTAG') + countTile('KRANKHEIT', 'Jahr ' + krankJahr)
-        + '</div>'
-        + '<div class="tile-row tile-row-single">'
-        + countTile('FREIZEITTAG')
+        + countTile('FEIERTAG') + countTile('KRANKHEIT', 'Jahr ' + krankJahr) + countTile('FREIZEITTAG')
         + '</div>';
 }
 
@@ -2284,15 +2288,15 @@ function showDayTip(e) {
     const sonderfrei = (!cell && !chip && !quota && !bueroAnteil && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
     const btn = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
     const zeitraum = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('.zeitraum-card') : null;
-    const kpiCard = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum) ? e.target.closest('.kpi-card[data-tip]') : null;
-    if (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum && !kpiCard) {
+    const ratioCard = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
+    if (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum && !ratioCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || kpiCard).getBoundingClientRect();
+    const rect = (cell || chip || quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || ratioCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2340,18 +2344,18 @@ function showDayTip(e) {
     } else if (zeitraum) {
         html = 'Zeitraum'
             + '<div class="day-tip-hints">' + 'Start- und End-Monat des Anzeige-/Auswertungszeitraums wählen.' + '</div>';
-    } else if (kpiCard) {
-        html = kpiCard.getAttribute('data-tip');
+    } else if (ratioCard) {
+        html = ratioCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || kpiCard));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || ratioCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
     let left = rect.left + rect.width / 2 - tipW / 2;
     let top = rect.top - tipH - 6;
     if (top < 8) {
-        top = rect.bottom + ((zeitraum || kpiCard) ? 6 : 6);
+        top = rect.bottom + ((zeitraum || ratioCard) ? 6 : 6);
     }
     dayTip.style.left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8)) + 'px';
     dayTip.style.top = Math.max(8, Math.min(top, window.innerHeight - tipH - 8)) + 'px';
@@ -2602,7 +2606,6 @@ selectionCancelButton.addEventListener('click', exitSelectionMode);
 
 if (!IS_TOUCH) {
     yearGridEl.addEventListener('mouseover', showDayTip);
-    kpiStripEl.addEventListener('mouseover', showDayTip);
     legendEl.addEventListener('mouseover', showDayTip);
     quotaWrapEl.addEventListener('mouseover', showDayTip);
     bueroAnteilWrapEl.addEventListener('mouseover', showDayTip);
@@ -2611,7 +2614,6 @@ if (!IS_TOUCH) {
     footerActionsEl.addEventListener('mouseover', showDayTip);
     zeitraumCardEl.addEventListener('mouseover', showDayTip);
     yearGridEl.addEventListener('mouseout', hideDayTip);
-    kpiStripEl.addEventListener('mouseout', hideDayTip);
     legendEl.addEventListener('mouseout', hideDayTip);
     quotaWrapEl.addEventListener('mouseout', hideDayTip);
     bueroAnteilWrapEl.addEventListener('mouseout', hideDayTip);
@@ -2654,7 +2656,6 @@ function updateDashboardTitle() {
 function render() {
     updateDashboardTitle();
     syncZeitraumUi();
-    renderKpis();
     renderMonths();
     renderLegend();
 }

@@ -330,95 +330,11 @@ select:focus-visible {
     transform: none;
 }
 
-/* ---------- KPI strip ---------- */
+.month-card .m-head span.ampel-ok    { color: #16a34a !important; }
 
-.kpi-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 32px;
-}
+.month-card .m-head span.ampel-warn  { color: #eab308 !important; }
 
-.kpi-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px 22px;
-    display: flex;
-    align-items: center;
-    gap: 18px;
-}
-
-.ring {
-    --pct: 0;
-    --ring-color: #185FA5;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: conic-gradient(var(--ring-color) calc(var(--pct) * 1%), #ECEAE3 0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: none;
-}
-
-.ring::after {
-    content: '';
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: var(--surface);
-}
-
-.ring-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-}
-
-.ring-pct {
-    position: absolute;
-    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 12.5px;
-    font-weight: 700;
-}
-
-@keyframes ring-pulse {
-    0%, 100% { filter: brightness(1); }
-    50% { filter: brightness(1.5); }
-}
-
-.ring-pulse {
-    animation: ring-pulse 2s ease-in-out infinite;
-}
-
-.ring-pct.ampel-ok    { color: #16a34a; }
-.ring-pct.ampel-warn  { color: #eab308; }
-.ring-pct.ampel-alert { color: #dc2626; }
-
-.month-card .m-head span.ampel-ok,
-.kpi-card .ring-pct.ampel-ok    { color: #16a34a !important; }
-
-.month-card .m-head span.ampel-warn,
-.kpi-card .ring-pct.ampel-warn  { color: #eab308 !important; }
-
-.month-card .m-head span.ampel-alert,
-.kpi-card .ring-pct.ampel-alert { color: #dc2626 !important; }
-
-.kpi-text .kpi-value {
-    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 19px;
-    font-weight: 700;
-}
-
-.kpi-text .kpi-label {
-    font-size: 12px;
-    color: var(--text-soft);
-    margin-top: 2px;
-}
+.month-card .m-head span.ampel-alert { color: #dc2626 !important; }
 
 .section-title {
     display: flex;
@@ -846,6 +762,46 @@ select:focus-visible {
 
 .chip.active .tile-value {
     color: var(--accent);
+}
+
+/* ----- Ring-Kacheln (Quoten) in der Statistik ----- */
+
+.chip.ratio-chip {
+    cursor: default;
+}
+
+.chip.ratio-chip:hover {
+    background: var(--surface-muted);
+}
+
+.ratio-ring {
+    --pct: 0;
+    --ring-color: #16a34a;
+    width: 30px;
+    height: 30px;
+    flex: none;
+    border-radius: 50%;
+    background: conic-gradient(var(--ring-color) calc(var(--pct) * 1%), #ECEAE3 0);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.ratio-ring::after {
+    content: '';
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface-muted);
+}
+
+.ratio-ring span {
+    position: absolute;
+    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 8.5px;
+    font-weight: 700;
+    line-height: 1;
 }
 
 .chip.dimmed {
@@ -1397,9 +1353,6 @@ select:focus-visible {
 /* ---------- Responsive ---------- */
 
 @media (max-width: 950px) {
-    .kpi-strip {
-        grid-template-columns: repeat(2, 1fr);
-    }
     .year-grid {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -1408,9 +1361,6 @@ select:focus-visible {
 @media (max-width: 640px) {
     body {
         padding: 20px 14px;
-    }
-    .kpi-strip {
-        grid-template-columns: 1fr;
     }
     .year-grid {
         grid-template-columns: 1fr;

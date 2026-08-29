@@ -33,8 +33,8 @@ Eigenschaften des App-Modus:
 Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
-- **KPI-Karten:** Verhältnis Büro/Homeoffice, Verhältnis Homeoffice/Büro, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
 - **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist mit einem kleinen grünen Punkt (●) markiert.
+- **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Bürotag, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln; die Quoten (Büropflicht-Quote, Büro/Homeoffice-Verhältnis) als Kachel mit **Fortschrittsring + Ampel-Farbe** und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant).
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.
@@ -86,7 +86,7 @@ Der **aktuelle Monat** ist dezent durch einen kleinen grünen Punkt **●** vor 
 
 ### 4.3 Bedienung auf Touch-Geräten (Smartphone/Tablet)
 
-Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und Jahresübersicht einspaltig dargestellt, alle Dialoge passen sich der Bildschirmbreite an. Die Bedienung ist vollständig ohne Maus möglich:
+Die App passt sich schmalen Displays an: Auf Smartphones werden Statistik-Kacheln und Jahresübersicht einspaltig dargestellt, alle Dialoge passen sich der Bildschirmbreite an. Die Bedienung ist vollständig ohne Maus möglich:
 
 - **Tippen auf einen Tag:** öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten` – wie der Linksklick mit der Maus.
 - **Langer Druck auf einen Tag** (ca. eine halbe Sekunde, ohne den Finger zu bewegen): öffnet das **Schnellauswahl-Menü** an der Fingerposition (gleiche Funktionen wie per Rechtsklick: Art setzen, **Eintrag bearbeiten**, **Mehrfachauswahl…**, **gebucht**, **Löschen**). Wird der Finger vor Ablauf bewegt oder abgehoben, wird der Vorgang abgebrochen.
@@ -146,6 +146,8 @@ Hinweise:
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
 Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat), z. B. `Bürotag (10)`. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** die Zahl im gewählten Zeitraum **plus die Jahreszahl**, z. B. `Krankheitstage 2 · Jahr 9` – so bleibt sichtbar, wie viele Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+
+Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Bürotag, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln. Die beiden **Quoten** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt – das Kontingent gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht.
 
 Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
@@ -260,48 +262,40 @@ Beispiel bei 22 Werktagen und keinen neutralen Tagen: `22 × 0,6 = 13,2` → **1
 
 Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/13` (Bürotage/Pflichttage).
 
-### 7.2 Verhältnis Büro/Homeoffice (KPI-Karten)
+### 7.2 Statistik-Sektion (Quoten mit Fortschrittsring)
 
-Unter der Kopfzeile zeigen vier **KPI-Karten** mit Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen Blick. Jede Karte zeigt einen **Ampel-Indikator**: Die Farbe des Rings und des Prozentwerts signalisiert den Status auf einen Blick.
+In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei Kacheln, die eine **Quote mit Fortschrittsring** kombinieren. Die **Ampel-Farbe** des Rings signalisiert den Status auf einen Blick. Beide Quoten beziehen sich auf den **gesamten gewählten Zeitraum** (nicht nur auf den aktuellen Monat).
 
-- **Büropflicht (aktueller Monat):** erfasste Bürotage im Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den Prozentwert direkt (Ziel: 100 %).
-- **Verhältnis Büro/Homeoffice:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den eingestellten **Büro-Anteil** als Zielwert (dieser = voller Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als visuelles Signal.
-- **Verhältnis Homeoffice/Büro:** Anteil der Homeoffice-Tage. Der Ring skaliert auf den Homeoffice-Anteil (100 − Büro-Anteil) als Zielwert. Überschreitet das Verhältnis den Zielwert, pulsiert der Ring.
-- **Urlaub (Jahr):** genommene Urlaubstage im Verhältnis zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig verbraucht, Rot = alles aufgebraucht (100 %).
+- **Büropflicht-Quote:** erfasste Bürotage im Verhältnis zu den Pflichttagen des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %).
+- **Büro/Homeoffice-Verhältnis:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den eingestellten **Büro-Anteil** als Zielwert (dieser = voller Kreis).
 
-> **Wichtige Abgrenzung:** Die beiden **„Verhältnis"-Karten** messen nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht**-Karte zeigt korrekt **10/10 = 100 %** (Solltage erfüllt), während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt – die 60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind fachlich korrekt, beantworten aber verschiedene Fragen.
+> **Wichtige Abgrenzung:** Das **„Verhältnis"-Ring** misst nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt – die 60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind fachlich korrekt, beantworten aber verschiedene Fragen.
 
 **Ampel-Farben:**
 
-| Karte | Grün | Gelb | Rot |
-|-------|------|------|-----|
-| Büropflicht | ≥100 % | ≥80 % | <80 % |
+| Kategorie | Grün | Gelb | Rot |
+|-----------|------|------|-----|
+| Büropflicht-Quote | ≥100 % | ≥80 % | <80 % |
 | Verhältnis Büro/Homeoffice | ≥ Büro-Anteil | ≥75 % des Büro-Anteils | darunter |
-| Verhältnis Homeoffice/Büro | ≥ Homeoffice-Anteil | ≥75 % des Homeoffice-Anteils | darunter |
-| Urlaub | <60 % verbraucht | 60–99 % verbraucht | 100 % verbraucht |
-
-> Die Ampel-Schwellen der beiden Verhältnis-Karten richten sich automatisch nach dem eingestellten Zielwert (Kapitel 7.3). Bei Standardwert 60/40 entsprechen sie den früheren festen Werten (Büro ≥60 %/≥45 %, Homeoffice ≥40 %/≥30 %).
 
 Regeln:
 
 - **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Teilweise erfasste Monate werden nicht mitgezählt.
 - Die Prozentwerte werden ganzzahlig gerundet.
-- Sind keine vollständigen Monate vorhanden, zeigen beide Verhältnis-Karten **„–"**.
+- Sind keine vollständigen Monate vorhanden, zeigt das Verhältnis **„–"**.
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 
-**Prozent-Badges:** In den Monatskarten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben. Die Prozentzahlen in den Rings der KPI-Karten werden immer in dunkelgrauer Schrift (`--text`) dargestellt, unabhängig von der Ring-Farbe.
+**Tooltips:** Beim Überfahren einer Ring-Kachel mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung (auf Touch-Geräten entfällt er).
 
-**Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
-
-**Ringskalierung:** Die beiden Verhältnis-Karten verwenden eine relative Skalierung: **Verhältnis Büro/Homeoffice** (eingestellter Büro-Anteil = voller Kreis) und **Verhältnis Homeoffice/Büro** (100 − Büro-Anteil = voller Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle Farbanimation).
+**Ringskalierung:** Das **Büro/Homeoffice-Verhältnis** verwendet eine relative Skalierung (eingestellter Büro-Anteil = voller Kreis); die **Büropflicht-Quote** zeigt ihren Prozentwert direkt.
 
 ### 7.3 Büro-Anteil einstellen
 
 Der Büro-Anteil bestimmt zwei Dinge:
 
 - **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim Standardwert 60 % sind das z. B. `(Werktage − Neutrale Tage) × 0,6` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
-- **Das Ziel der Verhältnis-Karten:** Der Ring der Karte **„Verhältnis Büro/Homeoffice"** zeigt volle Erfüllung beim eingestellten Büro-Anteil; die Karte **„Verhältnis Homeoffice/Büro"** zielt auf den Rest (100 − Büro-Anteil).
+- **Das Ziel der Verhältnis-Kachel:** Der Ring der Kachel **„Verhältnis Büro/Homeoffice"** zeigt volle Erfüllung beim eingestellten Büro-Anteil; der Homeoffice-Anteil (100 − Büro-Anteil) ist dessen Gegenstück, wird aber nicht als eigener Ring ausgewiesen.
 
 **So stellst du ihn ein:** In der Einstellungen-Karte (Fußzeile) im Feld **„Büro-Anteil (%)"** den gewünschten Wert (0–100) eingeben und mit **OK** bestätigen. Die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Der Homeoffice-Anteil ergibt sich automatisch als `100 − Büro-Anteil` – es gibt dafür keine zweite Eingabe. Der Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
