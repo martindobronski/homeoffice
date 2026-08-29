@@ -808,6 +808,16 @@ select:focus-visible {
     line-height: 1;
 }
 
+.ratio-ring.over {
+    animation: ring-blink 1s steps(2, start) infinite;
+}
+
+@keyframes ring-blink {
+    to {
+        opacity: 0.25;
+    }
+}
+
 .chip.dimmed {
     opacity: 0.4;
 }

@@ -1208,12 +1208,14 @@ function renderLegend() {
     }
 
     // Ring-Kachel: Kombiniert Ring (Erfüllungsgrad/Anteil) und zugehörige Zahl.
+    // Liegt die Quote über 100 %, blendet der Ring zusätzlich zum grünen Zustand.
     function ratioTile(value, pct, label, caption, tip) {
         const t = 100;
         let ringColor = pct >= t ? '#16a34a' : pct >= Math.round(t * 0.75) ? '#eab308' : '#dc2626';
+        const over = pct > t ? ' over' : '';
         return '<div class="chip ratio-chip"' + (tip ? ' data-tip="' + tip + '"' : '') + '>'
             + '<span class="tile-head">'
-            + '<span class="ratio-ring" style="--pct:' + pct + ';--ring-color:' + ringColor + '"><span>' + pct + '%</span></span>'
+            + '<span class="ratio-ring' + over + '" style="--pct:' + pct + ';--ring-color:' + ringColor + '"><span>' + pct + '%</span></span>'
             + '<span class="tile-label">' + label + '</span>'
             + '</span>'
             + '<span class="tile-value" style="font-size:16px">' + value + '</span>'
@@ -1223,7 +1225,8 @@ function renderLegend() {
 
     const urlaubTip = 'Resturlaub im Kalenderjahr ' + now.getFullYear() + ': ' + ungeplant + ' von ' + urlaubTotal
             + ' Tagen frei verfügbar (= ' + urlaubRestPct + ' %). Geplante Tage zählen als vergeben.';
-    const urlaubRing = '<span class="ratio-ring urlaub-ring" style="--pct:' + urlaubRestPct
+    const urlaubRing = '<span class="ratio-ring urlaub-ring' + (urlaubRestPct > 100 ? ' over' : '')
+            + '" style="--pct:' + urlaubRestPct
             + ';--ring-color:' + urlaubRingColor + '" data-tip="' + urlaubTip + '"><span>' + urlaubRestPct + '%</span></span>';
     const urlaubTile = tile(byKey.URLAUB,
         '<span class="urlaub-breakdown">'
