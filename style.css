@@ -582,14 +582,17 @@ select:focus-visible {
 
 .month-card .m-head h4 .m-badge {
     display: inline-block;
-    width: 8px;
-    height: 8px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 3px 7px;
     margin-right: 7px;
-    border-radius: 50%;
+    border-radius: 999px;
     background: var(--office);
-    vertical-align: baseline;
-    position: relative;
-    top: -1px;
+    color: #fff;
+    vertical-align: middle;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 }
 
 .month-card .m-head span {

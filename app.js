@@ -1092,7 +1092,7 @@ function cardHTML(year, month, showYear, isCurrent) {
     const st = monthStat(year, month);
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
     const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
-    const cur = isCurrent ? '<span class="m-badge">●</span>' : '';
+    const cur = isCurrent ? '<span class="m-badge">Aktiv</span>' : '';
     return '<div class="month-card' + (isCurrent ? ' current' : '') + '">'
         + '<div class="m-head">'
         + '<h4>' + cur + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
