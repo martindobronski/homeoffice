@@ -1409,6 +1409,11 @@ select:focus-visible {
     .zeitraum-card .reset-btn {
         margin-top: 0;
     }
+    .zeitraum-card .duration-badge {
+        flex-basis: 100%;
+        align-self: center;
+        text-align: center;
+    }
     .dialog {
         min-width: 0;
         max-width: calc(100vw - 24px);
