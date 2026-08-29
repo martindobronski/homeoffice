@@ -175,7 +175,7 @@ h1 {
 
 .duration-badge {
     align-self: flex-start;
-    margin-top: 22px;
+    margin-top: 21px;
     background: var(--surface-muted);
     border-radius: 999px;
     padding: 6px 14px;
