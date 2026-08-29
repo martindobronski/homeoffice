@@ -1159,6 +1159,13 @@ function renderLegend() {
         }
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
+    // Resturlaub-Ring: % = frei verfügbare (ungeplante) Tage vom Jahreskontingent.
+    // Ampel "viel Rest = grün"; ist alles genommen/verplant (oder Kontingent 0),
+    // wird der Ring grau dargestellt.
+    const urlaubRestPct = urlaubTotal > 0 ? Math.round(ungeplant / urlaubTotal * 100) : 0;
+    const urlaubRingColor = ungeplant > 0
+        ? (urlaubRestPct >= 50 ? '#16a34a' : urlaubRestPct >= 25 ? '#eab308' : '#dc2626')
+        : '#9ca3af';
 
     // Quoten über den gesamten gewählten Zeitraum (nur vollständige Monate,
     // damit Büro- und Homeoffice-Quote spiegelbildlich konsistent sind).
@@ -1180,7 +1187,7 @@ function renderLegend() {
     WORK_TYPES.forEach(function (t) {
         byKey[t.key] = t;
     });
-    function tile(t, inner, label) {
+    function tile(t, inner, label, headExtra) {
         const active = activeFilter === t.key ? ' active' : (activeFilter ? ' dimmed' : '');
         return '<button type="button" class="chip' + active + '"'
             + ' data-filter="' + t.key + '">'
@@ -1188,6 +1195,7 @@ function renderLegend() {
             + '<span class="dot" style="background:' + t.color + '"></span>'
             + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
             + '<span class="tile-label">' + (label || t.label) + '</span>'
+            + (headExtra || '')
             + '</span>'
             + inner
             + '</button>';
@@ -1213,6 +1221,10 @@ function renderLegend() {
             + '</div>';
     }
 
+    const urlaubTip = 'Resturlaub im Kalenderjahr ' + now.getFullYear() + ': ' + ungeplant + ' von ' + urlaubTotal
+            + ' Tagen frei verfügbar (= ' + urlaubRestPct + ' %). Geplante Tage zählen als vergeben.';
+    const urlaubRing = '<span class="ratio-ring urlaub-ring" style="--pct:' + urlaubRestPct
+            + ';--ring-color:' + urlaubRingColor + '" data-tip="' + urlaubTip + '"><span>' + urlaubRestPct + '%</span></span>';
     const urlaubTile = tile(byKey.URLAUB,
         '<span class="urlaub-breakdown">'
             + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + '</span><span class="tile-caption">genommen</span></span>'
@@ -1221,7 +1233,8 @@ function renderLegend() {
             + '</span>'
             + '<span class="tile-caption urlaub-hinweis">Kontingent für das Kalenderjahr ' + now.getFullYear()
             + ', unabhängig vom gewählten Auswertungszeitraum · verplant = genommen + geplant</span>',
-        'Urlaub (Kalenderjahr ' + now.getFullYear() + ')');
+        'Urlaub (Kalenderjahr ' + now.getFullYear() + ')',
+        urlaubRing);
 
     // Start/Ende sind immer ganze Kalendermonate; ein unvollständiger Monat ist
     // ausschließlich der laufende (noch nicht abgeschlossene) Monat, falls er
@@ -2361,23 +2374,24 @@ function showDayTip(e) {
         return;
     }
     const cell = e.target.closest('.day[data-date]');
-    const chip = cell ? null : e.target.closest('.chip[data-filter]');
-    const quota = (!cell && !chip) ? e.target.closest('.quota-input') : null;
-    const bueroAnteil = (!cell && !chip && !quota) ? e.target.closest('.buero-anteil') : null;
-    const bundesland = (!cell && !chip && !quota && !bueroAnteil) ? e.target.closest('.bundesland-select') : null;
-    const sonderfrei = (!cell && !chip && !quota && !bueroAnteil && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
-    const btn = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
-    const resetBtn = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
-    const zeitraum = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('.zeitraum-card') : null;
-    const ratioCard = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
-    if (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum && !ratioCard) {
+    const urlaubRing = e.target.closest('.urlaub-ring[data-tip]');
+    const chip = urlaubRing ? null : e.target.closest('.chip[data-filter]');
+    const quota = (!cell && !chip && !urlaubRing) ? e.target.closest('.quota-input') : null;
+    const bueroAnteil = (!cell && !chip && !urlaubRing && !quota) ? e.target.closest('.buero-anteil') : null;
+    const bundesland = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil) ? e.target.closest('.bundesland-select') : null;
+    const sonderfrei = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
+    const btn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
+    const resetBtn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
+    const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('.zeitraum-card') : null;
+    const ratioCard = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
+    if (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum && !ratioCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || zeitraum || ratioCard).getBoundingClientRect();
+    const rect = (cell || chip || urlaubRing || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || zeitraum || ratioCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2397,6 +2411,8 @@ function showDayTip(e) {
             }
         }
         html += '<div class="day-tip-hints">Linksklick: Eintrag bearbeiten<br>Rechtsklick: Schnellauswahl</div>';
+    } else if (urlaubRing) {
+        html = urlaubRing.getAttribute('data-tip');
     } else if (chip) {
         const key = chip.getAttribute('data-filter');
         const t = WORK_TYPES.find(x => x.key === key);

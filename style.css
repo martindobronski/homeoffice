@@ -817,6 +817,10 @@ select:focus-visible {
     line-height: 1;
 }
 
+.tile-head .urlaub-ring {
+    margin-left: auto;
+}
+
 .chip.dimmed {
     opacity: 0.4;
 }
