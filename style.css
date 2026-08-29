@@ -809,12 +809,15 @@ select:focus-visible {
 }
 
 .ratio-ring.over {
-    animation: ring-blink 1s steps(2, start) infinite;
+    animation: ring-pulse 1s ease-in-out infinite;
 }
 
-@keyframes ring-blink {
-    to {
-        opacity: 0.25;
+@keyframes ring-pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
     }
 }
 
