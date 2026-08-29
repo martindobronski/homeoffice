@@ -90,15 +90,6 @@ h4 {
     margin-bottom: 28px;
 }
 
-.eyebrow {
-    font-size: 12px;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
 h1 {
     font-size: 26px;
     font-weight: 700;
