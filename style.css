@@ -393,7 +393,7 @@ select:focus-visible {
 }
 
 .day.empty {
-    background: #ECECE6;
+    background: transparent;
     cursor: default;
 }
 
@@ -563,11 +563,11 @@ select:focus-visible {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 8px;
+    margin-bottom: 10px;
 }
 
 .month-card .m-head h4 {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 700;
     letter-spacing: -0.01em;
 }
@@ -598,8 +598,8 @@ select:focus-visible {
 }
 
 .month-card .progress-bar {
-    height: 5px;
-    margin: 0 0 10px;
+    height: 6px;
+    margin: 0 0 14px;
 }
 
 .month-card .cal-grid {
@@ -608,10 +608,15 @@ select:focus-visible {
 
 .month-card .day {
     aspect-ratio: 1 / 1;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
+    color: var(--text);
     border-radius: 7px;
     transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.month-card .day.future {
+    color: var(--text-faint);
 }
 
 .month-card .day:not(.empty):hover {
