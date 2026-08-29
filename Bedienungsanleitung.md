@@ -250,15 +250,18 @@ Das Druckdokument wird vollständig offline im Browser erzeugt (keine externen S
 
 ### 7.1 Büropflichttage pro Monat
 
-Die erforderlichen Bürotage ergeben sich aus den Werktagen abzüglich der **neutralen Tage**, aufgerundet auf 60 %:
+Die erforderlichen Bürotage ergeben sich aus den Werktagen abzüglich der **neutralen Tage**, kaufmännisch gerundet auf den Büro-Anteil:
 
 ```
-Büropflichttage = (Werktage – Neutrale Tage) × 0,6  (abgerundet)
+Büropflichttage     = round((Werktage – Neutrale Tage) × Büro-Anteil / 100)
+Homeoffice-Solltage = (Werktage – Neutrale Tage) − Büropflichttage
 ```
 
 **Neutrale Tage** sind Tage, an denen weder Büro noch Homeoffice erfasst wird: Urlaub, Krankheit, Freizeittag, Feiertag und Dienstreise. Homeoffice- und Bürotage zählen also nicht als neutral.
 
-Beispiel bei 22 Werktagen und keinen neutralen Tagen: `22 × 0,6 = 13,2` → **13 Pflichttage**. Bei 21 Werktagen: `21 × 0,6 = 12,6` → **12 Pflichttage**.
+**Komplementär-Rundung:** Nur die **Büropflichttage** werden aktiv berechnet und gerundet (z. B. `round` statt `floor`). Die **Homeoffice-Solltage** werden nicht unabhängig gerundet, sondern als **Rest** (Gesamttage minus Büropflichttage) ermittelt. Dadurch gilt immer exakt `Büropflichttage + Homeoffice-Solltage = arbeitsfähige Tage` – ein Tag kann nicht anteilig beiden Kategorien zugeordnet sein und geht so nie über unabhängiges Runden verloren.
+
+Beispiel bei 22 Werktagen und keinen neutralen Tagen: `round(22 × 0,6) = round(13,2)` → **13 Pflichttage** und **9 Homeoffice-Solltage** (Summe 22). Bei 21 Werktagen: `round(21 × 0,6) = round(12,6)` → **13 Pflichttage** und **8 Homeoffice-Solltage** (Summe 21).
 
 Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/13` (Bürotage/Pflichttage).
 
@@ -267,7 +270,7 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei Kacheln, die eine **Quote mit Fortschrittsring** kombinieren. Die **Ampel-Farbe** des Rings signalisiert den Status auf einen Blick. Beide Quoten beziehen sich auf den **gesamten gewählten Zeitraum** (nicht nur auf den aktuellen Monat).
 
 - **Büropflicht-Quote:** erfasste Bürotage im Verhältnis zu den Pflichttagen des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %).
-- **Homeoffice-Quote:** erfasste Homeoffice-Tage im Verhältnis zu den Homeoffice-**Solltagen** des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %). Die Sollwerte beider Quoten ergeben sich spiegelbildlich aus Werktagen × Büro-Anteil bzw. × Homeoffice-Anteil (siehe 7.3); die Homeoffice-Quote ist damit das Gegenstück zur Büropflicht-Quote für die Homeoffice-Seite der 60/40-Regel.
+- **Homeoffice-Quote:** erfasste Homeoffice-Tage im Verhältnis zu den Homeoffice-**Solltagen** des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %). Die Sollwerte beider Quoten entstehen spiegelbildlich (Büro gerundet, Homeoffice als komplementärer Rest, siehe 7.1/7.3); die Homeoffice-Quote ist damit das Gegenstück zur Büropflicht-Quote für die Homeoffice-Seite der 60/40-Regel.
 
 > **Wichtige Abgrenzung:** Beide Quoten messen die **Erfüllung der jeweiligen Solltage** – die Büropflicht-Quote die Büro-Solltage, die Homeoffice-Quote die Homeoffice-Solltage. Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, die **Homeoffice-Quote** das Verhältnis der erfassten zu den Soll-Homeoffice-Tagen. Beide Kacheln beantworten also verschiedene Fragen – zusammen decken sie die Soll-Seite (z. B. 60/40) vollständig ab.
 
@@ -284,9 +287,7 @@ Regeln:
 - Die Prozentwerte werden ganzzahlig gerundet.
 - Sind keine vollständigen Monate vorhanden (bzw. beträgt das Homeoffice-Soll 0, z. B. bei einem Büro-Anteil von 100 %), zeigen die Quoten **0 %** statt des üblichen Werts.
 
-**Rundungsmethodik des Solls:** Beide Sollwerte (Büro- und Homeoffice-Soll) werden **pro Monat einzeln** berechnet und abgerundet (`Math.floor(Werktage × Anteil)`) und anschließend über den Zeitraum summiert – nicht einmalig über den gesamten Zeitraum. Weil beide unabhängig voneinander pro Monat abgerundet werden, kann ihre Summe die Monats-Werktage um 0 oder 1 Tag **unterschreiten** (z. B. 39 Werktage → Bürosoll 23 + Homeoffice-Soll 15 = 38 statt 39). Diese kleine Rest-Differenz wird bewusst so belassen, damit beide Sollwerte zur Summe der Monatskarten konsistent bleiben.
-
-Beispiel: 23 erfasste Büro- und 16 erfasste Homeoffice-Tage aus vollständigen Monaten, Büro-Anteil 60 % → Homeoffice-Soll ≈ 15–16 → **Homeoffice-Quote ≈ 100 %** (bzw. etwas darüber, da 16 von 15 Solltagen erfasst sind).
+**Rundungsmethodik des Solls:** Büro- und Homeoffice-Soll werden **pro Monat einzeln** berechnet und anschließend über den Zeitraum summiert – nicht einmalig über den gesamten Zeitraum. Pro Monat wird nur das **Büro-Soll** aktiv gerundet (`Math.round(Werktage × Anteil)`); das **Homeoffice-Soll** ist der komplementäre Rest (Werktage − Büro-Soll). Dadurch gilt auch über mehrere Monate hinweg exakt `Büro-Soll + Homeoffice-Soll = Summe der arbeitsfähigen Tage` – kein Tag geht durch unabhängiges Runden verloren und beide Quoten können nicht gleichzeitig über 100 % liegen.
 
 **Tooltips:** Beim Überfahren einer Ring-Kachel mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung (auf Touch-Geräten entfällt er).
 
@@ -296,8 +297,8 @@ Beispiel: 23 erfasste Büro- und 16 erfasste Homeoffice-Tage aus vollständigen 
 
 Der Büro-Anteil bestimmt zwei Dinge:
 
-- **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim Standardwert 60 % sind das z. B. `(Werktage − Neutrale Tage) × 0,6` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
-- **Die Homeoffice-Solltage:** Der Homeoffice-Anteil (`100 − Büro-Anteil`) legt spiegelbildlich die Solltage für die **Homeoffice-Quote** fest: pro Monat `(Werktage − Neutrale Tage) × Homeoffice-Anteil` (abgerundet). Beim Standardwert 60 % Büro sind das 40 % Homeoffice-Soll; der Homeoffice-Anteil wird aber **nicht** als Ampel-Schwelle benutzt, da die Homeoffice-Quote unabhängig davon stets 100 % Soll-Erfüllung anstrebt.
+- **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil und kaufmännisch gerundet (`Math.round`). Beim Standardwert 60 % sind das z. B. `round((Werktage − Neutrale Tage) × 0,6)` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
+- **Die Homeoffice-Solltage:** Der Homeoffice-Anteil (`100 − Büro-Anteil`) bestimmt die Homeoffice-Solltage als komplementären **Rest** (arbeitsfähige Tage − Büropflichttage), sodass beide Sollwerte zusammen immer exakt der Gesamtzahl der arbeitsfähigen Tage entsprechen. Beim Standardwert 60 % Büro sind das 40 % Homeoffice-Soll; der Homeoffice-Anteil wird aber **nicht** als Ampel-Schwelle benutzt, da die Homeoffice-Quote unabhängig davon stets 100 % Soll-Erfüllung anstrebt.
 
 **So stellst du ihn ein:** In der Einstellungen-Karte (Fußzeile) im Feld **„Büro-Anteil (%)"** den gewünschten Wert (0–100) eingeben und mit **OK** bestätigen. Die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Der Homeoffice-Anteil ergibt sich automatisch als `100 − Büro-Anteil` – es gibt dafür keine zweite Eingabe. Der Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 

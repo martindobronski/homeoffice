@@ -843,6 +843,15 @@ function monthStat(year, month) {
         .reduce((a, [, v]) => a + v, 0);
     const office = recorded['BUEROTAG'] || 0;
     const basis = workdays - neutral;
+    // Komplementär-RUNDUNG: Das Büro-Soll (pflicht) wird aktiv berechnet und
+    // kaufmännisch gerundet (round), das Homeoffice-Soll (homeofficeSoll) wird
+    // bewusst NICHT unabhängig gerundet, sondern als Rest ermittelt
+    // (basis - pflicht). Dadurch gilt immer exakt pflicht + homeofficeSoll =
+    // basis (arbeitsfähige Tage) – ein Tag kann nicht anteilig beiden
+    // Kategorien zugeordnet sein und geht so nie über unabhängiges Runden
+    // verloren. (Früher wurden beide unabhängig mit floor gerundet, was die
+    // Summe regelmäßig unterschritt.)
+    const pflicht = Math.round(basis * (bueroAnteil / 100));
     return {
         year: year,
         month: month,
@@ -851,7 +860,8 @@ function monthStat(year, month) {
         recorded: recorded,
         neutral: neutral,
         basis: basis,
-        pflicht: Math.floor(basis * (bueroAnteil / 100)),
+        pflicht: pflicht,
+        homeofficeSoll: basis - pflicht,
         complete: recordedTotal === workdays
     };
 }
@@ -925,13 +935,12 @@ function populateQuick() {
 
 // Summiert Bürotage (Ist) und Büropflicht (Soll) über den gesamten gewählten
 // Zeitraum – nur vollständige Monate, konsistent mit periodQuota().
-// RUNDUNGSMETHODIK: Der Sollwert (pflicht) wird PRO MONAT EINZELN berechnet
-// und abgerundet (monthStat().pflicht = Math.floor(basis * bueroAnteil / 100))
-// und anschließend über den Zeitraum aufsummiert – NICHT einmalig über den
-// gesamten Zeitraum (das könnte z. B. 60 % der Gesamtwerktage = 23 statt
-// summiert 22 ergeben). Diese Abweichung wird bewusst so belassen, damit der
-// Mehr-Monats-Wert konsistent zur Summe der Monatskarten (Ist/Soll je Monat)
-// bleibt; eine Änderung der Methode ist nicht beabsichtigt.
+// METHODIK: Der Sollwert (pflicht) wird PRO MONAT EINZELN berechnet
+// (monthStat().pflicht = Math.round(basis * bueroAnteil / 100), kaufmännisch
+// gerundet) und anschließend über den Zeitraum aufsummiert – NICHT einmalig
+// über den gesamten Zeitraum. Dies hält den Mehr-Monats-Wert konsistent zur
+// Summe der Monatskarten (Ist/Soll je Monat). Das Homeoffice-Soll ist je Monat
+// der komplementäre Rest (basis - pflicht), siehe monthStat().
 function periodPflichtQuota(fromIso, toIso) {
     const from = parseISO(fromIso);
     const to = parseISO(toIso);
@@ -957,20 +966,17 @@ function periodPflichtQuota(fromIso, toIso) {
 
 // Summiert Homeoffice-Ist und Homeoffice-Soll (Ziel) über den gesamten
 // gewählten Zeitraum – nur vollständige Monate, spiegelbildlich zur
-// periodPflichtQuota. RUNDUNGSMETHODIK: Das Homeoffice-Soll wird PRO MONAT
-// EINZELN berechnet und abgerundet (Math.floor(basis * homeAnteil / 100)) und
-// anschließend aufsummiert – konsistent zur Büropflicht-Soll-Berechnung.
-// Hinweis: Weil Büro- und Homeoffice-Soll unabhängig voneinander pro Monat
-// abgerundet werden, kann die Summe beider Sollwerte die jeweilige
-// Monats-Werktagskombination um 0 oder 1 Tag unterschreiten (z. B. 39
-// Werktage → Büro 60 % = 23 und Homeoffice 40 % = 15 ergibt 38 statt 39).
-// Diese kleine Rest-Differenz wird bewusst so belassen und nicht repariert,
-// da beide Sollwerte damit zur Summe der Monatskarten konsistent bleiben.
+// periodPflichtQuota. AGGREGATION: Die Sollwerte werden PRO MONAT EINZELN
+// ermittelt (aus monthStat(), das Büro-Soll gerundet und das Homeoffice-Soll
+// als Rest berechnet – siehe Kommentar dort) und anschließend über den
+// Zeitraum aufsummiert. Weil Büro- und Homeoffice-Soll je Monat komplementär
+// sind (pflicht + homeofficeSoll = basis), ist auch über mehrere Monate die
+// Summe beider Sollwerte immer exakt gleich der Summe der arbeitsfähigen Tage
+// – kein Tag geht durch unabhängiges Runden verloren.
 function periodHomeofficeQuota(fromIso, toIso) {
     const from = parseISO(fromIso);
     const to = parseISO(toIso);
     const endAnchor = new Date(to.getFullYear(), to.getMonth(), 1);
-    const homeAnteil = 100 - bueroAnteil;
     let y = from.getFullYear();
     let m = from.getMonth() + 1;
     let homeoffice = 0;
@@ -979,7 +985,7 @@ function periodHomeofficeQuota(fromIso, toIso) {
         const st = monthStat(y, m);
         if (st.complete) {
             homeoffice += st.recorded['HOMEOFFICE'] || 0;
-            homeofficeSoll += Math.floor(st.basis * (homeAnteil / 100));
+            homeofficeSoll += st.homeofficeSoll;
         }
         m++;
         if (m === 13) {
@@ -1090,7 +1096,7 @@ function cardHTML(year, month, showYear, isCurrent) {
     return '<div class="month-card' + (isCurrent ? ' current' : '') + '">'
         + '<div class="m-head">'
         + '<h4>' + cur + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
-        + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
+        + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, gerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
         + renderCalGrid(year, month, st.office > 0)
@@ -1233,7 +1239,7 @@ function renderLegend() {
         : 'Homeoffice-Tage erfasst';
     const homeofficeTip = 'Erfüllungsgrad der Homeoffice-Quote (spiegelbildlich zur Büropflicht-Quote) über den gesamten gewählten Zeitraum'
         + (partial ? ' (nur vollständige Monate)' : '')
-        + ': ' + ho.homeoffice + ' erfasste Homeoffice-Tage von ' + ho.homeofficeSoll + ' Soll-Tagen (' + homeAnteil + ' % der Werktage, abgerundet pro Monat). Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
+        + ': ' + ho.homeoffice + ' erfasste Homeoffice-Tage von ' + ho.homeofficeSoll + ' Soll-Tagen (' + homeAnteil + ' % der Werktage, gerundet pro Monat). Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
 
     const pflichtTile = ratioTile(
         p.office + ' / ' + p.pflicht + ' Tage',
