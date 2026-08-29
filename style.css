@@ -1444,8 +1444,9 @@ select:focus-visible {
         max-width: 100%;
     }
     .month-card .m-head {
-        flex-wrap: wrap;
-        gap: 2px 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
     }
     .selection-bar {
         left: 12px;
