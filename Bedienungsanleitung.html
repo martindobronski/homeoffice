@@ -257,8 +257,8 @@
 </header>
 <h1 id="bedienungsanleitung">Bedienungsanleitung</h1>
 <h2
-id="anwesenheits-dashboard-version-1.47-vom-28.08.2026">Anwesenheits-Dashboard
-(Version 1.47 vom 28.08.2026)</h2>
+id="anwesenheits-dashboard-version-1.48-vom-29.08.2026">Anwesenheits-Dashboard
+(Version 1.48 vom 29.08.2026)</h2>
 <p>Die App erfasst für jeden Werktag, ob du im <strong>Büro</strong>
 oder im <strong>Homeoffice</strong> gearbeitet hast. Urlaub, Krankheit
 und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls
@@ -293,8 +293,10 @@ App-Seiten, Stylesheets, Skripte und diese Bedienungsanleitung (HTML) im
 Gerätespeicher vorgehalten. Die App startet und funktioniert damit auch
 ohne Internetverbindung; Einträge werden weiterhin lokal gesichert.</li>
 <li><strong>Automatische Updates:</strong> Bei bestehender
-Internetverbindung lädt die App immer den aktuellen Stand; Änderungen
-erscheinen spätestens mit dem nächsten Öffnen.</li>
+Internetverbindung prüft die App bei jedem Start auf eine neue Version,
+lädt diese im Hintergrund und nimmt sie nach kurzer Zeit automatisch in
+Betrieb (einmaliges Neuladen). Änderungen erscheinen so zuverlässig beim
+nächsten bzw. übernächsten Öffnen.</li>
 <li><strong>Daten bleiben gerätebezogen:</strong> Der Speicher gilt pro
 Gerät und Browser – unabhängig davon, ob die App installiert oder nur
 als Webseite geöffnet ist. Ein Datenaustausch zwischen Geräten erfolgt
@@ -304,17 +306,23 @@ als Webseite geöffnet ist. Ein Datenaustausch zwischen Geräten erfolgt
 <h2 id="aufbau-der-oberfläche">2. Aufbau der Oberfläche</h2>
 <p>Das Fenster ist in vier Bereiche gegliedert:</p>
 <ul>
-<li><strong>Kopfzeile:</strong> Überschrift mit Jahr und Auswahl des
-Zeitraumbeginns (Startmonat und Startjahr).</li>
-<li><strong>KPI-Karten:</strong> Verhältnis Büro/Homeoffice, Verhältnis
-Homeoffice/Büro, Büropflicht (aktueller Monat) und Urlaubsstand –
-jeweils mit Zahlenwert, prozentualem <strong>Fortschrittsring</strong>
-und <strong>Ampel-Farben</strong> (grün/gelb/rot) sowie informativem
-Tooltip beim Überfahren.</li>
-<li><strong>Mitte:</strong> Der aktuelle Monat als große
-<strong>Hero-Karte</strong> (mit Badge „Läuft gerade”) sowie alle
-weiteren Monate des Zeitraums als kompakte Mini-Karten in einer
-Jahresübersicht.</li>
+<li><strong>Kopfzeile:</strong> Überschrift „Anwesenheits-Dashboard” und
+daneben die Zeitraum-Auswahl (Start/Ende, Kapitel 3).</li>
+<li><strong>Mitte:</strong> Alle Monate des gewählten Zeitraums als
+kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist
+durch ein blaues <strong>„Aktiv”-Label</strong> im Monatskopf und einen
+blauen Rahmen markiert.</li>
+<li><strong>Statistik:</strong> Eine konsolidierte Sektion unterhalb der
+Jahresübersicht mit <strong>einer Kachel je Kategorie</strong>, auf den
+gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Bürotage,
+Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte
+Zahlen-Kacheln, wobei <strong>Bürotage</strong> und
+<strong>Homeoffice</strong> direkt nebeneinander stehen; die Quoten
+(Büropflicht-Quote, Homeoffice-Quote) als Kachel mit
+<strong>Fortschrittsring + Ampel-Farbe</strong>, beschreibendem Wert (z.
+B. <code>Bürotage: 131 von 143 Solltagen</code>) und Tooltip; Urlaub mit
+Jahres-Breakdown (genommen/geplant/ungeplant) und
+<strong>Resturlaub-Ring</strong>.</li>
 <li><strong>Fußzeile:</strong> Zwei Karten –
 <strong>„Einstellungen”</strong> (Urlaubskontingent, Bundesland-Auswahl
 „Bundesland (Feiertage)” mit Checkbox „24./31.12. (arbeitsfreie Tage)“)
@@ -325,89 +333,94 @@ Versionsangabe mit Copyright („© 2026”).</li>
 </ul>
 <p>Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3
 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf
-Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.</p>
+Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.</p>
 <hr />
 <h2 id="zeitraum-wählen">3. Zeitraum wählen</h2>
 <p>Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken
-denselben Zeitraum ab: Er beginnt mit dem gewählten Startmonat und
-erstreckt sich über die eingestellte <strong>Dauer</strong> (Standard:
-12 Monate). Startmonat und Dauer ergeben zusammen den Auswertungs- und
-Anzeigezeitraum – ein eigenes Enddatum gibt es nicht.</p>
+denselben Zeitraum ab: Er beginnt mit dem gewählten
+<strong>Start-Monat</strong> und endet mit dem gewählten
+<strong>Ende-Monat</strong>. Damit lässt sich jeder beliebige Zeitraum
+von 1 Monat bis zu mehreren Jahren festlegen (Standard: <strong>12
+Monate</strong>).</p>
 <ul>
-<li><strong>Startmonat wählen:</strong> Über die beiden Auswahlfelder
-<code>[Monat] [Jahr]</code> in der Kopfzeile legst du den Startmonat des
-Zeitraums fest. Die Auswahl wirkt <strong>sofort</strong> – ein
-zusätzlicher „Übernehmen“-Klick ist nicht nötig. Beispiel: Startmonat
-<code>September</code> und Jahr <code>2026</code> ergibt den
-Kalenderzeitraum <strong>September 2026 – August 2027</strong>.</li>
-<li><strong>Vor- und zurückblättern:</strong> Mit den Pfeilen
-<strong>‹</strong> und <strong>›</strong> neben den Auswahlfeldern
-verschiebst du den Zeitraum um jeweils einen Monat. Dasselbe geht per
-Tastatur mit den <strong>Pfeiltasten links/rechts</strong>.</li>
-<li><strong>Heute:</strong> Der Button <strong>Heute</strong> setzt den
-Zeitraum direkt auf den aktuellen Monat zurück.</li>
-<li><strong>Dauer (Monate):</strong> Neben dem Startmonat lässt sich die
-<strong>Länge</strong> des Zeitraums über die Pfeile
-<strong>‹</strong>/<strong>›</strong> auf <strong>1–24 Monate</strong>
-einstellen (Standard: 12). Die Überschrift der Jahresübersicht nennt
-immer den exakten Zeitraum (z. B.
-<code>Oktober 2026 – November 2026</code> bei Start Oktober und Dauer 2,
-oder <code>September 2026</code> bei Dauer 1). Bei der Standard-Dauer
-von 12 Monaten steht zusätzlich „Jahresübersicht:” davor (z. B.
+<li><strong>Start und Ende wählen:</strong> In der Kopfzeile gibt es
+zwei Blöcke – <strong>Start</strong> und <strong>Ende</strong> –,
+jeweils mit den Auswahlfeldern <code>[Monat] [Jahr]</code> und zwei
+Pfeilen <strong>‹</strong>/<strong>›</strong>. Über die Dropdowns oder
+die Pfeiltasten legst du den ersten bzw. letzten Monat des Zeitraums
+fest. Die Auswahl wirkt <strong>sofort</strong> – ein zusätzlicher
+„Übernehmen“-Klick ist nicht nötig.</li>
+<li><strong>Ende folgt Start:</strong> Solange du das Ende nicht selbst
+geändert hast, folgt es dem Start automatisch um <strong>11 Monate
+(wieder 12 Monate Zeitraum)</strong>. Änderst du den Start, wandert das
+Ende mit. Sobald du den Ende-Monat einmal selbst verstellst, bleibt das
+Ende fixiert.</li>
+<li><strong>Vor- und zurückblättern:</strong> Die Pfeile
+<strong>‹</strong>/<strong>›</strong> an jedem Block verschieben den
+jeweiligen Monat um einen Monat. Über die Pfeile
+<strong>‹</strong>/<strong>›</strong> des Start-Blocks (oder die
+Tastatur-Pfeiltasten links/rechts) blätterst du durch den Zeitraum;
+dabei bleibt ein nicht manuell gesetztes Ende synchron. Beim Überfahren
+zeigen die Pfeile einen Tooltip („Vorheriger Monat” bzw. „Nächster
+Monat”).</li>
+<li><strong>Dauer-Anzeige:</strong> Zwischen beiden Blöcken zeigt ein
+Badge die <strong>Dauer</strong> des Zeitraums an (z. B.
+<code>12 Monate</code> bei Start Januar 2026 bis Ende Dezember 2026).
+Diese Anzeige ist rein informativ und wird automatisch aus Start und
+Ende berechnet; ein Hovertipp auf den Badge zeigt den Hinweis „Dauer des
+eingestellten Zeitraums”.</li>
+<li><strong>Validierung:</strong> Das Ende darf nicht vor dem Start
+liegen. Wird es vor den Start gesetzt, wird es automatisch auf den
+Start-Monat korrigiert (Mindestdauer 1 Monat).</li>
+<li><strong>Zurücksetzen:</strong> Der Pfeil-Button <strong>↻</strong>
+am rechten Rand setzt den Zeitraum auf den <strong>aktuellen
+Monat</strong> mit einer Dauer von <strong>12 Monaten</strong>
+zurück.</li>
+<li><strong>Überschriften:</strong> Die Jahresübersicht nennt immer den
+exakten Zeitraum (z. B. <code>Oktober 2026 – November 2026</code> bei
+Start Oktober und Ende November, oder <code>September 2026</code> bei
+Start = Ende). Bei einer Dauer von 12 Monaten steht zusätzlich
+„Jahresübersicht:“ davor (z. B.
 <code>Jahresübersicht: Januar 2026 – Dezember 2026</code>).
 Jahreswechsel werden korrekt berücksichtigt (z. B. Start November 2026,
-Dauer 3 → November 2026 – Januar 2027). Die Jahresübersicht zeigt nur
-die Monate dieses Zeitraums; der <strong>Zurücksetzen</strong>-Link
-setzt lediglich die Dauer wieder auf 12 zurück (das Startdatum bleibt
-unverändert). Die Dauer wird <strong>nicht</strong> gespeichert und beim
-nächsten Öffnen wieder auf 12 gesetzt.</li>
+Ende Januar 2027 → November 2026 – Januar 2027).</li>
 <li><strong>Jahresauswahl:</strong> Die Liste reicht von mehreren Jahren
-in der Vergangenheit bis einschließlich <strong>2030</strong>. Liegen
-Einträge in späteren Jahren vor, wird die Auswahl automatisch
-erweitert.</li>
-<li>Die Startmonat-Auswahl wird gespeichert und beim nächsten Öffnen
+in der Vergangenheit bis einige Jahre in die Zukunft; sie wird bei
+Einträgen in späteren Jahren automatisch erweitert.</li>
+<li>Start- und Endmonat werden gespeichert und beim nächsten Öffnen
 wiederhergestellt.</li>
 </ul>
 <hr />
 <h2 id="die-monatsansicht">4. Die Monatsansicht</h2>
-<p>Die Mitte der Seite besteht aus zwei Bereichen:</p>
-<h3 id="hero-karte-aktueller-monat">4.1 Hero-Karte (aktueller
-Monat)</h3>
-<p>Der Monat mit dem heutigen Datum wird als große Karte mit grünem
-Badge <strong>„● Läuft gerade”</strong> dargestellt. Sie enthält:</p>
+<p>Der gewählte Zeitraum wird als Raster von Monatskarten dargestellt.
+Der aktuelle Monat ist dabei eine dieser Karten – er ist zusätzlich
+durch ein blaues <strong>„Aktiv”-Label</strong> im Monatskopf und einen
+blauen Rahmen gekennzeichnet und nimmt keinen Extra-Platz ein.</p>
+<h3 id="monatskarten">4.1 Monatskarten</h3>
+<p>Jeder Monat des gewählten Zeitraums erscheint als kompakte Karte (in
+3 Spalten). Jede Karte zeigt:</p>
 <ul>
-<li><strong>Monatsname und Jahr</strong>, z. B.
-<code>August 2026</code>.</li>
-<li><strong>Werktage:</strong> Anzahl der Arbeitstage (Montag bis
-Freitag) im Monat.</li>
-<li><strong>Bürotage (Soll):</strong> erfasste Bürotage im Verhältnis zu
-den Pflichttagen, z. B. <code>1 / 12</code>, mit
-<strong>Fortschrittsbalken</strong> und farbigem
-<strong>Prozent-Badge</strong>.</li>
-<li>Den Wochenkalender mit größeren Tageszellen. Auf größeren
-Bildschirmen sind die Wochentage ausgeschrieben (Montag – Dienstag –
-Mittwoch – Donnerstag – Freitag), auf schmalen Smartphone-Displays
-erscheinen die kurzen Abkürzungen (Mo–Fr).</li>
-</ul>
-<h3 id="jahresübersicht">4.2 Jahresübersicht</h3>
-<p>Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als
-kompakte Mini-Karten (in 3 Spalten). Jede Karte zeigt:</p>
-<ul>
-<li><strong>Monatsname</strong> und rechts die Werte
-<code>Bürotage/Pflichttage</code> (z. B. <code>3/12</code>) mit farbigem
-<strong>Prozent-Badge</strong>. Erstreckt sich der Zeitraum über zwei
-Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt,
-z. B. <code>September 2026</code> und <code>August 2027</code>.</li>
+<li><strong>Monatsname</strong> mit Jahr und, rechts daneben, dem Stand
+<code>X von Y Solltagen erfüllt</code> mit farbigem
+<strong>Prozent-Badge</strong> (z. B.
+<code>3 von 12 Solltagen erfüllt</code> mit <code>25 %</code>).
+Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem
+Monatsnamen das jeweilige Jahr zur besseren Orientierung extra
+hervorgehoben, z. B. <code>September 2026</code> und
+<code>August 2027</code>.</li>
 <li>Einen schmalen <strong>Fortschrittsbalken</strong> für den Anteil
 der erfüllten Büropflichttage.</li>
-<li>Den Wochenkalender in kleinerer Darstellung.</li>
+<li>Den Wochenkalender in kleiner Darstellung.</li>
 </ul>
-<p>Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die
-Hero-Karte ausgeblendet und alle Monate erscheinen als Mini-Karten.</p>
-<h3 id="tageszellen">4.3 Tageszellen</h3>
+<p>Der <strong>aktuelle Monat</strong> ist durch ein blaues
+<strong>„Aktiv”-Label</strong> vor dem Monatsnamen und einen blauen
+Rahmen markiert; der heutige Tag ist innerhalb der Karte zusätzlich
+hervorgehoben.</p>
+<h3 id="tageszellen">4.2 Tageszellen</h3>
 <ul>
 <li>Jeder Werktag ist ein Feld; Wochenenden werden nicht dargestellt.
-Leere Felder am Anfang der ersten Woche füllen den Kalender aus.</li>
+Leere Füllzellen am Monatsrand (nicht existierende Tage) bleiben
+<strong>transparent</strong> und treten optisch klar zurück.</li>
 <li><strong>Erfasste Tage</strong> haben die Farbe ihrer Art und ein
 <strong>Icon</strong> oben links (z. B. 🏢 Bürotag, 🏖️ Urlaub). Die
 Icons machen die Arten auch ohne Farbe unterscheidbar (z. B. bei
@@ -432,7 +445,7 @@ Kapitel 5) und <strong>Löschen</strong> entfernt den Eintrag direkt. Das
 Menü schließt sich per ESC, bei einem Klick daneben oder bei einem
 Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet)
 funktioniert die Schnellauswahl über einen <strong>langen Druck</strong>
-auf den Tag – siehe Kapitel 4.4.</li>
+auf den Tag – siehe Kapitel 4.3.</li>
 <li><strong>Tooltip beim Überfahren:</strong> Ein Hovertipp auf einen
 Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B.
 <code>- Bürotag -</code>) und den Hinweisen <strong>Linksklick: Eintrag
@@ -442,8 +455,7 @@ den Feiertagsnamen (z. B. <code>- Weihnachten -</code>), arbeitsfreie
 Sondertage (24./31.12.) zeigen <code>- Arbeitsfrei -</code>. Das rote
 <strong>?-Badge</strong> auf leeren Tagen zeigt beim Überfahren den
 Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden.” Auch
-die Legenden-Einträge sowie die Buttons und das Label „Zeitraum
-Start-Monat” zeigen solche Tooltips.</li>
+die Legenden-Einträge sowie die Buttons zeigen solche Tooltips.</li>
 <li><strong>Automatische Feiertage:</strong> Gesetzliche Feiertage des
 gewählten Bundeslandes (alle 16 Bundesländer wählbar) und optional
 arbeitsfreie Sondertage (24./31.12., per Checkbox aktivierbar) werden
@@ -462,12 +474,12 @@ erfüllten Solltag.</li>
 <li>Die <strong>Legende</strong> unterhalb der Jahresübersicht erklärt
 Farben, Icons und Zähler (siehe Kapitel 6).</li>
 </ul>
-<h3 id="bedienung-auf-touch-geräten-smartphonetablet">4.4 Bedienung auf
+<h3 id="bedienung-auf-touch-geräten-smartphonetablet">4.3 Bedienung auf
 Touch-Geräten (Smartphone/Tablet)</h3>
 <p>Die App passt sich schmalen Displays an: Auf Smartphones werden
-KPI-Karten und Jahresübersicht einspaltig dargestellt, alle Dialoge
-passen sich der Bildschirmbreite an. Die Bedienung ist vollständig ohne
-Maus möglich:</p>
+Statistik-Kacheln und Jahresübersicht einspaltig dargestellt, alle
+Dialoge passen sich der Bildschirmbreite an. Die Bedienung ist
+vollständig ohne Maus möglich:</p>
 <ul>
 <li><strong>Tippen auf einen Tag:</strong> öffnet den Dialog
 <code>Eintrag hinzufügen</code> bzw. <code>Eintrag bearbeiten</code> –
@@ -495,10 +507,10 @@ bearbeiten und löschen</h2>
 den Dialog <code>Eintrag hinzufügen</code> bzw.
 <code>Eintrag bearbeiten</code>.</p>
 <p><strong>Schnellbelegung per Rechtsklick:</strong> Ein Rechtsklick auf
-einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.3) an der
+einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.2) an der
 Mausposition, mit dem du die Art mit einem Klick setzen oder den Eintrag
 direkt löschen kannst. Auf Touch-Geräten genügt ein langer Druck auf den
-Tag (Kapitel 4.4).</p>
+Tag (Kapitel 4.3).</p>
 <p><strong>Mehrfachauswahl:</strong> Mehrere nicht zusammenhängende Tage
 lassen sich markieren und in einem Rutsch ändern:</p>
 <ul>
@@ -643,16 +655,41 @@ Fenster neben dem Dialog schließt ihn ebenfalls.</li>
 </table>
 <p>Die <strong>Legende</strong> unterhalb der Jahresübersicht zeigt für
 jede Art den Farbklecks, das <strong>Icon</strong> und die Anzahl im
-gewählten Auswertungszeitraum (Startmonat + Dauer), z. B.
-<code>Bürotag (10)</code>. Zwei Arten sind Sonderfälle: Beim
+gewählten Auswertungszeitraum (Startmonat bis Endmonat).
+<strong>Bürotage</strong> und <strong>Homeoffice</strong> stehen als
+Zahlen-Kacheln direkt nebeneinander, damit die Anwesenheit im Zeitraum
+auf einen Blick erfassbar ist. Zwei Arten sind Sonderfälle: Beim
 <strong>Urlaub</strong> steht statt der Zeitraumzahl der Jahresstand
 (genommen/geplant/ungeplant, siehe unten), beim
-<strong>Krankheitstag</strong> die Zahl im gewählten Zeitraum
-<strong>plus die Jahreszahl</strong>, z. B.
-<code>Krankheitstage 2 · Jahr 9</code> – so bleibt sichtbar, wie viele
-Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die
+<strong>Krankheitstag</strong> nur die Zahl im gewählten Zeitraum. Die
 Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch
 bei Farbsehschwäche eindeutig sind.</p>
+<p>Die Statistik ist in einer <strong>einzigen Sektion</strong>
+konsolidiert – jede Kategorie erscheint genau <strong>einmal</strong>.
+Reine Zahlen-Kategorien (Bürotage, Homeoffice, Dienstreise, Feiertag,
+Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln;
+<strong>Bürotage</strong> und <strong>Homeoffice</strong> stehen direkt
+nebeneinander, um die Anwesenheit im Zeitraum im Blick zu haben. Die
+beiden <strong>Quoten</strong> (Büropflicht-Quote und Homeoffice-Quote)
+sind Kacheln, die in einem <strong>Fortschrittsring</strong> zusätzlich
+die Zahl und den Prozentwert mit <strong>Ampel-Farbe</strong>
+(grün/gelb/rot) kombinieren; als Text steht dort z. B.
+<code>Bürotage: 131 von 143 Solltagen</code> bzw.
+<code>Homeoffice-Tage: 166 von 85 Zieltagen</code>. Liegt eine Quote
+über <strong>100 %</strong> (mehr erfasste Tage als Soll), bleibt der
+Ring grün und <strong>pulsiert</strong> dezent in einem 2-Sekunden-Takt.
+Beim Überfahren zeigt ein Tooltip die Details. Beim
+<strong>Urlaub</strong> wird der Jahresstand als
+genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich
+<strong>bewusst auf das aktuelle Kalenderjahr</strong> – unabhängig vom
+gewählten Auswertungszeitraum – und gilt als <strong>verplant</strong>,
+sobald die Summe aus genommenen und geplanten Tagen das Kontingent
+erreicht. Zusätzlich zeigt der <strong>Resturlaub-Ring</strong> im
+Urlaubskopf den Anteil der noch <strong>frei verfügbaren</strong>
+(ungeplanten) Tage am Jahreskontingent: grün ab 50 %, gelb ab 25 %, rot
+darunter; sind alle Tage genommen oder verplant, bleibt der Ring
+<strong>grau</strong>. Die Beschriftung nennt den Rest, z. B.
+<code>15 von 30 Urlaubstagen verfügbar</code>.</p>
 <p>Die Legendeneinträge sind <strong>klickbar und fungieren als
 Filter</strong>:</p>
 <ul>
@@ -861,65 +898,73 @@ lokal gespeicherten Daten.</p>
 <h2 id="quotenberechnung">7. Quotenberechnung</h2>
 <h3 id="büropflichttage-pro-monat">7.1 Büropflichttage pro Monat</h3>
 <p>Die erforderlichen Bürotage ergeben sich aus den Werktagen abzüglich
-der <strong>neutralen Tage</strong>, aufgerundet auf 60 %:</p>
-<pre><code>Büropflichttage = (Werktage – Neutrale Tage) × 0,6  (abgerundet)</code></pre>
+der <strong>neutralen Tage</strong>, kaufmännisch gerundet auf den
+Büro-Anteil:</p>
+<pre><code>Büropflichttage     = round((Werktage – Neutrale Tage) × Büro-Anteil / 100)
+Homeoffice-Solltage = (Werktage – Neutrale Tage) − Büropflichttage</code></pre>
 <p><strong>Neutrale Tage</strong> sind Tage, an denen weder Büro noch
 Homeoffice erfasst wird: Urlaub, Krankheit, Freizeittag, Feiertag und
 Dienstreise. Homeoffice- und Bürotage zählen also nicht als neutral.</p>
+<p><strong>Komplementär-Rundung:</strong> Nur die
+<strong>Büropflichttage</strong> werden aktiv berechnet und gerundet (z.
+B. <code>round</code> statt <code>floor</code>). Die
+<strong>Homeoffice-Solltage</strong> werden nicht unabhängig gerundet,
+sondern als <strong>Rest</strong> (Gesamttage minus Büropflichttage)
+ermittelt. Dadurch gilt immer exakt
+<code>Büropflichttage + Homeoffice-Solltage = arbeitsfähige Tage</code>
+– ein Tag kann nicht anteilig beiden Kategorien zugeordnet sein und geht
+so nie über unabhängiges Runden verloren.</p>
 <p>Beispiel bei 22 Werktagen und keinen neutralen Tagen:
-<code>22 × 0,6 = 13,2</code> → <strong>13 Pflichttage</strong>. Bei 21
-Werktagen: <code>21 × 0,6 = 12,6</code> → <strong>12
-Pflichttage</strong>.</p>
-<p>Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert,
-z. B. <code>13/13</code> (Bürotage/Pflichttage).</p>
-<h3 id="verhältnis-bürohomeoffice-kpi-karten">7.2 Verhältnis
-Büro/Homeoffice (KPI-Karten)</h3>
-<p>Unter der Kopfzeile zeigen vier <strong>KPI-Karten</strong> mit
-Fortschrittsring (in Prozent) die wichtigsten Kennzahlen auf einen
-Blick. Jede Karte zeigt einen <strong>Ampel-Indikator</strong>: Die
-Farbe des Rings und des Prozentwerts signalisiert den Status auf einen
-Blick.</p>
+<code>round(22 × 0,6) = round(13,2)</code> → <strong>13
+Pflichttage</strong> und <strong>9 Homeoffice-Solltage</strong> (Summe
+22). Bei 21 Werktagen: <code>round(21 × 0,6) = round(12,6)</code> →
+<strong>13 Pflichttage</strong> und <strong>8
+Homeoffice-Solltage</strong> (Summe 21).</p>
+<p>Die Darstellung in der Jahresübersicht zeigt den erfüllten und den
+Soll-Wert mit farbigem Prozent-Badge, z. B.
+<code>13 von 13 Solltagen erfüllt</code> mit <code>100 %</code>
+(Bürotage/Pflichttage).</p>
+<h3 id="statistik-sektion-quoten-mit-fortschrittsring">7.2
+Statistik-Sektion (Quoten mit Fortschrittsring)</h3>
+<p>In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei
+Kacheln, die eine <strong>Quote mit Fortschrittsring</strong>
+kombinieren. Die <strong>Ampel-Farbe</strong> des Rings signalisiert den
+Status auf einen Blick. Beide Quoten beziehen sich auf den
+<strong>gesamten gewählten Zeitraum</strong> (nicht nur auf den
+aktuellen Monat).</p>
 <ul>
-<li><strong>Büropflicht (aktueller Monat):</strong> erfasste Bürotage im
-Verhältnis zu den Pflichttagen des aktuellen Monats. Der Ring zeigt den
-Prozentwert direkt (Ziel: 100 %).</li>
-<li><strong>Verhältnis Büro/Homeoffice:</strong> Anteil der Bürotage an
-allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den
-eingestellten <strong>Büro-Anteil</strong> als Zielwert (dieser = voller
-Kreis). Überschreitet das Verhältnis den Zielwert, pulsiert der Ring als
-visuelles Signal.</li>
-<li><strong>Verhältnis Homeoffice/Büro:</strong> Anteil der
-Homeoffice-Tage. Der Ring skaliert auf den Homeoffice-Anteil (100 −
-Büro-Anteil) als Zielwert. Überschreitet das Verhältnis den Zielwert,
-pulsiert der Ring.</li>
-<li><strong>Urlaub (Jahr):</strong> genommene Urlaubstage im Verhältnis
-zum Urlaubskontingent. Die Ampelfarben sind invertiert: Grün = wenig
-verbraucht, Rot = alles aufgebraucht (100 %).</li>
+<li><strong>Büropflicht-Quote:</strong> erfasste Bürotage im Verhältnis
+zu den Pflichttagen des <strong>gesamten Auswertungszeitraums</strong>.
+Der Ring zeigt direkt den Prozentwert (Ziel: 100 %); als Text steht
+darunter z. B. <code>Bürotage: 131 von 143 Solltagen</code>.</li>
+<li><strong>Homeoffice-Quote:</strong> erfasste Homeoffice-Tage im
+Verhältnis zu den Homeoffice-<strong>Solltagen</strong> des
+<strong>gesamten Auswertungszeitraums</strong>. Der Ring zeigt direkt
+den Prozentwert (Ziel: 100 %); als Text steht darunter z. B.
+<code>Homeoffice-Tage: 166 von 85 Zieltagen</code>. Die Sollwerte beider
+Quoten entstehen spiegelbildlich (Büro gerundet, Homeoffice als
+komplementärer Rest, siehe 7.1/7.3); die Homeoffice-Quote ist damit das
+Gegenstück zur Büropflicht-Quote für die Homeoffice-Seite der
+60/40-Regel.</li>
 </ul>
 <blockquote>
-<p><strong>Wichtige Abgrenzung:</strong> Die beiden
-<strong>„Verhältnis”-Karten</strong> messen nicht die Erfüllung der
-Büropflicht, sondern nur die <strong>reale Mischung</strong> deiner
-Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und
-Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10
-Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die
-<strong>Büropflicht</strong>-Karte zeigt korrekt <strong>10/10 = 100
-%</strong> (Solltage erfüllt), während das <strong>Verhältnis
-Büro/Homeoffice</strong> bei <strong>10/18 = 56 %</strong> liegt – die
-60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind
-fachlich korrekt, beantworten aber verschiedene Fragen.</p>
+<p><strong>Wichtige Abgrenzung:</strong> Beide Quoten messen die
+<strong>Erfüllung der jeweiligen Solltage</strong> – die
+Büropflicht-Quote die Büro-Solltage, die Homeoffice-Quote die
+Homeoffice-Solltage. Urlaub, Freizeit, Feiertage und Krankheit zählen
+dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-,
+3 Freizeittagen und 1 Urlaubstag: Die <strong>Büropflicht-Quote</strong>
+zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, die
+<strong>Homeoffice-Quote</strong> das Verhältnis der erfassten zu den
+Soll-Homeoffice-Tagen. Beide Kacheln beantworten also verschiedene
+Fragen – zusammen decken sie die Soll-Seite (z. B. 60/40) vollständig
+ab.</p>
 </blockquote>
 <p><strong>Ampel-Farben:</strong></p>
 <table>
-<colgroup>
-<col style="width: 29%" />
-<col style="width: 25%" />
-<col style="width: 25%" />
-<col style="width: 20%" />
-</colgroup>
 <thead>
 <tr>
-<th>Karte</th>
+<th>Kategorie</th>
 <th>Grün</th>
 <th>Gelb</th>
 <th>Rot</th>
@@ -927,75 +972,72 @@ fachlich korrekt, beantworten aber verschiedene Fragen.</p>
 </thead>
 <tbody>
 <tr>
-<td>Büropflicht</td>
+<td>Büropflicht-Quote</td>
 <td>≥100 %</td>
 <td>≥80 %</td>
 <td>&lt;80 %</td>
 </tr>
 <tr>
-<td>Verhältnis Büro/Homeoffice</td>
-<td>≥ Büro-Anteil</td>
-<td>≥75 % des Büro-Anteils</td>
-<td>darunter</td>
-</tr>
-<tr>
-<td>Verhältnis Homeoffice/Büro</td>
-<td>≥ Homeoffice-Anteil</td>
-<td>≥75 % des Homeoffice-Anteils</td>
-<td>darunter</td>
-</tr>
-<tr>
-<td>Urlaub</td>
-<td>&lt;60 % verbraucht</td>
-<td>60–99 % verbraucht</td>
-<td>100 % verbraucht</td>
+<td>Homeoffice-Quote</td>
+<td>≥100 %</td>
+<td>≥80 %</td>
+<td>&lt;80 %</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>Die Ampel-Schwellen der beiden Verhältnis-Karten richten sich
-automatisch nach dem eingestellten Zielwert (Kapitel 7.3). Bei
-Standardwert 60/40 entsprechen sie den früheren festen Werten (Büro ≥60
-%/≥45 %, Homeoffice ≥40 %/≥30 %).</p>
-</blockquote>
 <p>Regeln:</p>
 <ul>
 <li><strong>Berechnung nur aus vollständigen Monaten:</strong> Ein Monat
 gilt als vollständig, wenn <strong>alle</strong> Werktage erfasst sind.
-Teilweise erfasste Monate werden nicht mitgezählt.</li>
+Da Start und Ende immer ganze Kalendermonate sind, ist der einzige nicht
+mitgezählte Fall der <strong>laufende, noch nicht abgeschlossene
+Monat</strong>, wenn er im Zeitraum liegt. Nur dann erscheint bei beiden
+Quoten der Zusatz <strong>„(vollst. Monate)“</strong>.</li>
 <li>Die Prozentwerte werden ganzzahlig gerundet.</li>
-<li>Sind keine vollständigen Monate vorhanden, zeigen beide
-Verhältnis-Karten <strong>„–“</strong>.</li>
+<li>Sind keine vollständigen Monate vorhanden (bzw. beträgt das
+Homeoffice-Soll 0, z. B. bei einem Büro-Anteil von 100 %), zeigen die
+Quoten <strong>0 %</strong> statt des üblichen Werts.</li>
+<li>Übersteigt eine Quote <strong>100 %</strong> (mehr erfasste Tage als
+Soll), bleibt der Ring grün und <strong>pulsiert</strong> dezent in
+einem 2-Sekunden-Takt, um die Übererfüllung sichtbar zu machen.</li>
 </ul>
-<p>Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen
-Monaten → Basis 39 → <strong>59 % Büro / 41 % Homeoffice</strong>.</p>
-<p><strong>Prozent-Badges:</strong> In der Hero-Karte und den
-Mini-Karten wird der Prozentwert als farbiges Badge (Hintergrundfarbe,
-weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell
-hervorzuheben. Die Prozentzahlen in den Rings der KPI-Karten werden
-immer in dunkelgrauer Schrift (<code>--text</code>) dargestellt,
-unabhängig von der Ring-Farbe.</p>
-<p><strong>Tooltips:</strong> Beim Überfahren einer KPI-Karte mit der
-Maus erscheint ein informativer Tooltip mit Details zur Berechnung.</p>
-<p><strong>Ringskalierung:</strong> Die beiden Verhältnis-Karten
-verwenden eine relative Skalierung: <strong>Verhältnis
-Büro/Homeoffice</strong> (eingestellter Büro-Anteil = voller Kreis) und
-<strong>Verhältnis Homeoffice/Büro</strong> (100 − Büro-Anteil = voller
-Kreis). Werte über dem Zielwert lassen den Ring pulsen (helle
-Farbanimation).</p>
+<p><strong>Rundungsmethodik des Solls:</strong> Büro- und
+Homeoffice-Soll werden <strong>pro Monat einzeln</strong> berechnet und
+anschließend über den Zeitraum summiert – nicht einmalig über den
+gesamten Zeitraum. Pro Monat wird nur das <strong>Büro-Soll</strong>
+aktiv gerundet (<code>Math.round(Werktage × Anteil)</code>); das
+<strong>Homeoffice-Soll</strong> ist der komplementäre Rest (Werktage −
+Büro-Soll). Dadurch gilt auch über mehrere Monate hinweg exakt
+<code>Büro-Soll + Homeoffice-Soll = Summe der arbeitsfähigen Tage</code>
+– kein Tag geht durch unabhängiges Runden verloren und beide Quoten
+können nicht gleichzeitig über 100 % liegen.</p>
+<p><strong>Tooltips:</strong> Beim Überfahren einer Ring-Kachel mit der
+Maus erscheint ein informativer Tooltip mit Details zur Berechnung (auf
+Touch-Geräten entfällt er).</p>
+<p><strong>Ringskalierung:</strong> Beide Ringe zeigen den
+<strong>realen Prozentwert direkt</strong> (vollständiger Kreis = 100
+%). Die <strong>Büropflicht-Quote</strong> zeigt den Erfüllungsgrad der
+Soll-Bürotage, die <strong>Homeoffice-Quote</strong> den Erfüllungsgrad
+der Soll-Homeoffice-Tage – jeweils Ist gegen Soll des kompletten
+Zeitraums.</p>
 <h3 id="büro-anteil-einstellen">7.3 Büro-Anteil einstellen</h3>
 <p>Der Büro-Anteil bestimmt zwei Dinge:</p>
 <ul>
 <li><strong>Die Büropflicht-Solltage:</strong> Die erforderlichen
 Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der
-neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim
-Standardwert 60 % sind das z. B.
-<code>(Werktage − Neutrale Tage) × 0,6</code> – erhöhst du den Anteil
-auf 75 %, steigen die Solltage entsprechend.</li>
-<li><strong>Das Ziel der Verhältnis-Karten:</strong> Der Ring der Karte
-<strong>„Verhältnis Büro/Homeoffice”</strong> zeigt volle Erfüllung beim
-eingestellten Büro-Anteil; die Karte <strong>„Verhältnis
-Homeoffice/Büro”</strong> zielt auf den Rest (100 − Büro-Anteil).</li>
+neutralen Tage, multipliziert mit dem Büro-Anteil und kaufmännisch
+gerundet (<code>Math.round</code>). Beim Standardwert 60 % sind das z.
+B. <code>round((Werktage − Neutrale Tage) × 0,6)</code> – erhöhst du den
+Anteil auf 75 %, steigen die Solltage entsprechend.</li>
+<li><strong>Die Homeoffice-Solltage:</strong> Der Homeoffice-Anteil
+(<code>100 − Büro-Anteil</code>) bestimmt die Homeoffice-Solltage als
+komplementären <strong>Rest</strong> (arbeitsfähige Tage −
+Büropflichttage), sodass beide Sollwerte zusammen immer exakt der
+Gesamtzahl der arbeitsfähigen Tage entsprechen. Beim Standardwert 60 %
+Büro sind das 40 % Homeoffice-Soll; der Homeoffice-Anteil wird aber
+<strong>nicht</strong> als Ampel-Schwelle benutzt, da die
+Homeoffice-Quote unabhängig davon stets 100 % Soll-Erfüllung
+anstrebt.</li>
 </ul>
 <p><strong>So stellst du ihn ein:</strong> In der Einstellungen-Karte
 (Fußzeile) im Feld <strong>„Büro-Anteil (%)“</strong> den gewünschten
@@ -1092,18 +1134,22 @@ wiederherstellen zu können.</p>
 <hr />
 <h2 id="versionsinfo">9. Versionsinfo</h2>
 <p>Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright
-angezeigt, z. B. <code>Version 1.47 vom 28.08.2026 · © 2026</code>.
+angezeigt, z. B. <code>Version 1.48 vom 29.08.2026 · © 2026</code>.
 Links steht der Link zur Bedienungsanleitung (HTML).</p>
 <hr />
 <h2 id="häufige-fragen">10. Häufige Fragen</h2>
-<p><strong>Warum zeigt die Quote „–“?</strong> Weil noch kein
-vollständiger Monat (alle Werktage erfasst) im gewählten
-Auswertungszeitraum liegt.</p>
-<p><strong>Warum gibt es kein Enddatum?</strong> Der Zeitraum beginnt
-mit dem Startmonat und erstreckt sich über die eingestellte
-<strong>Dauer</strong> (1–24 Monate, Standard 12). Startmonat und Dauer
-ergeben den Zeitraum automatisch, ein separates Enddatum ist deshalb
-nicht erforderlich.</p>
+<p><strong>Warum zeigt die Quote 0 % statt eines
+Erfüllungsgrads?</strong> Weil noch kein vollständiger Monat (alle
+Werktage erfasst) im gewählten Auswertungszeitraum liegt, oder weil das
+Soll 0 beträgt (z. B. Homeoffice-Soll bei einem Büro-Anteil von 100
+%).</p>
+<p><strong>Wie lege ich den Auswertungszeitraum fest?</strong> Über die
+beiden Blöcke <strong>Start</strong> und <strong>Ende</strong> in der
+Kopfzeile (Kapitel 3). Solange das Ende nicht selbst geändert wird,
+folgt es dem Start um 11 Monate (also ein Zeitraum von 12 Monaten).
+Sobald das Ende manuell verstellt wird, bleibt es fixiert. Das
+<strong>↻</strong>‑Symbol setzt auf den aktuellen Monat mit 12 Monaten
+Dauer zurück.</p>
 <p><strong>Wo werden meine Daten gespeichert?</strong> Im Browser
 (localStorage). Andere Browser, Computer oder das Löschen der
 Browserdaten löschen auch die Einträge – deshalb regelmäßig
