@@ -948,6 +948,27 @@ function periodPflichtQuota(fromIso, toIso) {
     return { office: office, pflicht: pflicht };
 }
 
+// Prüft, ob der Zeitraum mindestens einen noch nicht vollständig erfassten
+// Monat enthält (bei Monatsgranularität nur der laufende Kalendermonat).
+function periodHasPartialMonth(fromIso, toIso) {
+    const from = parseISO(fromIso);
+    const to = parseISO(toIso);
+    const endAnchor = new Date(to.getFullYear(), to.getMonth(), 1);
+    let y = from.getFullYear();
+    let m = from.getMonth() + 1;
+    while (new Date(y, m - 1, 1) <= endAnchor) {
+        if (!monthStat(y, m).complete) {
+            return true;
+        }
+        m++;
+        if (m === 13) {
+            m = 1;
+            y++;
+        }
+    }
+    return false;
+}
+
 
 // ---------- Monatskalender ----------
 
@@ -1076,17 +1097,11 @@ function renderLegend() {
         }
     }
 
-    // Urlaub im Kalenderjahr + Krankheitstage im Jahr.
+    // Urlaub im Kalenderjahr.
     let urlaubGenommen = 0;
     let urlaubGeplant = 0;
-    let krankJahr = 0;
     for (const iso of Object.keys(days)) {
         if (parseISO(iso).getFullYear() !== now.getFullYear()) {
-            continue;
-        }
-        if (days[iso] === 'KRANKHEIT') {
-            krankJahr++;
-        } else if (days[iso] !== 'URLAUB') {
             continue;
         }
         if (days[iso] === 'URLAUB' && iso < today) {
@@ -1153,15 +1168,26 @@ function renderLegend() {
             + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + '</span><span class="tile-caption">genommen</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
-            + '</span>',
-        'Urlaub (Jahr ' + now.getFullYear() + ') · verplant = genommen + geplant');
+            + '</span>'
+            + '<span class="tile-caption urlaub-hinweis">Kontingent für das Kalenderjahr ' + now.getFullYear()
+            + ', unabhängig vom gewählten Auswertungszeitraum · verplant = genommen + geplant</span>',
+        'Urlaub (Kalenderjahr ' + now.getFullYear() + ')');
 
+    // Start/Ende sind immer ganze Kalendermonate; ein unvollständiger Monat ist
+    // ausschließlich der laufende (noch nicht abgeschlossene) Monat, falls er
+    // im Zeitraum liegt. Nur dann wird der "(vollst. Monate)"-Hinweis gezeigt.
+    const partial = periodHasPartialMonth(az.start, az.end);
+    const nurVoll = partial ? ' (vollst. Monate)' : '';
     const pflichtCaption = basis > 0
-        ? 'Bürotage erfasst von ' + bueroAnteil + ' % Soll (vollst. Monate)'
+        ? 'Bürotage erfasst von ' + bueroAnteil + ' % Soll' + nurVoll
         : 'Bürotage erfasst';
-    const pflichtTip = 'Erfüllungsgrad der Büropflicht über den gesamten gewählten Zeitraum (nur vollständige Monate): ' + p.office + ' erfasste Bürotage von ' + p.pflicht + ' Pflichttagen. Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
+    const pflichtTip = 'Erfüllungsgrad der Büropflicht über den gesamten gewählten Zeitraum'
+        + (partial ? ' (nur vollständige Monate)' : '')
+        + ': ' + p.office + ' erfasste Bürotage von ' + p.pflicht + ' Pflichttagen. Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
     const ratioTip = basis > 0
-        ? 'Tatsächliche Verteilung über den gesamten Zeitraum (nur vollständige Monate): Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel ' + bueroAnteil + ' %).'
+        ? 'Tatsächliche Verteilung über den gesamten Zeitraum'
+        + (partial ? ' (nur vollständige Monate)' : '')
+        + ': Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel ' + bueroAnteil + ' %).'
         : 'Noch keine vollständigen Monate für das Büro/Homeoffice-Verhältnis vorhanden.';
 
     const pflichtTile = ratioTile(
@@ -1179,15 +1205,21 @@ function renderLegend() {
         (basis > 0 ? 'Ist-Anwesenheit im Büro' : 'keine vollständigen Monate'),
         ratioTip);
 
+    // Redundanz: Der Bürotag-Grundwert steckt bereits in beiden Ring-Kacheln
+    // (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) und wird dort direkt
+    // ablesbar angezeigt, daher ist eine eigene Bürotag-Zahlkachel verzichtbar.
+    // Der Homeoffice-Wert ist aus der Verhältnis-Kachel nur durch Subtraktion
+    // (Basis − Büro) zu erschließen, daher bleibt sie als eigenständige, direkt
+    // lesbare Zahlkachel bestehen.
     legendEl.innerHTML =
         '<div class="tile-row">'
         + pflichtTile + ratioTileHtml + urlaubTile
         + '</div>'
         + '<div class="tile-row">'
-        + countTile('BUEROTAG') + countTile('HOMEOFFICE') + countTile('DIENSTREISE')
+        + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
         + '</div>'
         + '<div class="tile-row">'
-        + countTile('FEIERTAG') + countTile('KRANKHEIT', 'Jahr ' + krankJahr) + countTile('FREIZEITTAG')
+        + countTile('KRANKHEIT') + countTile('FREIZEITTAG')
         + '</div>';
 }
 

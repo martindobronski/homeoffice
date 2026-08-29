@@ -34,7 +34,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist mit einem kleinen grünen Punkt (●) markiert.
-- **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Bürotag, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln; die Quoten (Büropflicht-Quote, Büro/Homeoffice-Verhältnis) als Kachel mit **Fortschrittsring + Ampel-Farbe** und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant).
+- **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln; die Quoten (Büropflicht-Quote, Büro/Homeoffice-Verhältnis) als Kachel mit **Fortschrittsring + Ampel-Farbe** und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant).
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.
@@ -145,9 +145,9 @@ Hinweise:
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat), z. B. `Bürotag (10)`. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** die Zahl im gewählten Zeitraum **plus die Jahreszahl**, z. B. `Krankheitstage 2 · Jahr 9` – so bleibt sichtbar, wie viele Krankheitstage im laufenden Kalenderjahr insgesamt angefallen sind. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat). Der **Bürotag** hat keine eigene Kachel mehr, da sein Grundwert bereits in beiden **Ring-Kacheln** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) direkt ablesbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
-Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Bürotag, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln. Die beiden **Quoten** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt – das Kontingent gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht.
+Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln; der **Bürotag** hat keine eigene Kachel, da sein Wert in den beiden Ring-Kacheln steckt. Die beiden **Quoten** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich **bewusst auf das aktuelle Kalenderjahr** – unabhängig vom gewählten Auswertungszeitraum – und gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht.
 
 Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
@@ -280,7 +280,7 @@ In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei Kacheln, die
 
 Regeln:
 
-- **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Teilweise erfasste Monate werden nicht mitgezählt.
+- **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Da Start und Ende immer ganze Kalendermonate sind, ist der einzige nicht mitgezählte Fall der **laufende, noch nicht abgeschlossene Monat**, wenn er im Zeitraum liegt. Nur dann erscheint bei der Büropflicht-Quote der Zusatz **„(vollst. Monate)"**.
 - Die Prozentwerte werden ganzzahlig gerundet.
 - Sind keine vollständigen Monate vorhanden, zeigt das Verhältnis **„–"**.
 
