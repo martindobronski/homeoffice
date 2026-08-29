@@ -1410,9 +1410,12 @@ select:focus-visible {
         margin-top: 0;
     }
     .zeitraum-card .duration-badge {
-        flex-basis: 100%;
+        flex: 1;
         align-self: center;
         text-align: center;
+    }
+    .zeitraum-card .reset-btn {
+        margin-left: auto;
     }
     .dialog {
         min-width: 0;
