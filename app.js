@@ -195,7 +195,7 @@ function getDauerMonate() {
 function syncZeitraumUi() {
     const monate = getDauerMonate();
     if (durationBadge) {
-        durationBadge.textContent = monate === 1 ? '1 Monat' : monate + ' Monate';
+        durationBadge.textContent = 'Zeitraum-Dauer: ' + (monate === 1 ? '1 Monat' : monate + ' Monate');
     }
     if (startMonth) {
         const s = parseISO(periodStart);
