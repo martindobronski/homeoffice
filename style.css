@@ -1448,6 +1448,13 @@ select:focus-visible {
         align-items: flex-start;
         gap: 2px;
     }
+    .month-card .m-head span[title] {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 8px;
+    }
     .selection-bar {
         left: 12px;
         right: 12px;
