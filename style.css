@@ -400,15 +400,12 @@ select:focus-visible {
 .ring-pct.ampel-alert { color: #dc2626; }
 
 .month-card .m-head span.ampel-ok,
-.hero-stat .n .ampel-ok,
 .kpi-card .ring-pct.ampel-ok    { color: #16a34a !important; }
 
 .month-card .m-head span.ampel-warn,
-.hero-stat .n .ampel-warn,
 .kpi-card .ring-pct.ampel-warn  { color: #eab308 !important; }
 
 .month-card .m-head span.ampel-alert,
-.hero-stat .n .ampel-alert,
 .kpi-card .ring-pct.ampel-alert { color: #dc2626 !important; }
 
 .kpi-text .kpi-value {
@@ -423,8 +420,6 @@ select:focus-visible {
     margin-top: 2px;
 }
 
-/* ---------- Hero: current month ---------- */
-
 .section-title {
     display: flex;
     align-items: baseline;
@@ -438,65 +433,6 @@ select:focus-visible {
     color: var(--text-soft);
     text-transform: uppercase;
     letter-spacing: .06em;
-}
-
-.hero {
-    background: var(--surface);
-    border: 1px solid var(--office-line);
-    border-radius: var(--radius-lg);
-    padding: 24px 26px 26px;
-    margin-bottom: 36px;
-    box-shadow: 0 6px 24px rgba(59, 109, 17, .06);
-}
-
-.hero-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.hero-head .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--office-soft);
-    color: var(--office);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    padding: 5px 11px;
-    border-radius: 999px;
-    margin-bottom: 6px;
-}
-
-.hero-head h3 {
-    font-size: 22px;
-    font-weight: 700;
-}
-
-.hero-stats {
-    display: flex;
-    gap: 26px;
-    align-items: center;
-}
-
-.hero-stat {
-    text-align: right;
-}
-
-.hero-stat .n {
-    font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 20px;
-    font-weight: 700;
-}
-
-.hero-stat .l {
-    font-size: 11.5px;
-    color: var(--text-soft);
 }
 
 .progress-bar {
@@ -530,22 +466,6 @@ select:focus-visible {
     letter-spacing: .04em;
     text-align: center;
     padding-bottom: 4px;
-}
-
-.hero .cal-head {
-    font-size: 12px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-}
-
-.hero .cal-grid .day {
-    aspect-ratio: 1.5 / 1;
-    font-size: 17px;
-    font-weight: 700;
-}
-
-.hero .cell-icon {
-    font-size: 42px;
 }
 
 .day {
@@ -741,6 +661,18 @@ select:focus-visible {
 .month-card .m-head h4 .m-year {
     color: var(--text-faint);
     font-weight: 600;
+}
+
+.month-card .m-head h4 .m-badge {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 7px;
+    border-radius: 50%;
+    background: var(--office);
+    vertical-align: baseline;
+    position: relative;
+    top: -1px;
 }
 
 .month-card .m-head span {
@@ -1477,13 +1409,6 @@ select:focus-visible {
     }
     .year-grid {
         grid-template-columns: 1fr;
-    }
-    .hero .cal-grid .day {
-        aspect-ratio: 1 / 1;
-        font-size: 13px;
-    }
-    .hero .cell-icon {
-        font-size: 18px;
     }
     .zeitraum-card {
         justify-content: center;

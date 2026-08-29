@@ -34,10 +34,10 @@ Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **KPI-Karten:** Verhältnis Büro/Homeoffice, Verhältnis Homeoffice/Büro, Büropflicht (aktueller Monat) und Urlaubsstand – jeweils mit Zahlenwert, prozentualem **Fortschrittsring** und **Ampel-Farben** (grün/gelb/rot) sowie informativem Tooltip beim Überfahren.
-- **Mitte:** Der aktuelle Monat als große **Hero-Karte** (mit Badge „Läuft gerade") sowie alle weiteren Monate des Zeitraums als kompakte Mini-Karten in einer Jahresübersicht.
+- **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist mit einem kleinen grünen Punkt (●) markiert.
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
-Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.4.
+Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.
 
 ---
 
@@ -59,41 +59,32 @@ Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Ze
 
 ## 4. Die Monatsansicht
 
-Die Mitte der Seite besteht aus zwei Bereichen:
+Der gewählte Zeitraum wird als Raster von Monatskarten dargestellt. Der aktuelle Monat ist dabei eine dieser Karten – er wird nur durch einen kleinen grünen Punkt im Titel (●) als „laufender Monat“ gekennzeichnet und nimmt keinen Extra-Platz ein.
 
-### 4.1 Hero-Karte (aktueller Monat)
+### 4.1 Monatskarten
 
-Der Monat mit dem heutigen Datum wird als große Karte mit grünem Badge **„● Läuft gerade"** dargestellt. Sie enthält:
-
-- **Monatsname und Jahr**, z. B. `August 2026`.
-- **Werktage:** Anzahl der Arbeitstage (Montag bis Freitag) im Monat.
-- **Bürotage (Soll):** erfasste Bürotage im Verhältnis zu den Pflichttagen, z. B. `1 / 12`, mit **Fortschrittsbalken** und farbigem **Prozent-Badge**.
-- Den Wochenkalender mit größeren Tageszellen. Auf größeren Bildschirmen sind die Wochentage ausgeschrieben (Montag – Dienstag – Mittwoch – Donnerstag – Freitag), auf schmalen Smartphone-Displays erscheinen die kurzen Abkürzungen (Mo–Fr).
-
-### 4.2 Jahresübersicht
-
-Alle übrigen Monate des gewählten Zeitraums erscheinen darunter als kompakte Mini-Karten (in 3 Spalten). Jede Karte zeigt:
+Jeder Monat des gewählten Zeitraums erscheint als kompakte Karte (in 3 Spalten). Jede Karte zeigt:
 
 - **Monatsname** und rechts die Werte `Bürotage/Pflichttage` (z. B. `3/12`) mit farbigem **Prozent-Badge**. Erstreckt sich der Zeitraum über zwei Kalenderjahre, wird hinter dem Monatsnamen das jeweilige Jahr angezeigt, z. B. `September 2026` und `August 2027`.
 - Einen schmalen **Fortschrittsbalken** für den Anteil der erfüllten Büropflichttage.
-- Den Wochenkalender in kleinerer Darstellung.
+- Den Wochenkalender in kleiner Darstellung.
 
-Liegt der aktuelle Monat außerhalb des gewählten Zeitraums, wird die Hero-Karte ausgeblendet und alle Monate erscheinen als Mini-Karten.
+Der **aktuelle Monat** ist dezent durch einen kleinen grünen Punkt **●** vor dem Monatsnamen markiert; der heutige Tag ist innerhalb der Karte zusätzlich hervorgehoben.
 
-### 4.3 Tageszellen
+### 4.2 Tageszellen
 
 - Jeder Werktag ist ein Feld; Wochenenden werden nicht dargestellt. Leere Felder am Anfang der ersten Woche füllen den Kalender aus.
 - **Erfasste Tage** haben die Farbe ihrer Art und ein **Icon** oben links (z. B. 🏢 Bürotag, 🏖️ Urlaub). Die Icons machen die Arten auch ohne Farbe unterscheidbar (z. B. bei Rot-Grün-Sehschwäche).
 - **Unerfasste Tage in der Vergangenheit** bleiben weiß.
 - **Unerfasste Tage in der Zukunft** werden gestrichelt umrandet dargestellt („noch offen").
 - Als **„gebucht" markierte Tage** zeigen zusätzlich einen **grünen Haken** unten rechts.
-- **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, **Mehrfachauswahl…**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog, **Mehrfachauswahl…** startet die Mehrfachauswahl (siehe Kapitel 5) und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet) funktioniert die Schnellauswahl über einen **langen Druck** auf den Tag – siehe Kapitel 4.4.
+- **Schnellauswahl per Rechtsklick:** Ein Rechtsklick auf einen Tag öffnet an der Mausposition ein Menü mit dem Datum, **Eintrag bearbeiten**, **Mehrfachauswahl…**, einer Trennlinie und allen Arten. Bei einem vorhandenen Eintrag gibt es zusätzlich den **Löschen**-Eintrag; ist der Tag als **Bürotag** eingetragen, erscheint außerdem der **gebucht**-Umschalter. Ein Klick auf eine Art setzt den Tag sofort, ein Klick auf **gebucht** markiert den Tag (✓), **Eintrag bearbeiten** öffnet den vollständigen Dialog, **Mehrfachauswahl…** startet die Mehrfachauswahl (siehe Kapitel 5) und **Löschen** entfernt den Eintrag direkt. Das Menü schließt sich per ESC, bei einem Klick daneben oder bei einem Rechtsklick in die Legende. Auf Touch-Geräten (Smartphone/Tablet) funktioniert die Schnellauswahl über einen **langen Druck** auf den Tag – siehe Kapitel 4.3.
 - **Tooltip beim Überfahren:** Ein Hovertipp auf einen Tag zeigt sofort einen kleinen Infokasten mit Datum, der Art (z. B. `- Bürotag -`) und den Hinweisen **Linksklick: Eintrag bearbeiten** / **Rechtsklick: Schnellauswahl**. Bei automatisch erkannten Feiertagen (s. u.) zeigt der Tooltip zusätzlich den Feiertagsnamen (z. B. `- Weihnachten -`), arbeitsfreie Sondertage (24./31.12.) zeigen `- Arbeitsfrei -`. Das rote **?-Badge** auf leeren Tagen zeigt beim Überfahren den Hinweis „Diesem Tag sollte eine Anwesenheitsart zugeordnet werden." Auch die Legenden-Einträge sowie die Buttons zeigen solche Tooltips.
 - **Automatische Feiertage:** Gesetzliche Feiertage des gewählten Bundeslandes (alle 16 Bundesländer wählbar) und optional arbeitsfreie Sondertage (24./31.12., per Checkbox aktivierbar) werden automatisch erkannt und im Kalender angezeigt (🎉 Icon, violette Farbe), ohne dass du sie manuell erfassen musst. Ein manueller Eintrag hat dabei immer Vorrang – setzt du z. B. an einem Feiertag „Homeoffice", wird dieser Eintrag angezeigt statt des Feiertags. Beim Wechsel des Bundeslandes werden vorhandene Feiertags-Einträge automatisch an die neue Liste angepasst. Die automatischen Feiertage werden nicht in den Browser-Daten gespeichert.
 - **Leere Tage:** Werktage ohne Eintrag zeigen ein rotes **?-Badge** oben rechts in der Tageszelle. Der Tooltip weist darauf hin, dass diesem Tag eine Anwesenheitsart zugeordnet werden sollte. Das ?-Badge erscheint nur in Monaten mit mindestens einem erfüllten Solltag.
 - Die **Legende** unterhalb der Jahresübersicht erklärt Farben, Icons und Zähler (siehe Kapitel 6).
 
-### 4.4 Bedienung auf Touch-Geräten (Smartphone/Tablet)
+### 4.3 Bedienung auf Touch-Geräten (Smartphone/Tablet)
 
 Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und Jahresübersicht einspaltig dargestellt, alle Dialoge passen sich der Bildschirmbreite an. Die Bedienung ist vollständig ohne Maus möglich:
 
@@ -109,7 +100,7 @@ Die App passt sich schmalen Displays an: Auf Smartphones werden KPI-Karten und J
 
 **Tag anklicken:** Ein Klick auf einen Werktag öffnet den Dialog `Eintrag hinzufügen` bzw. `Eintrag bearbeiten`.
 
-**Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.3) an der Mausposition, mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst. Auf Touch-Geräten genügt ein langer Druck auf den Tag (Kapitel 4.4).
+**Schnellbelegung per Rechtsklick:** Ein Rechtsklick auf einen Werktag öffnet das Schnellauswahl-Menü (siehe Kapitel 4.2) an der Mausposition, mit dem du die Art mit einem Klick setzen oder den Eintrag direkt löschen kannst. Auf Touch-Geräten genügt ein langer Druck auf den Tag (Kapitel 4.3).
 
 **Mehrfachauswahl:** Mehrere nicht zusammenhängende Tage lassen sich markieren und in einem Rutsch ändern:
 
@@ -299,7 +290,7 @@ Regeln:
 
 Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
 
-**Prozent-Badges:** In der Hero-Karte und den Mini-Karten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben. Die Prozentzahlen in den Rings der KPI-Karten werden immer in dunkelgrauer Schrift (`--text`) dargestellt, unabhängig von der Ring-Farbe.
+**Prozent-Badges:** In den Monatskarten wird der Prozentwert als farbiges Badge (Hintergrundfarbe, weiße Schrift, schwarzer Rahmen) dargestellt, um ihn visuell hervorzuheben. Die Prozentzahlen in den Rings der KPI-Karten werden immer in dunkelgrauer Schrift (`--text`) dargestellt, unabhängig von der Ring-Farbe.
 
 **Tooltips:** Beim Überfahren einer KPI-Karte mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung.
 

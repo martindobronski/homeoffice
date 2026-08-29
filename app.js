@@ -79,8 +79,6 @@ const resetPeriodButton = document.getElementById('resetPeriodButton');
 const yearGridTitleEl = document.getElementById('yearGridTitle');
 const zeitraumCardEl = document.querySelector('.zeitraum-card');
 
-const heroEl = document.getElementById('hero');
-const heroTitleEl = document.getElementById('heroTitle');
 const yearGridEl = document.getElementById('yearGrid');
 const legendEl = document.getElementById('legend');
 const kpiStripEl = document.getElementById('kpiStrip');
@@ -1068,37 +1066,14 @@ function monthName(year, month) {
     return new Date(year, month - 1, 1).toLocaleDateString('de-DE', { month: 'long' });
 }
 
-function heroHTML(year, month) {
+function cardHTML(year, month, showYear, isCurrent) {
     const st = monthStat(year, month);
     const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
     const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
-    return '<div class="hero-head">'
-        + '<div>'
-        + '<div class="badge">● Läuft gerade</div>'
-        + '<h3>' + monthName(year, month) + ' ' + year + '</h3>'
-        + '</div>'
-        + '<div class="hero-stats">'
-        + '<div class="hero-stat">'
-        + '<div class="n">' + st.workdays + '</div>'
-        + '<div class="l">Werktage</div>'
-        + '</div>'
-        + '<div class="hero-stat">'
-        + '<div class="n" title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' / ' + st.pflicht + ' <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-4px">' + pct + ' %</span></div>'
-        + '<div class="l" style="text-align:left">Bürotage (Ist/Soll)</div>'
-        + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
-        + '</div>'
-        + '</div>'
-        + '</div>'
-                + renderCalGrid(year, month, st.office > 0, window.innerWidth > 640);
-}
-
-function cardHTML(year, month, showYear) {
-    const st = monthStat(year, month);
-    const pct = st.pflicht > 0 ? Math.round(st.office / st.pflicht * 100) : 0;
-    const pctColor = pct >= 100 ? '#16a34a' : pct >= 80 ? '#eab308' : '#dc2626';
-    return '<div class="month-card">'
+    const cur = isCurrent ? '<span class="m-badge">●</span>' : '';
+    return '<div class="month-card' + (isCurrent ? ' current' : '') + '">'
         + '<div class="m-head">'
-        + '<h4>' + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
+        + '<h4>' + cur + monthName(year, month) + ' <span class="m-year">' + year + '</span></h4>'
         + '<span title="Erfüllungsgrad der Büropflicht: ' + st.office + ' erfasste Bürotage von ' + st.pflicht + ' Pflichttagen (' + bueroAnteil + '% der Werktage, abgerundet) = ' + pct + ' %. Unabhängig von der Büro-/Homeoffice-Ist-Verteilung oben in den KPI-Karten.">' + st.office + ' von ' + st.pflicht + ' Solltagen erfüllt <span style="background:' + pctColor + ';color:#fff;padding:1px 6px;border-radius:4px;font-weight:700;font-size:11px;border:1px solid #000;position:relative;top:-1px">' + pct + ' %</span></span>'
         + '</div>'
         + '<div class="progress-bar"><div style="width:' + pct + '%"></div></div>'
@@ -1112,22 +1087,13 @@ function renderMonths() {
     const end = parseISO(az.end);
     const endAnchor = new Date(end.getFullYear(), end.getMonth(), 1);
     const now = new Date();
-    const curAnchor = new Date(now.getFullYear(), now.getMonth(), 1);
-    const inRange = curAnchor >= new Date(start.getFullYear(), start.getMonth(), 1)
-        && curAnchor <= endAnchor;
     const showYear = start.getFullYear() !== endAnchor.getFullYear();
     let y = start.getFullYear();
     let m = start.getMonth() + 1;
-    let heroShown = false;
     let cards = '';
     while (new Date(y, m - 1, 1) <= endAnchor) {
         const isCurrent = y === now.getFullYear() && m === now.getMonth() + 1;
-        if (isCurrent && inRange) {
-            heroEl.innerHTML = heroHTML(y, m);
-            heroShown = true;
-        } else {
-            cards += cardHTML(y, m, showYear);
-        }
+        cards += cardHTML(y, m, showYear, isCurrent);
         m++;
         if (m === 13) {
             m = 1;
@@ -1135,8 +1101,6 @@ function renderMonths() {
         }
     }
     yearGridEl.innerHTML = cards;
-    heroEl.classList.toggle('hidden', !heroShown);
-    heroTitleEl.classList.toggle('hidden', !heroShown);
 }
 
 // ---------- Legende ----------
@@ -1657,10 +1621,6 @@ function bindLongPress(el, resolver) {
     el.addEventListener('touchcancel', cancel);
 }
 
-bindLongPress(heroEl, function (e) {
-    const cell = e.target.closest('.day[data-date]');
-    return cell ? function (x, y) { quickShow(cell.getAttribute('data-date'), x, y); } : null;
-});
 bindLongPress(yearGridEl, function (e) {
     const cell = e.target.closest('.day[data-date]');
     return cell ? function (x, y) { quickShow(cell.getAttribute('data-date'), x, y); } : null;
@@ -2641,7 +2601,6 @@ selectionDeleteButton.addEventListener('click', function () {
 selectionCancelButton.addEventListener('click', exitSelectionMode);
 
 if (!IS_TOUCH) {
-    heroEl.addEventListener('mouseover', showDayTip);
     yearGridEl.addEventListener('mouseover', showDayTip);
     kpiStripEl.addEventListener('mouseover', showDayTip);
     legendEl.addEventListener('mouseover', showDayTip);
@@ -2651,7 +2610,6 @@ if (!IS_TOUCH) {
     sonderfreiWrapEl.addEventListener('mouseover', showDayTip);
     footerActionsEl.addEventListener('mouseover', showDayTip);
     zeitraumCardEl.addEventListener('mouseover', showDayTip);
-    heroEl.addEventListener('mouseout', hideDayTip);
     yearGridEl.addEventListener('mouseout', hideDayTip);
     kpiStripEl.addEventListener('mouseout', hideDayTip);
     legendEl.addEventListener('mouseout', hideDayTip);
@@ -2754,10 +2712,8 @@ function init() {
     endPrev.addEventListener('click', function () { shiftEnd(-1); });
     endNext.addEventListener('click', function () { shiftEnd(1); });
     resetPeriodButton.addEventListener('click', resetZeitraum);
-    heroEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
-    heroEl.addEventListener('contextmenu', gridContext);
     render();
     updateExportHint();
 }
