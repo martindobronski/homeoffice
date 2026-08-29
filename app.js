@@ -175,8 +175,8 @@ function absMonat(y, m) {
     return y * 12 + m;
 }
 
-// Auswertungszeitraum aus Start-Monat (periodStart) und End-Monat (endY/endM).
-// Liefert ersten Tag des Start-Monats bis letzten Tag des End-Monats.
+// Auswertungszeitraum aus Start-Monat (periodStart) und Ende-Monat (endY/endM).
+// Liefert ersten Tag des Start-Monats bis letzten Tag des Ende-Monats.
 function getAuswertungZeitraum() {
     const s = parseISO(periodStart);
     const start = fmt(new Date(s.getFullYear(), s.getMonth(), 1));
@@ -2367,16 +2367,17 @@ function showDayTip(e) {
     const bundesland = (!cell && !chip && !quota && !bueroAnteil) ? e.target.closest('.bundesland-select') : null;
     const sonderfrei = (!cell && !chip && !quota && !bueroAnteil && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
     const btn = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
-    const zeitraum = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('.zeitraum-card') : null;
-    const ratioCard = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
-    if (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !zeitraum && !ratioCard) {
+    const resetBtn = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
+    const zeitraum = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('.zeitraum-card') : null;
+    const ratioCard = (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
+    if (!cell && !chip && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !zeitraum && !ratioCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || ratioCard).getBoundingClientRect();
+    const rect = (cell || chip || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || zeitraum || ratioCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2421,21 +2422,24 @@ function showDayTip(e) {
                 : btn.id === 'importButton'
                     ? 'Backup-Datei importieren (überschreibt aktuelle Daten).'
                     : 'Anwesenheitsübersicht mit frei wählbarem Zeitraum als Druckdokument/PDF erstellen.') + '</div>';
+    } else if (resetBtn) {
+        html = 'Zeitraum zurücksetzen'
+            + '<div class="day-tip-hints">Auf 12 Monate ab dem aktuellen Monat zurücksetzen.</div>';
     } else if (zeitraum) {
         html = 'Zeitraum'
-            + '<div class="day-tip-hints">' + 'Start- und End-Monat des Anzeige-/Auswertungszeitraums wählen.' + '</div>';
+            + '<div class="day-tip-hints">' + 'Start- und Ende-Monat des Anzeige-/Auswertungszeitraums wählen.' + '</div>';
     } else if (ratioCard) {
         html = ratioCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || zeitraum || ratioCard));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || zeitraum || ratioCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
     let left = rect.left + rect.width / 2 - tipW / 2;
     let top = rect.top - tipH - 6;
     if (top < 8) {
-        top = rect.bottom + ((zeitraum || ratioCard) ? 6 : 6);
+        top = rect.bottom + ((zeitraum || ratioCard || resetBtn) ? 6 : 6);
     }
     dayTip.style.left = Math.max(8, Math.min(left, window.innerWidth - tipW - 8)) + 'px';
     dayTip.style.top = Math.max(8, Math.min(top, window.innerHeight - tipH - 8)) + 'px';

@@ -43,10 +43,10 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 ## 3. Zeitraum wählen
 
-Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten **Start-Monat** und endet mit dem gewählten **End-Monat**. Damit lässt sich jeder beliebige Zeitraum von 1 Monat bis zu mehreren Jahren festlegen (Standard: **12 Monate**).
+Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Zeitraum ab: Er beginnt mit dem gewählten **Start-Monat** und endet mit dem gewählten **Ende-Monat**. Damit lässt sich jeder beliebige Zeitraum von 1 Monat bis zu mehreren Jahren festlegen (Standard: **12 Monate**).
 
 - **Start und Ende wählen:** In der Kopfzeile gibt es zwei Blöcke – **Start** und **Ende** –, jeweils mit den Auswahlfeldern `[Monat] [Jahr]` und zwei Pfeilen **‹**/**›**. Über die Dropdowns oder die Pfeiltasten legst du den ersten bzw. letzten Monat des Zeitraums fest. Die Auswahl wirkt **sofort** – ein zusätzlicher „Übernehmen“-Klick ist nicht nötig.
-- **Ende folgt Start:** Solange du das Ende nicht selbst geändert hast, folgt es dem Start automatisch um **11 Monate (wieder 12 Monate Zeitraum)**. Änderst du den Start, wandert das Ende mit. Sobald du den End-Monat einmal selbst verstellst, bleibt das Ende fixiert.
+- **Ende folgt Start:** Solange du das Ende nicht selbst geändert hast, folgt es dem Start automatisch um **11 Monate (wieder 12 Monate Zeitraum)**. Änderst du den Start, wandert das Ende mit. Sobald du den Ende-Monat einmal selbst verstellst, bleibt das Ende fixiert.
 - **Vor- und zurückblättern:** Die Pfeile **‹**/**›** an jedem Block verschieben den jeweiligen Monat um einen Monat. Über die Pfeile **‹**/**›** des Start-Blocks (oder die Tastatur-Pfeiltasten links/rechts) blätterst du durch den Zeitraum; dabei bleibt ein nicht manuell gesetztes Ende synchron.
 - **Dauer-Anzeige:** Zwischen beiden Blöcken zeigt ein Badge die **Dauer** des Zeitraums an (z. B. `12 Monate` bei Start Januar 2026 bis Ende Dezember 2026). Diese Anzeige ist rein informativ und wird automatisch aus Start und Ende berechnet.
 - **Validierung:** Das Ende darf nicht vor dem Start liegen. Wird es vor den Start gesetzt, wird es automatisch auf den Start-Monat korrigiert (Mindestdauer 1 Monat).
