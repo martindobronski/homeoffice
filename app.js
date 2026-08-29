@@ -1192,10 +1192,10 @@ function renderLegend() {
         return '<button type="button" class="chip' + active + '"'
             + ' data-filter="' + t.key + '">'
             + '<span class="tile-head">'
+            + (headExtra || '')
             + '<span class="dot" style="background:' + t.color + '"></span>'
             + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
             + '<span class="tile-label">' + (label || t.label) + '</span>'
-            + (headExtra || '')
             + '</span>'
             + inner
             + '</button>';
@@ -1231,8 +1231,7 @@ function renderLegend() {
             + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
             + '</span>'
-            + '<span class="tile-caption urlaub-hinweis">Kontingent für das Kalenderjahr ' + now.getFullYear()
-            + ', unabhängig vom gewählten Auswertungszeitraum · verplant = genommen + geplant</span>',
+            + '<span class="tile-caption urlaub-hinweis">Resturlaub: ' + ungeplant + ' von ' + urlaubTotal + ' Tagen noch offen</span>',
         'Urlaub (Kalenderjahr ' + now.getFullYear() + ')',
         urlaubRing);
 
