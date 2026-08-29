@@ -3,6 +3,7 @@
     --surface: #FFFFFF;
     --surface-muted: #F8F8F6;
     --text: #1C2128;
+    --text-strong: #4B5563;
     --text-soft: #6B7280;
     --text-faint: #9CA3AF;
     --border: #E6E7EB;
@@ -339,7 +340,7 @@ select:focus-visible {
 .section-title h2 {
     font-size: 15px;
     font-weight: 600;
-    color: var(--text-soft);
+    color: var(--text-strong);
     text-transform: uppercase;
     letter-spacing: .06em;
 }
@@ -370,7 +371,7 @@ select:focus-visible {
 .cal-head {
     font-size: 11px;
     font-weight: 700;
-    color: var(--text-faint);
+    color: var(--text-soft);
     text-transform: uppercase;
     letter-spacing: .04em;
     text-align: center;
@@ -753,7 +754,7 @@ select:focus-visible {
 
 .tile-caption {
     font-size: 11px;
-    color: var(--text-faint);
+    color: var(--text-soft);
     white-space: nowrap;
 }
 
@@ -845,7 +846,7 @@ select:focus-visible {
 .stats-label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-soft);
+    color: var(--text-strong);
     text-transform: uppercase;
     letter-spacing: .06em;
 }
@@ -883,7 +884,7 @@ select:focus-visible {
 
 .card-label {
     font-size: 13px;
-    color: var(--text-faint);
+    color: var(--text-strong);
     font-weight: 500;
     margin: 0 0 12px;
 }
@@ -1055,7 +1056,7 @@ select:focus-visible {
 
 .export-meta {
     font-size: 12px;
-    color: var(--text-faint);
+    color: var(--text-soft);
     margin: 0 0 4px 12px;
     white-space: nowrap;
     overflow: hidden;
