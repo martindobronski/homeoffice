@@ -1416,6 +1416,7 @@ select:focus-visible {
     }
     .zeitraum-card .reset-btn {
         margin-left: auto;
+        border: 1px solid #D1D5DB;
     }
     .dialog {
         min-width: 0;
