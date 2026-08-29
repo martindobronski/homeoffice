@@ -925,6 +925,13 @@ function populateQuick() {
 
 // Summiert Bürotage (Ist) und Büropflicht (Soll) über den gesamten gewählten
 // Zeitraum – nur vollständige Monate, konsistent mit periodQuota().
+// RUNDUNGSMETHODIK: Der Sollwert (pflicht) wird PRO MONAT EINZELN berechnet
+// und abgerundet (monthStat().pflicht = Math.floor(basis * bueroAnteil / 100))
+// und anschließend über den Zeitraum aufsummiert – NICHT einmalig über den
+// gesamten Zeitraum (das könnte z. B. 60 % der Gesamtwerktage = 23 statt
+// summiert 22 ergeben). Diese Abweichung wird bewusst so belassen, damit der
+// Mehr-Monats-Wert konsistent zur Summe der Monatskarten (Ist/Soll je Monat)
+// bleibt; eine Änderung der Methode ist nicht beabsichtigt.
 function periodPflichtQuota(fromIso, toIso) {
     const from = parseISO(fromIso);
     const to = parseISO(toIso);
@@ -1117,9 +1124,11 @@ function renderLegend() {
     const q = periodQuota(az.start, az.end);
     const basis = q.office + q.homeoffice;
     const pflichtPct = p.pflicht > 0 ? Math.round(p.office / p.pflicht * 100) : 0;
-    const homeAnteil = 100 - bueroAnteil;
-    const officePct = basis > 0 ? Math.round(q.office * 100 / basis) : 0;
-    const officeRingPct = basis > 0 ? Math.min(100, Math.round(officePct * 100 / bueroAnteil)) : 0;
+    // Ring des "Büro/Homeoffice-Verhältnis": tatsächliches Verhältnis
+    // Büro / (Büro + Homeoffice) im Zeitraum – bewusst identisch zur
+    // angezeigten Bruchzahl und unabhängig von der 60-%-Zielquote sowie von
+    // der Büropflicht-Ist/Soll-Berechnung (eigenständige Formel).
+    const ratioPct = basis > 0 ? Math.round(q.office * 100 / basis) : 0;
 
     const labelEl = document.getElementById('legendPeriodLabel');
     if (labelEl) {
@@ -1185,10 +1194,10 @@ function renderLegend() {
         + (partial ? ' (nur vollständige Monate)' : '')
         + ': ' + p.office + ' erfasste Bürotage von ' + p.pflicht + ' Pflichttagen. Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
     const ratioTip = basis > 0
-        ? 'Tatsächliche Verteilung über den gesamten Zeitraum'
+        ? 'Tatsächliches Verhältnis über den gesamten Zeitraum'
         + (partial ? ' (nur vollständige Monate)' : '')
-        + ': Anteil Bürotage an allen Büro+Homeoffice-Tagen (Ziel ' + bueroAnteil + ' %).'
-        : 'Noch keine vollständigen Monate für das Büro/Homeoffice-Verhältnis vorhanden.';
+        + ': `' + q.office + ' Bürotage von ' + basis + ' Tagen (' + ratioPct + ' %). Der Ring und die angezeigte Zahl beruhen auf derselben Formel.'
+        : 'Keine erfassten Büro- oder Homeoffice-Tage in diesem Zeitraum.';
 
     const pflichtTile = ratioTile(
         p.office + ' / ' + p.pflicht + ' Tage',
@@ -1200,7 +1209,7 @@ function renderLegend() {
     const ratioValue = basis > 0 ? q.office + ' / ' + basis : '– / –';
     const ratioTileHtml = ratioTile(
         ratioValue,
-        officeRingPct,
+        ratioPct,
         'Büro/Homeoffice-Verhältnis',
         (basis > 0 ? 'Ist-Anwesenheit im Büro' : 'keine vollständigen Monate'),
         ratioTip);

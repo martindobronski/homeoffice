@@ -267,9 +267,9 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei Kacheln, die eine **Quote mit Fortschrittsring** kombinieren. Die **Ampel-Farbe** des Rings signalisiert den Status auf einen Blick. Beide Quoten beziehen sich auf den **gesamten gewählten Zeitraum** (nicht nur auf den aktuellen Monat).
 
 - **Büropflicht-Quote:** erfasste Bürotage im Verhältnis zu den Pflichttagen des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %).
-- **Büro/Homeoffice-Verhältnis:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen. Der Ring skaliert auf den eingestellten **Büro-Anteil** als Zielwert (dieser = voller Kreis).
+- **Büro/Homeoffice-Verhältnis:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen, also `Bürotage / (Bürotage + Homeoffice-Tage)`. Der Ring zeigt **denselben** Prozentsatz wie die daneben angezeigte Bruchzahl (z. B. `11 / 39` = **28 %**) und ist unabhängig von der eingestellten Büro-Zielquote.
 
-> **Wichtige Abgrenzung:** Das **„Verhältnis"-Ring** misst nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt – die 60 %-Zielmischung ist also knapp unterschritten. Beide Werte sind fachlich korrekt, beantworten aber verschiedene Fragen.
+> **Wichtige Abgrenzung:** Das **„Verhältnis"-Ring** misst nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt. Der Ring zeigt diesen realen Wert direkt – ob er über oder unter der eingestellten Büro-Zielquote (z. B. 60 %) liegt, ist über die **Ampel-Farbe** erkennbar (grün = Zielquote erreicht). Beide Kacheln beantworten also verschiedene Fragen.
 
 **Ampel-Farben:**
 
@@ -288,14 +288,14 @@ Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Bas
 
 **Tooltips:** Beim Überfahren einer Ring-Kachel mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung (auf Touch-Geräten entfällt er).
 
-**Ringskalierung:** Das **Büro/Homeoffice-Verhältnis** verwendet eine relative Skalierung (eingestellter Büro-Anteil = voller Kreis); die **Büropflicht-Quote** zeigt ihren Prozentwert direkt.
+**Ringskalierung:** Beide Ringe zeigen den **realen Prozentwert direkt** (vollständiger Kreis = 100 %). Beim **Büro/Homeoffice-Verhältnis** ist dies der tatsächliche Anteil Büro an allen Büro+Homeoffice-Tagen (unabhängig von der Zielquote); die **Büropflicht-Quote** zeigt den Erfüllungsgrad der Soll-Bürotage.
 
 ### 7.3 Büro-Anteil einstellen
 
 Der Büro-Anteil bestimmt zwei Dinge:
 
 - **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim Standardwert 60 % sind das z. B. `(Werktage − Neutrale Tage) × 0,6` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
-- **Das Ziel der Verhältnis-Kachel:** Der Ring der Kachel **„Verhältnis Büro/Homeoffice"** zeigt volle Erfüllung beim eingestellten Büro-Anteil; der Homeoffice-Anteil (100 − Büro-Anteil) ist dessen Gegenstück, wird aber nicht als eigener Ring ausgewiesen.
+- **Die Zielquote der Verhältnis-Kachel:** Der eingestellte **Büro-Anteil** dient als Ampel-Schwelle für das **„Verhältnis Büro/Homeoffice"**: Liegt der reale Büro-Anteil auf oder über diesem Zielwert, ist die Kachel grün; darunter gelb bzw. rot (≥75 % des Ziels). Der Ring selbst zeigt immer den realen Wert, nicht die Abweichung vom Ziel.
 
 **So stellst du ihn ein:** In der Einstellungen-Karte (Fußzeile) im Feld **„Büro-Anteil (%)"** den gewünschten Wert (0–100) eingeben und mit **OK** bestätigen. Die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Der Homeoffice-Anteil ergibt sich automatisch als `100 − Büro-Anteil` – es gibt dafür keine zweite Eingabe. Der Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
