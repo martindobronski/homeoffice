@@ -1231,7 +1231,7 @@ function renderLegend() {
             + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
             + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
             + '</span>'
-            + '<span class="tile-caption urlaub-hinweis">Resturlaub: ' + ungeplant + ' von ' + urlaubTotal + ' Tagen noch offen</span>',
+            + '<span class="tile-caption urlaub-hinweis">' + ungeplant + ' von ' + urlaubTotal + ' Urlaubstagen verfügbar</span>',
         'Urlaub (Kalenderjahr ' + now.getFullYear() + ')',
         urlaubRing);
 
