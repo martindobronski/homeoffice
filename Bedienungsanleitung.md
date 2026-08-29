@@ -34,7 +34,7 @@ Das Fenster ist in vier Bereiche gegliedert:
 
 - **Kopfzeile:** Überschrift mit Jahr und Auswahl des Zeitraumbeginns (Startmonat und Startjahr).
 - **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist mit einem kleinen grünen Punkt (●) markiert.
-- **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln; die Quoten (Büropflicht-Quote, Büro/Homeoffice-Verhältnis) als Kachel mit **Fortschrittsring + Ampel-Farbe** und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant).
+- **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln; die Quoten (Büropflicht-Quote, Homeoffice-Quote) als Kachel mit **Fortschrittsring + Ampel-Farbe** und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant).
 - **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.
@@ -145,9 +145,9 @@ Hinweise:
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat). Der **Bürotag** hat keine eigene Kachel mehr, da sein Grundwert bereits in beiden **Ring-Kacheln** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) direkt ablesbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat). Der **Bürotag** hat keine eigene Kachel mehr, da sein Grundwert bereits in der **Büropflicht-Quote** ablesbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
-Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln; der **Bürotag** hat keine eigene Kachel, da sein Wert in den beiden Ring-Kacheln steckt. Die beiden **Quoten** (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich **bewusst auf das aktuelle Kalenderjahr** – unabhängig vom gewählten Auswertungszeitraum – und gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht.
+Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln; der **Bürotag** hat keine eigene Kachel, da sein Wert in der Büropflicht-Quote steckt. Die beiden **Quoten** (Büropflicht-Quote und Homeoffice-Quote) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich **bewusst auf das aktuelle Kalenderjahr** – unabhängig vom gewählten Auswertungszeitraum – und gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht.
 
 Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
@@ -267,35 +267,37 @@ Die Darstellung in der Jahresübersicht zeigt den Ist- und Sollwert, z. B. `13/1
 In der Statistik-Sektion unterhalb der Jahresübersicht stehen zwei Kacheln, die eine **Quote mit Fortschrittsring** kombinieren. Die **Ampel-Farbe** des Rings signalisiert den Status auf einen Blick. Beide Quoten beziehen sich auf den **gesamten gewählten Zeitraum** (nicht nur auf den aktuellen Monat).
 
 - **Büropflicht-Quote:** erfasste Bürotage im Verhältnis zu den Pflichttagen des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %).
-- **Büro/Homeoffice-Verhältnis:** Anteil der Bürotage an allen Büro- und Homeoffice-Tagen, also `Bürotage / (Bürotage + Homeoffice-Tage)`. Der Ring zeigt **denselben** Prozentsatz wie die daneben angezeigte Bruchzahl (z. B. `11 / 39` = **28 %**) und ist unabhängig von der eingestellten Büro-Zielquote.
+- **Homeoffice-Quote:** erfasste Homeoffice-Tage im Verhältnis zu den Homeoffice-**Solltagen** des **gesamten Auswertungszeitraums**. Der Ring zeigt direkt den Prozentwert (Ziel: 100 %). Die Sollwerte beider Quoten ergeben sich spiegelbildlich aus Werktagen × Büro-Anteil bzw. × Homeoffice-Anteil (siehe 7.3); die Homeoffice-Quote ist damit das Gegenstück zur Büropflicht-Quote für die Homeoffice-Seite der 60/40-Regel.
 
-> **Wichtige Abgrenzung:** Das **„Verhältnis"-Ring** misst nicht die Erfüllung der Büropflicht, sondern nur die **reale Mischung** deiner Anwesenheitstage (Büro vs. Homeoffice). Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, während das **Verhältnis Büro/Homeoffice** bei **10/18 = 56 %** liegt. Der Ring zeigt diesen realen Wert direkt – ob er über oder unter der eingestellten Büro-Zielquote (z. B. 60 %) liegt, ist über die **Ampel-Farbe** erkennbar (grün = Zielquote erreicht). Beide Kacheln beantworten also verschiedene Fragen.
+> **Wichtige Abgrenzung:** Beide Quoten messen die **Erfüllung der jeweiligen Solltage** – die Büropflicht-Quote die Büro-Solltage, die Homeoffice-Quote die Homeoffice-Solltage. Urlaub, Freizeit, Feiertage und Krankheit zählen dabei bewusst nicht mit. Beispiel September mit 10 Büro-, 8 Homeoffice-, 3 Freizeittagen und 1 Urlaubstag: Die **Büropflicht-Quote** zeigt das Verhältnis der erfassten zu den Soll-Bürotagen, die **Homeoffice-Quote** das Verhältnis der erfassten zu den Soll-Homeoffice-Tagen. Beide Kacheln beantworten also verschiedene Fragen – zusammen decken sie die Soll-Seite (z. B. 60/40) vollständig ab.
 
 **Ampel-Farben:**
 
 | Kategorie | Grün | Gelb | Rot |
 |-----------|------|------|-----|
 | Büropflicht-Quote | ≥100 % | ≥80 % | <80 % |
-| Verhältnis Büro/Homeoffice | ≥ Büro-Anteil | ≥75 % des Büro-Anteils | darunter |
+| Homeoffice-Quote | ≥100 % | ≥80 % | <80 % |
 
 Regeln:
 
-- **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Da Start und Ende immer ganze Kalendermonate sind, ist der einzige nicht mitgezählte Fall der **laufende, noch nicht abgeschlossene Monat**, wenn er im Zeitraum liegt. Nur dann erscheint bei der Büropflicht-Quote der Zusatz **„(vollst. Monate)"**.
+- **Berechnung nur aus vollständigen Monaten:** Ein Monat gilt als vollständig, wenn **alle** Werktage erfasst sind. Da Start und Ende immer ganze Kalendermonate sind, ist der einzige nicht mitgezählte Fall der **laufende, noch nicht abgeschlossene Monat**, wenn er im Zeitraum liegt. Nur dann erscheint bei beiden Quoten der Zusatz **„(vollst. Monate)"**.
 - Die Prozentwerte werden ganzzahlig gerundet.
-- Sind keine vollständigen Monate vorhanden, zeigt das Verhältnis **„–"**.
+- Sind keine vollständigen Monate vorhanden (bzw. beträgt das Homeoffice-Soll 0, z. B. bei einem Büro-Anteil von 100 %), zeigen die Quoten **0 %** statt des üblichen Werts.
 
-Beispiel: 23 Bürotage und 16 Homeoffice-Tage aus vollständigen Monaten → Basis 39 → **59 % Büro / 41 % Homeoffice**.
+**Rundungsmethodik des Solls:** Beide Sollwerte (Büro- und Homeoffice-Soll) werden **pro Monat einzeln** berechnet und abgerundet (`Math.floor(Werktage × Anteil)`) und anschließend über den Zeitraum summiert – nicht einmalig über den gesamten Zeitraum. Weil beide unabhängig voneinander pro Monat abgerundet werden, kann ihre Summe die Monats-Werktage um 0 oder 1 Tag **unterschreiten** (z. B. 39 Werktage → Bürosoll 23 + Homeoffice-Soll 15 = 38 statt 39). Diese kleine Rest-Differenz wird bewusst so belassen, damit beide Sollwerte zur Summe der Monatskarten konsistent bleiben.
+
+Beispiel: 23 erfasste Büro- und 16 erfasste Homeoffice-Tage aus vollständigen Monaten, Büro-Anteil 60 % → Homeoffice-Soll ≈ 15–16 → **Homeoffice-Quote ≈ 100 %** (bzw. etwas darüber, da 16 von 15 Solltagen erfasst sind).
 
 **Tooltips:** Beim Überfahren einer Ring-Kachel mit der Maus erscheint ein informativer Tooltip mit Details zur Berechnung (auf Touch-Geräten entfällt er).
 
-**Ringskalierung:** Beide Ringe zeigen den **realen Prozentwert direkt** (vollständiger Kreis = 100 %). Beim **Büro/Homeoffice-Verhältnis** ist dies der tatsächliche Anteil Büro an allen Büro+Homeoffice-Tagen (unabhängig von der Zielquote); die **Büropflicht-Quote** zeigt den Erfüllungsgrad der Soll-Bürotage.
+**Ringskalierung:** Beide Ringe zeigen den **realen Prozentwert direkt** (vollständiger Kreis = 100 %). Die **Büropflicht-Quote** zeigt den Erfüllungsgrad der Soll-Bürotage, die **Homeoffice-Quote** den Erfüllungsgrad der Soll-Homeoffice-Tage – jeweils Ist gegen Soll des kompletten Zeitraums.
 
 ### 7.3 Büro-Anteil einstellen
 
 Der Büro-Anteil bestimmt zwei Dinge:
 
 - **Die Büropflicht-Solltage:** Die erforderlichen Bürotage pro Monat ergeben sich aus den Werktagen abzüglich der neutralen Tage, multipliziert mit dem Büro-Anteil (abgerundet). Beim Standardwert 60 % sind das z. B. `(Werktage − Neutrale Tage) × 0,6` – erhöhst du den Anteil auf 75 %, steigen die Solltage entsprechend.
-- **Die Zielquote der Verhältnis-Kachel:** Der eingestellte **Büro-Anteil** dient als Ampel-Schwelle für das **„Verhältnis Büro/Homeoffice"**: Liegt der reale Büro-Anteil auf oder über diesem Zielwert, ist die Kachel grün; darunter gelb bzw. rot (≥75 % des Ziels). Der Ring selbst zeigt immer den realen Wert, nicht die Abweichung vom Ziel.
+- **Die Homeoffice-Solltage:** Der Homeoffice-Anteil (`100 − Büro-Anteil`) legt spiegelbildlich die Solltage für die **Homeoffice-Quote** fest: pro Monat `(Werktage − Neutrale Tage) × Homeoffice-Anteil` (abgerundet). Beim Standardwert 60 % Büro sind das 40 % Homeoffice-Soll; der Homeoffice-Anteil wird aber **nicht** als Ampel-Schwelle benutzt, da die Homeoffice-Quote unabhängig davon stets 100 % Soll-Erfüllung anstrebt.
 
 **So stellst du ihn ein:** In der Einstellungen-Karte (Fußzeile) im Feld **„Büro-Anteil (%)"** den gewünschten Wert (0–100) eingeben und mit **OK** bestätigen. Die Übernahme erfolgt erst über den OK-Button, nicht während des Tippens. Der Homeoffice-Anteil ergibt sich automatisch als `100 − Büro-Anteil` – es gibt dafür keine zweite Eingabe. Der Wert wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
@@ -377,8 +379,8 @@ Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt,
 
 ## 10. Häufige Fragen
 
-**Warum zeigt die Quote „–"?**
-Weil noch kein vollständiger Monat (alle Werktage erfasst) im gewählten Auswertungszeitraum liegt.
+**Warum zeigt die Quote 0 % statt eines Erfüllungsgrads?**
+Weil noch kein vollständiger Monat (alle Werktage erfasst) im gewählten Auswertungszeitraum liegt, oder weil das Soll 0 beträgt (z. B. Homeoffice-Soll bei einem Büro-Anteil von 100 %).
 
 **Wie lege ich den Auswertungszeitraum fest?**
 Über die beiden Blöcke **Start** und **Ende** in der Kopfzeile (Kapitel 3). Solange das Ende nicht selbst geändert wird, folgt es dem Start um 11 Monate (also ein Zeitraum von 12 Monaten). Sobald das Ende manuell verstellt wird, bleibt es fixiert. Das **↻**‑Symbol setzt auf den aktuellen Monat mit 12 Monaten Dauer zurück.

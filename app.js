@@ -955,6 +955,41 @@ function periodPflichtQuota(fromIso, toIso) {
     return { office: office, pflicht: pflicht };
 }
 
+// Summiert Homeoffice-Ist und Homeoffice-Soll (Ziel) über den gesamten
+// gewählten Zeitraum – nur vollständige Monate, spiegelbildlich zur
+// periodPflichtQuota. RUNDUNGSMETHODIK: Das Homeoffice-Soll wird PRO MONAT
+// EINZELN berechnet und abgerundet (Math.floor(basis * homeAnteil / 100)) und
+// anschließend aufsummiert – konsistent zur Büropflicht-Soll-Berechnung.
+// Hinweis: Weil Büro- und Homeoffice-Soll unabhängig voneinander pro Monat
+// abgerundet werden, kann die Summe beider Sollwerte die jeweilige
+// Monats-Werktagskombination um 0 oder 1 Tag unterschreiten (z. B. 39
+// Werktage → Büro 60 % = 23 und Homeoffice 40 % = 15 ergibt 38 statt 39).
+// Diese kleine Rest-Differenz wird bewusst so belassen und nicht repariert,
+// da beide Sollwerte damit zur Summe der Monatskarten konsistent bleiben.
+function periodHomeofficeQuota(fromIso, toIso) {
+    const from = parseISO(fromIso);
+    const to = parseISO(toIso);
+    const endAnchor = new Date(to.getFullYear(), to.getMonth(), 1);
+    const homeAnteil = 100 - bueroAnteil;
+    let y = from.getFullYear();
+    let m = from.getMonth() + 1;
+    let homeoffice = 0;
+    let homeofficeSoll = 0;
+    while (new Date(y, m - 1, 1) <= endAnchor) {
+        const st = monthStat(y, m);
+        if (st.complete) {
+            homeoffice += st.recorded['HOMEOFFICE'] || 0;
+            homeofficeSoll += Math.floor(st.basis * (homeAnteil / 100));
+        }
+        m++;
+        if (m === 13) {
+            m = 1;
+            y++;
+        }
+    }
+    return { homeoffice: homeoffice, homeofficeSoll: homeofficeSoll };
+}
+
 // Prüft, ob der Zeitraum mindestens einen noch nicht vollständig erfassten
 // Monat enthält (bei Monatsgranularität nur der laufende Kalendermonat).
 function periodHasPartialMonth(fromIso, toIso) {
@@ -1119,16 +1154,16 @@ function renderLegend() {
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
 
-    // Quoten über den gesamten gewählten Zeitraum.
+    // Quoten über den gesamten gewählten Zeitraum (nur vollständige Monate,
+    // damit Büro- und Homeoffice-Quote spiegelbildlich konsistent sind).
     const p = periodPflichtQuota(az.start, az.end);
-    const q = periodQuota(az.start, az.end);
-    const basis = q.office + q.homeoffice;
+    const ho = periodHomeofficeQuota(az.start, az.end);
+    const homeAnteil = 100 - bueroAnteil;
     const pflichtPct = p.pflicht > 0 ? Math.round(p.office / p.pflicht * 100) : 0;
-    // Ring des "Büro/Homeoffice-Verhältnis": tatsächliches Verhältnis
-    // Büro / (Büro + Homeoffice) im Zeitraum – bewusst identisch zur
-    // angezeigten Bruchzahl und unabhängig von der 60-%-Zielquote sowie von
-    // der Büropflicht-Ist/Soll-Berechnung (eigenständige Formel).
-    const ratioPct = basis > 0 ? Math.round(q.office * 100 / basis) : 0;
+    // Homeoffice-Quote (Ist gegen Soll, spiegelbildlich zur Büropflicht-Quote):
+    // Homeoffice-Ist / Homeoffice-Soll. Division-durch-Null-Schutz: Ist das Soll
+    // 0 (z. B. bei Büro-Anteil = 100 %), wird ein Leerzustand angezeigt.
+    const hoPct = ho.homeofficeSoll > 0 ? Math.round(ho.homeoffice / ho.homeofficeSoll * 100) : 0;
 
     const labelEl = document.getElementById('legendPeriodLabel');
     if (labelEl) {
@@ -1187,17 +1222,18 @@ function renderLegend() {
     // im Zeitraum liegt. Nur dann wird der "(vollst. Monate)"-Hinweis gezeigt.
     const partial = periodHasPartialMonth(az.start, az.end);
     const nurVoll = partial ? ' (vollst. Monate)' : '';
-    const pflichtCaption = basis > 0
+    const pflichtCaption = p.pflicht > 0
         ? 'Bürotage erfasst von ' + bueroAnteil + ' % Soll' + nurVoll
         : 'Bürotage erfasst';
     const pflichtTip = 'Erfüllungsgrad der Büropflicht über den gesamten gewählten Zeitraum'
         + (partial ? ' (nur vollständige Monate)' : '')
         + ': ' + p.office + ' erfasste Bürotage von ' + p.pflicht + ' Pflichttagen. Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
-    const ratioTip = basis > 0
-        ? 'Tatsächliches Verhältnis über den gesamten Zeitraum'
+    const homeofficeCaption = ho.homeofficeSoll > 0
+        ? 'Homeoffice-Tage erfasst von ' + homeAnteil + ' % Soll' + nurVoll
+        : 'Homeoffice-Tage erfasst';
+    const homeofficeTip = 'Erfüllungsgrad der Homeoffice-Quote (spiegelbildlich zur Büropflicht-Quote) über den gesamten gewählten Zeitraum'
         + (partial ? ' (nur vollständige Monate)' : '')
-        + ': `' + q.office + ' Bürotage von ' + basis + ' Tagen (' + ratioPct + ' %). Der Ring und die angezeigte Zahl beruhen auf derselben Formel.'
-        : 'Keine erfassten Büro- oder Homeoffice-Tage in diesem Zeitraum.';
+        + ': ' + ho.homeoffice + ' erfasste Homeoffice-Tage von ' + ho.homeofficeSoll + ' Soll-Tagen (' + homeAnteil + ' % der Werktage, abgerundet pro Monat). Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
 
     const pflichtTile = ratioTile(
         p.office + ' / ' + p.pflicht + ' Tage',
@@ -1206,23 +1242,21 @@ function renderLegend() {
         pflichtCaption,
         pflichtTip);
 
-    const ratioValue = basis > 0 ? q.office + ' / ' + basis : '– / –';
-    const ratioTileHtml = ratioTile(
-        ratioValue,
-        ratioPct,
-        'Büro/Homeoffice-Verhältnis',
-        (basis > 0 ? 'Ist-Anwesenheit im Büro' : 'keine vollständigen Monate'),
-        ratioTip);
+    const homeofficeTileHtml = ratioTile(
+        ho.homeoffice + ' / ' + ho.homeofficeSoll + ' Tage',
+        hoPct,
+        'Homeoffice-Quote',
+        homeofficeCaption,
+        homeofficeTip);
 
-    // Redundanz: Der Bürotag-Grundwert steckt bereits in beiden Ring-Kacheln
-    // (Büropflicht-Quote und Büro/Homeoffice-Verhältnis) und wird dort direkt
-    // ablesbar angezeigt, daher ist eine eigene Bürotag-Zahlkachel verzichtbar.
-    // Der Homeoffice-Wert ist aus der Verhältnis-Kachel nur durch Subtraktion
-    // (Basis − Büro) zu erschließen, daher bleibt sie als eigenständige, direkt
-    // lesbare Zahlkachel bestehen.
+    // Redundanz: Der Bürotag-Grundwert steckt bereits in der Büropflicht-Quote-
+    // Kachel, der Homeoffice-Grundwert in der neuen Homeoffice-Quote-Kachel. Da
+    // der Homeoffice-Grundwert als Einzelzahl für den Nutzer schneller lesbar
+    // ist als aus der Quote herauszurechnen, bleibt die Homeoffice-Zahlkachel
+    // eigenständig bestehen (Bürotag hat bewusst keine eigene Zahlkachel mehr).
     legendEl.innerHTML =
         '<div class="tile-row">'
-        + pflichtTile + ratioTileHtml + urlaubTile
+        + pflichtTile + homeofficeTileHtml + urlaubTile
         + '</div>'
         + '<div class="tile-row">'
         + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
