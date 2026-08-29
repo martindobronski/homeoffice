@@ -2385,16 +2385,17 @@ function showDayTip(e) {
     const btn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
     const resetBtn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
     const durationBadge = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('#durationBadge') : null;
-    const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge) ? e.target.closest('.zeitraum-card') : null;
-    const ratioCard = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
-    if (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !zeitraum && !ratioCard) {
+    const monthArrow = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge) ? e.target.closest('#startPrev, #startNext, #endPrev, #endNext') : null;
+    const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow) ? e.target.closest('.zeitraum-card') : null;
+    const ratioCard = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
+    if (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !zeitraum && !ratioCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || urlaubRing || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || zeitraum || ratioCard).getBoundingClientRect();
+    const rect = (cell || chip || urlaubRing || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || zeitraum || ratioCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2446,6 +2447,8 @@ function showDayTip(e) {
             + '<div class="day-tip-hints">Auf 12 Monate ab dem aktuellen Monat zurücksetzen.</div>';
     } else if (durationBadge) {
         html = 'Dauer des eingestellten Zeitraums';
+    } else if (monthArrow) {
+        html = (monthArrow.id === 'startPrev' || monthArrow.id === 'endPrev') ? 'Vorheriger Monat' : 'Nächster Monat';
     } else if (zeitraum) {
         html = 'Zeitraum'
             + '<div class="day-tip-hints">' + 'Start- und Ende-Monat des Anzeige-/Auswertungszeitraums wählen.' + '</div>';
@@ -2453,7 +2456,7 @@ function showDayTip(e) {
         html = ratioCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || zeitraum || ratioCard));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || zeitraum || ratioCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
