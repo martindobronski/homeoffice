@@ -574,8 +574,10 @@ select:focus-visible {
 }
 
 .month-card .m-head h4 .m-year {
-    color: var(--text-faint);
-    font-weight: 600;
+    color: var(--text-strong);
+    font-weight: 700;
+    font-size: 0.85em;
+    letter-spacing: 0.01em;
 }
 
 .month-card .m-head h4 .m-badge {
