@@ -2804,3 +2804,28 @@ function init() {
 }
 
 init();
+
+// Service-Worker-Update-Behandlung:
+// Der Browser prüft sw.js standardmäßig nur ~einmal pro 24 h, wodurch Updates
+// (neue Cache-Buster in index.html) auf Mobilgeräten stark verzögert wirken
+// können. Daher wird der Update-Check bei jedem Start erzwungen (reg.update()).
+// Nimmt ein neuer Worker die Kontrolle über (controllerchange), wird die Seite
+// einmalig neu geladen, damit index.html mit den aktuellen Cache-Buster-URLs
+// angefordert und das gecachte alte Layout weggespült wird.
+function initServiceWorkerUpdate() {
+    if (!('serviceWorker' in navigator)) return;
+    var reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+        if (reloading) return;
+        reloading = true;
+        window.location.reload();
+    });
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('sw.js').then(function (reg) {
+            if (reg.active) {
+                reg.update();
+            }
+        }).catch(function () {});
+    });
+}
+initServiceWorkerUpdate();
