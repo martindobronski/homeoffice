@@ -1254,14 +1254,14 @@ function renderLegend() {
         + ': ' + ho.homeoffice + ' erfasste Homeoffice-Tage von ' + ho.homeofficeSoll + ' Soll-Tagen (' + homeAnteil + ' % der Werktage, gerundet pro Monat). Bezogen auf den kompletten Auswertungszeitraum, nicht nur den aktuellen Monat.';
 
     const pflichtTile = ratioTile(
-        p.office + ' / ' + p.pflicht + ' Tage',
+        'Bürotage: ' + p.office + ' von ' + p.pflicht + ' Solltagen',
         pflichtPct,
         'Büropflicht-Quote',
         pflichtCaption,
         pflichtTip);
 
     const homeofficeTileHtml = ratioTile(
-        ho.homeoffice + ' / ' + ho.homeofficeSoll + ' Tage',
+        'Homeoffice-Tage: ' + ho.homeoffice + ' von ' + ho.homeofficeSoll + ' Zieltagen',
         hoPct,
         'Homeoffice-Quote',
         homeofficeCaption,
