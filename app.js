@@ -1261,7 +1261,7 @@ function renderLegend() {
         pflichtTip);
 
     const homeofficeTileHtml = ratioTile(
-        'Homeoffice: ' + ho.homeoffice + ' von ' + ho.homeofficeSoll + ' Zieltagen',
+        'Homeoffice-Tage: ' + ho.homeoffice + ' von ' + ho.homeofficeSoll + ' Zieltagen',
         hoPct,
         'Homeoffice-Quote',
         homeofficeCaption,
