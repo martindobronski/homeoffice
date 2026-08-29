@@ -2758,7 +2758,7 @@ function updateDashboardTitle() {
     const az = getAuswertungZeitraum();
     const startYear = parseISO(az.start).getFullYear();
     const endYear = parseISO(az.end).getFullYear();
-    dashboardTitle.textContent = 'Anwesenheits-Dashboard ' + (startYear === endYear ? startYear : startYear + '/' + endYear);
+    dashboardTitle.innerHTML = 'Anwesenheits-Dashboard <span class="h1-year">' + (startYear === endYear ? startYear : startYear + '/' + endYear) + '</span>';
 }
 
 function render() {

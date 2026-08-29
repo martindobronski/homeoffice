@@ -1483,6 +1483,12 @@ select:focus-visible {
     .version .ver-meta {
         text-align: left;
     }
+    .topbar h1 {
+        text-align: center;
+    }
+    .topbar h1 .h1-year {
+        display: block;
+    }
 }
 
 @media (hover: none) and (pointer: coarse) {
