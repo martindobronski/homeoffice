@@ -7,12 +7,12 @@
    - übrige gleiche-Origin-Assets: stale-while-revalidate (Cache zuerst, im Hintergrund aktualisieren)
    Bei einem Release CACHE_NAME zusammen mit den Cache-Bustern in index.html erhöhen. */
 
-const CACHE_NAME = 'homeoffice-v1.95';
+const CACHE_NAME = 'homeoffice-v1.96';
 
 const PRECACHE = [
     './',
     'index.html',
-    'style.css?v=2.08',
+    'style.css?v=2.09',
     'app.js?v=1.189',
     'feiertage.js?v=2.0',
     'manifest.json',

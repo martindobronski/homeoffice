@@ -1435,6 +1435,11 @@ select:focus-visible {
     .legend {
         max-width: 100%;
     }
+    .month-card .cell-icon {
+        font-size: 15px;
+        top: 0;
+        left: 0;
+    }
     .chip {
         max-width: 100%;
     }
