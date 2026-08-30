@@ -203,9 +203,6 @@ h1 {
 }
 
 .reset-btn {
-    align-self: flex-start;
-    margin-top: 18px;
-    margin-left: -6px;
     width: 34px;
     height: 34px;
     padding: 0;
@@ -1451,10 +1448,6 @@ select:focus-visible {
     .zeitraum-card .arrow-divider {
         display: none;
     }
-    .zeitraum-card .duration-block,
-    .zeitraum-card .reset-btn {
-        margin-top: 0;
-    }
     .zeitraum-card .duration-block {
         flex: 1;
         align-self: center;
@@ -1462,10 +1455,6 @@ select:focus-visible {
     }
     .duration-control {
         justify-content: flex-start;
-    }
-    .zeitraum-card .reset-btn {
-        margin-left: auto;
-        border: 1px solid #D1D5DB;
     }
     .dialog {
         min-width: 0;
