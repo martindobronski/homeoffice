@@ -1721,7 +1721,7 @@ select:focus-visible {
    hellen Modus (helle Pastelle, dunkle Ziffern) – ein Brightness-Graufilter
    dimmt nur die Helligkeit, ohne die Farben zu verändern oder zu invertieren. */
 :root[data-theme="dark"] .month-card .day:is(.office, .ho, .holiday, .sick, .vacation, .free, .travel, .future) {
-    filter: brightness(0.76);
+    filter: brightness(0.66);
 }
 
 /* Die Ziffernfarbe der belegten Tage bleibt wie im hellen Modus dunkel –
