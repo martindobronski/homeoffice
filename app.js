@@ -1203,7 +1203,7 @@ function renderLegend() {
     function countTile(key, caption, label) {
         const t = byKey[key];
         const n = counts[key] || 0;
-        const unit = '<span class="tile-unit"> ' + (n === 1 ? 'Tag' : 'Tage') + '</span>';
+        const unit = '<span class="tile-unit"> Tage</span>';
         const inner = '<span class="tile-value">' + n + unit + '</span>';
         return tile(t, inner, label);
     }
