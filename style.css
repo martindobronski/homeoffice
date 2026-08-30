@@ -1707,40 +1707,25 @@ select:focus-visible {
     --ring-track: #39434F;
     --overlay: rgba(0, 0, 0, 0.55);
 
-    /* Tageszellen der Anwesenheitsarten: moderat abgedunkelt, aber die
-       Artfarbe bleibt klar erkennbar. Rahmen (line) und Text gleichen die
-       Halbtransparenz aus; die Ziffern in den Monatskarten erscheinen über
-       .month-card .day in hellem var(--text). */
-    --office: #7FB0E8;
-    --office-soft: rgba(24, 95, 165, 0.30);
-    --office-line: #3A82C9;
-
-    --ho-text: #A9C88E;
-    --ho-soft: rgba(59, 109, 17, 0.32);
-    --ho-line: #5B8C26;
-
-    --holiday: #B2A9EC;
-    --holiday-soft: rgba(83, 74, 183, 0.34);
-    --holiday-line: #7B72D6;
-
-    --sick: #FF8181;
-    --sick-soft: rgba(255, 26, 26, 0.22);
-    --sick-line: #FF5C5C;
-
-    --vacation: #F0B27A;
-    --vacation-soft: rgba(212, 133, 60, 0.28);
-    --vacation-line: #D4853C;
-
-    --free: #D6C65C;
-    --free-soft: rgba(168, 153, 40, 0.26);
-    --free-line: #A89928;
-
-    --travel: #BDBAB3;
-    --travel-soft: rgba(95, 94, 90, 0.36);
-    --travel-line: #6B6A66;
+    /* Die Farben der Anwesenheitsarten (Tageszellen) bleiben exakt wie im
+       hellen Modus – nur im Dark-Mode wird ein Graufilter über die Zellen
+       gelegt (weiter unten). */
 
     --future: #20262E;
     --future-line: #3A4450;
 
     --today-glow: rgba(192, 38, 212, 0.34);
+}
+
+/* Tageszellen der Monatskarten: Im Dark-Mode bleibt die Darstellung wie im
+   hellen Modus (helle Pastelle, dunkle Ziffern) – ein Brightness-Graufilter
+   dimmt nur die Helligkeit, ohne die Farben zu verändern oder zu invertieren. */
+:root[data-theme="dark"] .month-card .day:is(.office, .ho, .holiday, .sick, .vacation, .free, .travel, .future) {
+    filter: brightness(0.76);
+}
+
+/* Die Ziffernfarbe der belegten Tage bleibt wie im hellen Modus dunkel –
+   in den Monatskarten wirkt sonst .month-card .day (var(--text)) nach. */
+:root[data-theme="dark"] .month-card .day:is(.office, .ho, .holiday, .sick, .vacation, .free, .travel) {
+    color: #1C2128;
 }
