@@ -35,9 +35,9 @@
     --vacation-soft: #FDF0E4;
     --vacation-line: #D4853C;
 
-    --free: #8B7D1A;
-    --free-soft: #FAF6DC;
-    --free-line: #A89928;
+    --free: #7A5C00;
+    --free-soft: #FBF2C4;
+    --free-line: #C2A22C;
 
     --travel: #444441;
     --travel-soft: #F1EFE8;
@@ -1723,9 +1723,38 @@ select:focus-visible {
     --ring-track: #39434F;
     --overlay: rgba(0, 0, 0, 0.55);
 
-    /* Die Farben der Anwesenheitsarten (Tageszellen) bleiben exakt wie im
-       hellen Modus – nur im Dark-Mode wird ein Graufilter über die Zellen
-       gelegt (weiter unten). */
+    /* Farben der Anwesenheitsarten im Dark-Mode: kräftigere, stärker
+       gesättigte Varianten derselben Kategoriefarben. Die Zellflächen
+       (-*-soft) heben sich deutlich vom dunklen Seitenhintergrund ab; die
+       Rahmen-/Icon-Farben (-*-line) sowie Textfarben sind aufgehellt, damit
+       Icons und Zahlen darauf gut lesbar bleiben (WCAG-AA als Richtwert). */
+    --office: #8FC0F0;
+    --office-soft: #1B3A5C;
+    --office-line: #5B9BD5;
+
+    --ho-text: #AFD996;
+    --ho-soft: #243B18;
+    --ho-line: #8FBE6F;
+
+    --holiday: #C9C2F5;
+    --holiday-soft: #36305C;
+    --holiday-line: #A79FE8;
+
+    --sick: #FF9A9A;
+    --sick-soft: #4A1C1C;
+    --sick-line: #FF7070;
+
+    --vacation: #FFC08A;
+    --vacation-soft: #4A3118;
+    --vacation-line: #F0A45E;
+
+    --free: #F2DE8C;
+    --free-soft: #4A3E14;
+    --free-line: #E6C65C;
+
+    --travel: #C9C6BD;
+    --travel-soft: #32322E;
+    --travel-line: #A5A39C;
 
     --future: #20262E;
     --future-line: #3A4450;
@@ -1733,15 +1762,10 @@ select:focus-visible {
     --today-glow: rgba(192, 38, 212, 0.34);
 }
 
-/* Tageszellen der Monatskarten: Im Dark-Mode bleibt die Darstellung wie im
-   hellen Modus (helle Pastelle, dunkle Ziffern) – ein Brightness-Graufilter
-   dimmt nur die Helligkeit, ohne die Farben zu verändern oder zu invertieren. */
-:root[data-theme="dark"] .month-card .day:is(.office, .ho, .holiday, .sick, .vacation, .free, .travel, .future) {
-    filter: brightness(0.66);
-}
-
-/* Die Ziffernfarbe der belegten Tage bleibt wie im hellen Modus dunkel –
-   in den Monatskarten wirkt sonst .month-card .day (var(--text)) nach. */
-:root[data-theme="dark"] .month-card .day:is(.office, .ho, .holiday, .sick, .vacation, .free, .travel) {
-    color: #1C2128;
+/* Monats-Badge ("X/Y Solltagen"): bleibt im Dark-Mode wie im hellen Modus
+   (mittleres Blau mit weißer Schrift) – das aufgehellte --office wäre hier
+   zu blass für weißen Text. */
+:root[data-theme="dark"] .m-head .m-badge {
+    background: #185FA5;
+    color: #fff;
 }

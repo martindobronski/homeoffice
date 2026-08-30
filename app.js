@@ -10,7 +10,7 @@ const WORK_TYPES = [
     { key: 'URLAUB', label: 'Urlaub', color: '#D4853C' },
     { key: 'FEIERTAG', label: 'Feiertag', color: '#534AB7' },
     { key: 'KRANKHEIT', label: 'Krankheit', color: '#FF1A1A' },
-    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#A89928' }
+    { key: 'FREIZEITTAG', label: 'Freizeittag', color: '#C2A22C' }
 ];
 
 const TYPE_CLASS = {
@@ -28,15 +28,25 @@ const TYPE_ICONS = {
     HOMEOFFICE: 'ti-home',
     FREIZEITTAG: 'ti-walk',
     DIENSTREISE: 'ti-plane',
+    // Urlaub: ti-beach (Schwimmer/Wellen) war nicht eindeutig erkennbar.
+    // ti-beach-access und ti-palm-tree existieren in der eingebundenen
+    // Tabler-Version (3.46.0) nicht – daher ti-umbrella (s. Prioritätsliste).
+    URLAUB: 'ti-umbrella',
     FEIERTAG: 'ti-confetti',
-    KRANKHEIT: 'ti-thermometer',
-    URLAUB: 'ti-beach'
+    KRANKHEIT: 'ti-thermometer'
 };
 
-const TYPE_COLOR = {};
-WORK_TYPES.forEach(function (t) {
-    TYPE_COLOR[t.key] = t.color;
-});
+// Icon-Farbe über die Kategorie-CSS-Variablen (…-line): Damit greift je nach
+// aktivem Theme automatisch die Light- bzw. Dark-Mode-Definition aus style.css.
+const TYPE_ICON_VAR = {
+    BUEROTAG: '--office-line',
+    HOMEOFFICE: '--ho-line',
+    FREIZEITTAG: '--free-line',
+    DIENSTREISE: '--travel-line',
+    URLAUB: '--vacation-line',
+    FEIERTAG: '--holiday-line',
+    KRANKHEIT: '--sick-line'
+};
 
 const EXPORT_LABELS = {
     BUEROTAG: 'Bürotage',
@@ -1161,7 +1171,7 @@ function renderCalGrid(year, month, showEmpty, fullWeekday) {
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
             const icon = cls
-                ? '<span class="cell-icon" style="color:' + TYPE_COLOR[cell.type] + '"><i class="ti ' + TYPE_ICONS[cell.type] + '"></i></span>'
+                ? '<span class="cell-icon" style="color:var(' + TYPE_ICON_VAR[cell.type] + ')"><i class="ti ' + TYPE_ICONS[cell.type] + '"></i></span>'
                 : '';
             const emptyMark = (empty && showEmpty) ? '<span class="cell-empty" title="Diesem Tag sollte eine Anwesenheitsart zugeordnet werden.">?</span>' : '';
             const check = gebucht[cell.iso]
@@ -1290,7 +1300,7 @@ function renderLegend() {
             + '<span class="tile-head">'
             + (headExtra || '')
             + '<span class="dot" style="background:' + t.color + '"></span>'
-            + '<span class="chip-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
+            + '<span class="chip-icon" style="color:var(' + TYPE_ICON_VAR[t.key] + ')"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
             + '<span class="tile-label">' + (label || t.label) + '</span>'
             + '</span>'
             + inner
@@ -2665,7 +2675,7 @@ function quickShow(iso, x, y) {
         }
         html += '<button type="button" class="qm-item" data-set="' + t.key + '">'
             + '<span class="qm-swatch" style="background:' + t.color + '"></span>'
-            + '<span class="qm-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
+            + '<span class="qm-icon" style="color:var(' + TYPE_ICON_VAR[t.key] + ')"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
             + t.label
             + (resolved === t.key ? '<span class="qm-active"><i class="ti ti-check"></i></span>' : '')
             + '</button>';
@@ -2782,7 +2792,7 @@ function fillSelectionTypes() {
     WORK_TYPES.forEach(function (t) {
         html += '<button type="button" class="sb-type" data-sbtype="' + t.key + '">'
             + '<span class="sw" style="background:' + t.color + '"></span>'
-            + '<span class="chip-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>' + t.label
+            + '<span class="chip-icon" style="color:var(' + TYPE_ICON_VAR[t.key] + ')"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>' + t.label
             + '</button>';
         if (t.key === 'BUEROTAG') {
             html += '<button type="button" class="sb-type" data-sbaction="gebucht">'
