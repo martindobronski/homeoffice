@@ -1707,12 +1707,29 @@ select:focus-visible {
     --ring-track: #39434F;
     --overlay: rgba(0, 0, 0, 0.55);
 
-    /* Die Farben der Anwesenheitsarten (Tag-Flächen in den Monatskarten)
-       bleiben bewusst identisch zum hellen Modus – nur die Umgebung
-       (Hintergrund, Flächen, Texte) wird abgedunkelt. */
-
     --future: #20262E;
     --future-line: #3A4450;
 
     --today-glow: rgba(192, 38, 212, 0.34);
+}
+
+/* Die Tages-Zellen in den Monatskarten werden im Dark-Mode exakt wie im
+   hellen Modus dargestellt. Die Art-Hintergründe (-*-soft) und Rahmen sind
+   bereits identisch (nicht überschrieben); die Ziffern-Textfarbe wird von
+   .month-card .day auf var(--text) gesetzt – hier gezielt auf den Hellwert
+   zurückgenommen, damit nichts „heller" wirkt. */
+:root[data-theme="dark"] .month-card .day.ho,
+:root[data-theme="dark"] .month-card .day.office,
+:root[data-theme="dark"] .month-card .day.holiday,
+:root[data-theme="dark"] .month-card .day.sick,
+:root[data-theme="dark"] .month-card .day.vacation,
+:root[data-theme="dark"] .month-card .day.free,
+:root[data-theme="dark"] .month-card .day.travel {
+    color: #1C2128;
+}
+
+:root[data-theme="dark"] .month-card .day.future {
+    background: #FFFFFF;
+    border-color: #E9EAED;
+    color: #9CA3AF;
 }
