@@ -1202,8 +1202,8 @@ function renderLegend() {
     }
     function countTile(key, caption, label) {
         const t = byKey[key];
-        const inner = '<span class="tile-value">' + (counts[key] || 0) + '</span>'
-            + (caption ? '<span class="tile-caption">' + caption + '</span>' : '');
+        const unit = caption ? '<span class="tile-unit"> ' + caption + '</span>' : '';
+        const inner = '<span class="tile-value">' + (counts[key] || 0) + unit + '</span>';
         return tile(t, inner, label);
     }
 
@@ -1279,10 +1279,10 @@ function renderLegend() {
         + pflichtTile + homeofficeTileHtml + urlaubTile
         + '</div>'
         + '<div class="tile-row tile-row-4">'
-        + countTile('BUEROTAG', null, 'Bürotage') + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
+        + countTile('BUEROTAG', 'Tage', 'Bürotage') + countTile('HOMEOFFICE', 'Tage') + countTile('DIENSTREISE', 'Tage') + countTile('FEIERTAG', 'Tage')
         + '</div>'
         + '<div class="tile-row">'
-        + countTile('KRANKHEIT') + countTile('FREIZEITTAG')
+        + countTile('KRANKHEIT', 'Tage') + countTile('FREIZEITTAG', 'Tage')
         + '</div>';
 }
 

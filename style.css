@@ -759,6 +759,13 @@ select:focus-visible {
     color: var(--text-soft);
 }
 
+.tile-unit {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-soft);
+}
+
 .urlaub-breakdown {
     display: flex;
     align-items: flex-end;
