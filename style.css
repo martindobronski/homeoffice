@@ -106,7 +106,7 @@ h1 {
 
 .zeitraum-card {
     display: flex;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: space-between;
     gap: 20px;
     flex-wrap: wrap;
@@ -130,6 +130,14 @@ h1 {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 8px 10px;
+}
+
+/* Reset-Block: gleiche Rahmengröße wie der Dauer-Block (align-items: stretch
+   auf der Karte lässt in derselben Zeile liegende Blöcke gleich hoch werden);
+   der Kreis wird vertikal zentriert. */
+.reset-block {
+    display: flex;
+    align-items: center;
 }
 
 .month-picker {
@@ -1466,6 +1474,9 @@ select:focus-visible {
         flex: 1;
         align-self: center;
         text-align: left;
+    }
+    .zeitraum-card .reset-block {
+        align-self: center;
     }
     .duration-control {
         justify-content: flex-start;
