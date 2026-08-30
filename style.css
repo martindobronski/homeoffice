@@ -217,13 +217,14 @@ h1 {
     border-radius: 50%;
     background: var(--surface);
     cursor: pointer;
-    color: var(--text-soft);
-    font-size: 18px;
+    color: var(--text);
+    font-size: 20px;
     line-height: 1;
 }
 
 .reset-btn:hover {
-    background: var(--surface-muted);
+    background: #eef0ef;
+    border-color: var(--text-soft);
 }
 
 input[type="date"],
