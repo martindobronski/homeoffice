@@ -1235,7 +1235,7 @@ function renderLegend() {
             + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
             + '</span>'
             + '<span class="tile-caption urlaub-hinweis">' + ungeplant + ' von ' + urlaubTotal + ' Urlaubstagen verfügbar</span>',
-        'Urlaub (Kalenderjahr ' + now.getFullYear() + ')',
+        'Urlaub (' + now.getFullYear() + ')',
         urlaubRing);
 
     // Start/Ende sind immer ganze Kalendermonate; ein unvollständiger Monat ist
