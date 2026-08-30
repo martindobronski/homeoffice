@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.51 vom 30.08.2026)
+## Anwesenheits-Dashboard (Version 1.52 vom 30.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -41,7 +41,9 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 ### 2.1 Darstellung (Dark-Mode)
 
-Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt. Die **Farben der Anwesenheitsarten** (z. B. Blau für Bürotage, Grün für Homeoffice) bleiben im Dark-Mode **unverändert** wie im hellen Modus.
+Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
+
+Die **Farben der Anwesenheitsarten** (z. B. Blau für Bürotage, Grün für Homeoffice) bleiben im Dark-Mode wie im hellen Modus erhalten, damit die Einträge immer eindeutig erkennbar sind. Damit die farbigen Tageszellen in den Monatskarten vor dem dunklen Hintergrund nicht zu grell wirken, werden sie über einen **Graufilter** sanft abgedunkelt – die Farbnuance selbst bleibt dabei unverändert. Die **Zukunftstage** erscheinen im Dark-Mode als dezente dunkle Kästchen.
 
 ---
 
@@ -379,7 +381,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.51 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.52 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 

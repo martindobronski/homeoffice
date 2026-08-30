@@ -3,6 +3,19 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.52 vom 30.08.2026
+Änderungen gegenüber V1.51:
+
+- Dark-Mode: Die Farben der Anwesenheitsarten auf den Tageszellen bleiben
+  erhalten wie im hellen Modus, werden aber über einen Graufilter sanft
+  abgedunkelt, damit sie vor dem dunklen Hintergrund nicht zu grell wirken
+  (kein Farbwechsel, kein Invert-Effekt). Zukunftstage erscheinen als dezente
+  dunkle Kästchen.
+- Bedienungsanleitung (MD/HTML): Abschnitt 2.1 "Darstellung (Dark-Mode)"
+  ausführlicher erklärt; Cache-Name und Cache-Buster erhöht.
+
+--------------------------------------------------------------------------------------
+
 Version 1.51 vom 30.08.2026
 Änderungen gegenüber V1.50:
 
