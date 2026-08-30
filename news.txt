@@ -3,6 +3,29 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.53 vom 31.08.2026
+Änderungen gegenüber V1.52:
+
+- Icons umgestellt: Emojis durch lokale Tabler-Icons ersetzt; Urlaub und
+  Freizeittag sind jetzt eindeutiger und ohne Blick auf die Farbe erkennbar.
+- Urlaub: Icon vom Regenschirm (ti-umbrella, wirkte wie Regen/Wetterschutz)
+  auf ein Strand-Symbol (ti-beach) umgestellt – klares Urlaubs-/Ferien-Symbol,
+  klar vom Dienstreise-Flugzeug zu unterscheiden.
+- Freizeittag: Icon von einer laufenden Person (ti-walk, wirkte wie
+  "unterwegs") auf eine Sonne (ti-sun) umgestellt – eindeutig "freier,
+  selbstbestimmter Tag", klar von Homeoffice (Haus) und Urlaub (Strand)
+  unterscheidbar.
+- Farbkorrektur: Der Freizeittag wird jetzt in Gold/Bernstein dargestellt und
+  ist damit klar vom Homeoffice-Grün zu unterscheiden.
+- Dark-Mode: Die Anwesenheitsarten erhalten eine eigene, kräftigere und
+  kontrastreichere Farbpalette (statt Graufilter); Icons und Ziffern heben
+  sich im dunklen Design besser ab.
+- Legende: Die Reihenfolge von Freizeittag und Krankheit in der Legende
+  (Statistik-Kacheln) wurde getauscht.
+- Cache-Name und Cache-Buster erhöht; Bedienungsanleitung aktualisiert.
+
+--------------------------------------------------------------------------------------
+
 Version 1.52 vom 30.08.2026
 Änderungen gegenüber V1.51:
 

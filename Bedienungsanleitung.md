@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.52 vom 30.08.2026)
+## Anwesenheits-Dashboard (Version 1.53 vom 31.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -43,7 +43,7 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt.
 
-Die **Farben der Anwesenheitsarten** (z. B. Blau für Bürotage, Grün für Homeoffice) bleiben im Dark-Mode wie im hellen Modus erhalten, damit die Einträge immer eindeutig erkennbar sind. Damit die farbigen Tageszellen in den Monatskarten vor dem dunklen Hintergrund nicht zu grell wirken, werden sie über einen **Graufilter** sanft abgedunkelt – die Farbnuance selbst bleibt dabei unverändert. Die **Zukunftstage** erscheinen im Dark-Mode als dezente dunkle Kästchen.
+Die **Farben der Anwesenheitsarten** (z. B. Blau für Bürotage, Grün für Homeoffice, Gold für Freizeittag) erhalten im Dark-Mode eine **eigene, kräftigere und kontrastreichere Palette**: Die Zellflächen werden etwas dunkler, Rahmen-/Icon-Farben und Ziffern aufgehellt, sodass die Einträge vor dem dunklen Seitenhintergrund klar erkennbar und gut ablesbar sind – die Kategorien bleiben auch ohne Blick auf die Farbe eindeutig. Die **Zukunftstage** erscheinen im Dark-Mode als dezente dunkle Kästchen.
 
 ---
 
@@ -145,13 +145,13 @@ Hinweise:
 |-----------|-------------|--------------------------------------------------|
 | Blau      | Bürotag     | Vor Ort im Büro gearbeitet                       |
 | Grün      | Homeoffice  | Im Homeoffice gearbeitet                         |
-| Ocker     | Freizeittag | Freizeittag                                      |
+| Gold/Bernstein | Freizeittag | Freizeittag – selbstbestimmter freier Tag, bewusst klar vom Homeoffice-Grün unterscheidbar |
 | Grau      | Dienstreise | Dienstreise                                      |
 | Violett   | Feiertag    | Feiertag (automatisch erkannt, s. Kap. 4.3)      |
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endemonat). **Bürotage** und **Homeoffice** stehen als Zahlen-Kacheln direkt nebeneinander, damit die Anwesenheit im Zeitraum auf einen Blick erfassbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endemonat). **Bürotage** und **Homeoffice** stehen als Zahlen-Kacheln direkt nebeneinander, damit die Anwesenheit im Zeitraum auf einen Blick erfassbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 ☀️ ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind: Urlaub zeigt ein **Strand-Symbol** (klar vom Dienstreise-Flugzeug zu unterscheiden), Freizeittag eine **Sonne**.
 
 Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Bürotage, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln; **Bürotage** und **Homeoffice** stehen direkt nebeneinander, um die Anwesenheit im Zeitraum im Blick zu haben. Die beiden **Quoten** (Büropflicht-Quote und Homeoffice-Quote) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; als Text steht dort z. B. `Bürotage: 131 von 143 Solltagen` bzw. `Homeoffice-Tage: 166 von 85 Zieltagen`. Liegt eine Quote über **100 %** (mehr erfasste Tage als Soll), bleibt der Ring grün und **pulsiert** dezent in einem 2-Sekunden-Takt. Beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich **bewusst auf das aktuelle Kalenderjahr** – unabhängig vom gewählten Auswertungszeitraum – und gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht. Zusätzlich zeigt der **Resturlaub-Ring** im Urlaubskopf den Anteil der noch **frei verfügbaren** (ungeplanten) Tage am Jahreskontingent: grün ab 50 %, gelb ab 25 %, rot darunter. Sind **0 Tage frei**, unterscheidet der Ring zwei Fälle: wurde das gesamte Kontingent tatsächlich **genommen**, wird der Ring **rot**; sind die Tage dagegen nur **verplant** (oder kein Kontingent eingestellt), bleibt er **grau**. Die Beschriftung nennt den Rest, z. B. `15 von 30 Urlaubstagen verfügbar`.
 
@@ -381,7 +381,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.52 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.53 vom 31.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 
