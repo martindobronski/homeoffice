@@ -2386,16 +2386,17 @@ function showDayTip(e) {
     const resetBtn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
     const durationBadge = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('#durationBadge') : null;
     const monthArrow = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge) ? e.target.closest('#startPrev, #startNext, #endPrev, #endNext') : null;
-    const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow) ? e.target.closest('.zeitraum-card') : null;
-    const ratioCard = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
-    if (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !zeitraum && !ratioCard) {
+    const monthSel = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow) ? e.target.closest('#startMonth, #startYear, #endMonth, #endYear') : null;
+    const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !monthSel) ? e.target.closest('.zeitraum-card') : null;
+    const ratioCard = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !monthSel && !zeitraum) ? e.target.closest('.ratio-chip[data-tip]') : null;
+    if (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !monthSel && !zeitraum && !ratioCard) {
         return;
     }
     if (!overlay.classList.contains('hidden') || !confirmOverlay.classList.contains('hidden')
         || !urlaubConfirmOverlay.classList.contains('hidden')) {
         return;
     }
-    const rect = (cell || chip || urlaubRing || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || zeitraum || ratioCard).getBoundingClientRect();
+    const rect = (cell || chip || urlaubRing || quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || monthSel || zeitraum || ratioCard).getBoundingClientRect();
     let html;
     if (cell) {
         const iso = cell.getAttribute('data-date');
@@ -2449,6 +2450,20 @@ function showDayTip(e) {
         html = 'Dauer des eingestellten Zeitraums';
     } else if (monthArrow) {
         html = (monthArrow.id === 'startPrev' || monthArrow.id === 'endPrev') ? 'Vorheriger Monat' : 'Nächster Monat';
+    } else if (monthSel) {
+        const mId = monthSel.id;
+        html = (mId === 'startMonth' ? 'Zeitraum-Startmonat'
+            : mId === 'endMonth' ? 'Zeitraum-Endemonat'
+            : mId === 'startYear' ? 'Zeitraum-Startjahr'
+            : 'Zeitraum-Endejahr')
+            + '<div class="day-tip-hints">'
+            + (mId === 'startMonth'
+                ? 'Monat des Zeitraum-Beginns wählen.'
+                : mId === 'endMonth'
+                    ? 'Monat des Zeitraum-Endes wählen.'
+                    : mId === 'startYear'
+                        ? 'Jahr des Zeitraum-Beginns wählen.'
+                        : 'Jahr des Zeitraum-Endes wählen.') + '</div>';
     } else if (zeitraum) {
         html = 'Zeitraum'
             + '<div class="day-tip-hints">' + 'Start- und Ende-Monat des Anzeige-/Auswertungszeitraums wählen.' + '</div>';
@@ -2456,7 +2471,7 @@ function showDayTip(e) {
         html = ratioCard.getAttribute('data-tip');
     }
     dayTip.innerHTML = html;
-    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || zeitraum || ratioCard));
+    dayTip.classList.toggle('day-tip-wrap', !!(quota || bueroAnteil || bundesland || sonderfrei || btn || resetBtn || durationBadge || monthArrow || monthSel || zeitraum || ratioCard));
     dayTip.classList.remove('hidden');
     const tipW = dayTip.offsetWidth;
     const tipH = dayTip.offsetHeight;
