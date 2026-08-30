@@ -344,15 +344,22 @@ function shiftEnd(delta) {
 // Setzt auf Default zurück: Start = aktueller Monat, Ende = Start + 11 Monate.
 function resetZeitraum() {
     const now = new Date();
-    periodStart = fmt(new Date(now.getFullYear(), now.getMonth(), 1));
-    endeManuellGesetzt = false;
-    const eAbs = absMonat(now.getFullYear(), now.getMonth() + 1) + 11;
-    endM = (((eAbs % 12) + 12) % 12);
-    endY = Math.floor(eAbs / 12);
-    if (endM === 0) {
-        endM = 12;
-        endY--;
+    const solStart = fmt(new Date(now.getFullYear(), now.getMonth(), 1));
+    const solEndAbs = absMonat(now.getFullYear(), now.getMonth() + 1) + 11;
+    let solEndM = (((solEndAbs % 12) + 12) % 12);
+    let solEndY = Math.floor(solEndAbs / 12);
+    if (solEndM === 0) {
+        solEndM = 12;
+        solEndY--;
     }
+    if (periodStart === solStart && endY === solEndY && endM === solEndM) {
+        showToast('12-Monats-Zeitraum ist bereits eingestellt.');
+        return;
+    }
+    periodStart = solStart;
+    endeManuellGesetzt = false;
+    endM = solEndM;
+    endY = solEndY;
     persistZeitraum();
     applyAuswertung();
 }
