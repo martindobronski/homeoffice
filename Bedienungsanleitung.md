@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.50 vom 30.08.2026)
+## Anwesenheits-Dashboard (Version 1.51 vom 30.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -35,9 +35,13 @@ Das Fenster ist in vier Bereiche gegliedert:
 - **Kopfzeile:** Überschrift „Anwesenheits-Dashboard" mit der Jahresangabe des Zeitraums (z. B. `2026` oder `2026/2027`) und daneben die Zeitraum-Auswahl (Kapitel 3).
 - **Mitte:** Alle Monate des gewählten Zeitraums als kompakte Monatskarten in einer Jahresübersicht; der aktuelle Monat ist durch ein blaues **„Aktiv"-Label** im Monatskopf und einen blauen Rahmen markiert.
 - **Statistik:** Eine konsolidierte Sektion unterhalb der Jahresübersicht mit **einer Kachel je Kategorie**, auf den gesamten gewählten Zeitraum bezogen. Reine Zahlen-Kategorien (Bürotage, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) als schlichte Zahlen-Kacheln, wobei **Bürotage** und **Homeoffice** direkt nebeneinander stehen; die Quoten (Büropflicht-Quote, Homeoffice-Quote) als Kachel mit **Fortschrittsring + Ampel-Farbe**, beschreibendem Wert (z. B. `Bürotage: 131 von 143 Solltagen`) und Tooltip; Urlaub mit Jahres-Breakdown (genommen/geplant/ungeplant) und **Resturlaub-Ring**.
-- **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
+- **Fußzeile:** Zwei Karten – **„Einstellungen"** (Urlaubskontingent, Bundesland-Auswahl „Bundesland (Feiertage)" mit Checkbox „24./31.12. (arbeitsfreie Tage)", Darstellung „Automatisch/Hell/Dunkel") und **„Daten"** (Übersicht drucken / PDF, Backup exportieren mit Hinweis „Zuletzt exportiert:", Backup importieren) – sowie darunter links der Link zur Bedienungsanleitung und rechts die Versionsangabe mit Copyright („© 2026").
 
 Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten am Desktop, 2 Spalten auf Tablets, 1 Spalte auf Smartphones. Auf Touch-Geräten gelten die Bedienhinweise aus Kapitel 4.3.
+
+### 2.1 Darstellung (Dark-Mode)
+
+Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt. Im Dark-Mode bleiben die Farben der Anwesenheitsarten erkennbar (dunklere Flächen, hellere Artfarben); Ampel-Farben und Kacheln funktionieren unverändert.
 
 ---
 
@@ -375,7 +379,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.50 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.51 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 

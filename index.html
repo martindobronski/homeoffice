@@ -8,13 +8,26 @@
     <meta http-equiv="expires" content="0">
     <title>Anwesenheits-Dashboard</title>
     <meta name="theme-color" content="#185FA5">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#0F1215">
+    <script>
+        (function () {
+            var t;
+            try { t = localStorage.getItem('theme'); } catch (e) { t = null; }
+            if (t === 'light' || t === 'dark') {
+                document.documentElement.dataset.theme = t;
+            } else {
+                var dark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+            }
+        })();
+    </script>
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
     <link rel="apple-touch-icon" href="icon-192.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.35">
+    <link rel="stylesheet" href="style.css?v=2.36">
 </head>
 <body>
 
@@ -90,6 +103,14 @@
                 <label for="sonderfreiCheck">24./31.12. (arbeitsfreie Tage)</label>
                 <input type="checkbox" id="sonderfreiCheck">
             </div>
+            <div class="setting-row theme-select">
+                <label for="themeSelect">Darstellung</label>
+                <select id="themeSelect">
+                    <option value="auto">Automatisch</option>
+                    <option value="light">Hell</option>
+                    <option value="dark">Dunkel</option>
+                </select>
+            </div>
         </div>
 
         <div class="card footer-actions">
@@ -112,7 +133,7 @@
             <input type="file" id="importFile" accept=".json,application/json,.csv,text/csv" class="hidden">
         </div>
 
-        <div id="version" class="version"><span class="ver-manual"><a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a></span><span class="ver-meta">Version 1.50 vom 30.08.2026 · &copy; Martin Dobronski 2026</span></div>
+        <div id="version" class="version"><span class="ver-manual"><a href="Bedienungsanleitung.html" target="_blank">Bedienungsanleitung</a></span><span class="ver-meta">Version 1.51 vom 30.08.2026 · &copy; Martin Dobronski 2026</span></div>
     </div>
 
     <div id="quickMenu" class="quick-menu hidden"></div>
@@ -286,6 +307,6 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.211"></script>
+    <script src="app.js?v=1.212"></script>
 </body>
 </html>

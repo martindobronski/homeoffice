@@ -2903,6 +2903,39 @@ function render() {
     renderLegend();
 }
 
+// Dark-Mode / Darstellung: folgt der Systemeinstellung ("Automatisch") oder
+// der manuellen Wahl aus den Einstellungen. Setzt data-theme auf <html>;
+// ein Inline-Script in index.html erledigt dasselbe bereits vor dem ersten
+// Paint, damit beim Laden kein falscher Themen-Flash entsteht.
+function applyTheme() {
+    var pref = 'auto';
+    try { pref = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+    var dark = pref === 'dark'
+        || (pref === 'auto' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+}
+
+function initThemeControl() {
+    var select = document.getElementById('themeSelect');
+    if (!select) return;
+    var pref = 'auto';
+    try { pref = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+    select.value = pref;
+    select.addEventListener('change', function () {
+        try { localStorage.setItem('theme', select.value); } catch (e) {}
+        applyTheme();
+    });
+    // Systemwechsel auch ohne Reload übernehmen, solange "Automatisch" aktiv.
+    var mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq && mq.addEventListener) {
+        mq.addEventListener('change', function () {
+            var p = 'auto';
+            try { p = localStorage.getItem('theme') || 'auto'; } catch (e) {}
+            if (p === 'auto') applyTheme();
+        });
+    }
+}
+
 function init() {
     loadDays();
     loadPeriod();
@@ -2942,6 +2975,7 @@ function init() {
         render();
         if (n > 0) showToast(n + ' Feiertag' + (n > 1 ? 'e' : '') + ' angepasst');
     });
+    initThemeControl();
 
     populateQuick();
     fillTypeSelect();

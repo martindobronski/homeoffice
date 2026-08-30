@@ -3,6 +3,18 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.51 vom 30.08.2026
+Änderungen gegenüber V1.50:
+
+- Neu: Dark-Mode. Die Darstellung folgt automatisch den Systemeinstellungen
+  (Hell/Dunkel) und lässt sich in den Einstellungen manuell auf "Hell" oder
+  "Dunkel" umstellen ("Automatisch" = Standard). Die Wahl wird gespeichert;
+  bei "Automatisch" reagiert die App auf einen Systemwechsel sofort.
+- Bedienungsanleitung (MD/HTML) aktualisiert; Cache-Name und Cache-Buster
+  erhöht.
+
+--------------------------------------------------------------------------------------
+
 Version 1.50 vom 30.08.2026
 Änderungen gegenüber V1.49:
 
