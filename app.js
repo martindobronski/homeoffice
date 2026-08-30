@@ -1288,11 +1288,13 @@ function renderLegend() {
             + inner
             + '</button>';
     }
+    function unitTag(n) {
+        return '<span class="tile-unit"> ' + (n === 1 ? 'Tag' : 'Tage') + '</span>';
+    }
     function countTile(key, caption, label) {
         const t = byKey[key];
         const n = counts[key] || 0;
-        const unit = '<span class="tile-unit"> ' + (n === 1 ? 'Tag' : 'Tage') + '</span>';
-        const inner = '<span class="tile-value">' + n + unit + '</span>';
+        const inner = '<span class="tile-value">' + n + unitTag(n) + '</span>';
         return tile(t, inner, label);
     }
 
@@ -1319,9 +1321,9 @@ function renderLegend() {
             + ';--ring-color:' + urlaubRingColor + '" data-tip="' + urlaubTip + '"><span>' + urlaubRestPct + '%</span></span>';
     const urlaubTile = tile(byKey.URLAUB,
         '<span class="urlaub-breakdown">'
-            + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + '</span><span class="tile-caption">genommen</span></span>'
-            + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + '</span><span class="tile-caption">geplant</span></span>'
-            + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + '</span><span class="tile-caption">ungeplant</span></span>'
+            + '<span class="urlaub-b"><span class="tile-value">' + urlaubGenommen + unitTag(urlaubGenommen) + '</span><span class="tile-caption">genommen</span></span>'
+            + '<span class="urlaub-b"><span class="tile-value sub">' + urlaubGeplant + unitTag(urlaubGeplant) + '</span><span class="tile-caption">geplant</span></span>'
+            + '<span class="urlaub-b"><span class="tile-value sub">' + ungeplant + unitTag(ungeplant) + '</span><span class="tile-caption">ungeplant</span></span>'
             + '</span>'
             + '<span class="tile-caption urlaub-hinweis">' + ungeplant + ' von ' + urlaubTotal + ' Urlaubstagen verfügbar</span>',
         'Urlaub (' + now.getFullYear() + ')',
