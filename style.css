@@ -890,7 +890,7 @@ select:focus-visible {
 .card-label {
     font-size: 13px;
     color: var(--text-strong);
-    font-weight: 500;
+    font-weight: 700;
     margin: 0 0 12px;
 }
 
