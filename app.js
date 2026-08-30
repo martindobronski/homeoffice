@@ -26,12 +26,18 @@ const TYPE_CLASS = {
 const TYPE_ICONS = {
     BUEROTAG: 'ti-building',
     HOMEOFFICE: 'ti-home',
-    FREIZEITTAG: 'ti-walk',
+    // Freizeittag: ti-sun (Sonne) – klar Unterscheidbar von Homeoffice (Haus)
+    // und Urlaub (Strand); Prioritätenliste: ti-sun → ti-coffee → ti-mood-smile
+    // → ti-sofa. Erste Option ti-sun ist in der Font vorhanden und hat keine
+    // Kategorie-Überschneidung, wird daher verwendet.
+    FREIZEITTAG: 'ti-sun',
     DIENSTREISE: 'ti-plane',
-    // Urlaub: ti-beach (Schwimmer/Wellen) war nicht eindeutig erkennbar.
-    // ti-beach-access und ti-palm-tree existieren in der eingebundenen
-    // Tabler-Version (3.46.0) nicht – daher ti-umbrella (s. Prioritätsliste).
-    URLAUB: 'ti-umbrella',
+    // Urlaub: ti-beach (Strand/Wellen) – eindeutiges Urlaubs-Symbol.
+    // Prioritätenliste: 1. ti-beach (vorhanden, gewählt) → 2. ti-palm-tree
+    // (in Font-Version 3.46.0 nicht enthalten) → 3. ti-luggage (vorhanden, aber
+    // Strand ist eindeutiger) → 4. ti-plane-departure (vorhanden, aber zu ähnlich
+    // zu ti-plane der Dienstreise – bewusst vermieden, um Verwechslung zu verhindern).
+    URLAUB: 'ti-beach',
     FEIERTAG: 'ti-confetti',
     KRANKHEIT: 'ti-thermometer'
 };
