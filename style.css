@@ -682,6 +682,20 @@ select:focus-visible {
     margin-bottom: 0;
 }
 
+/* Kacheln dürfen schrumpfen (sonst erzwingt langer nowrap-Inhalt eine
+   Mindestbreite und die letzte Kachel ragt über den Zeilenrand hinaus). */
+.tile-row > * {
+    min-width: 0;
+}
+
+/* Innerhalb der Ring-Kacheln lange Labels/Unterschriften umbrechen statt
+   die Spalte aufzublähen (verhindert Überstand auf schmalen Ansichten). */
+.ratio-chip .tile-label,
+.ratio-chip .tile-caption {
+    white-space: normal;
+    overflow-wrap: anywhere;
+}
+
 .chip {
     display: flex;
     flex-direction: column;
