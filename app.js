@@ -2911,6 +2911,17 @@ function init() {
     resetPeriodButton.addEventListener('click', resetZeitraum);
     if (durationInput) {
         durationInput.addEventListener('change', onDurationChanged);
+        durationInput.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter') {
+                return;
+            }
+            e.preventDefault();
+            e.stopPropagation();
+            const y = window.scrollY;
+            onDurationChanged();
+            durationInput.blur();
+            window.scrollTo(window.scrollX, y);
+        });
     }
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
