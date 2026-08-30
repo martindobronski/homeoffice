@@ -384,6 +384,21 @@ function onDurationChanged() {
     applyAuswertung();
 }
 
+// Mobiler Schutz: Samsung/Android-Browser springen nach der Tastatur-
+// Bestätigung (IME-Action) gelegentlich selbstständig zum nächsten
+// Eingabefeld (#bueroAnteilInput) und scrollen dorthin. Diese Guard
+// fängt solche Fokus-Sprünge in einem kurzen Zeitfenster nach der
+// Dauer-Eingabe ab und verhindert sie.
+let durationGuardUntil = 0;
+let durationGuardY = 0;
+function armDurationGuard() {
+    durationGuardUntil = Date.now() + 400;
+    durationGuardY = window.scrollY;
+}
+function disarmDurationGuard() {
+    durationGuardUntil = 0;
+}
+
 // ---------- Speicher ----------
 
 function storeGet(key) {
@@ -2910,25 +2925,41 @@ function init() {
     endNext.addEventListener('click', function () { shiftEnd(1); });
     resetPeriodButton.addEventListener('click', resetZeitraum);
     if (durationInput) {
-        durationInput.addEventListener('change', onDurationChanged);
+        durationInput.addEventListener('change', function () {
+            onDurationChanged();
+            armDurationGuard();
+        });
         durationInput.addEventListener('keydown', function (e) {
-            if (e.key !== 'Enter') {
+            if (e.key !== 'Enter' && e.key !== 'Tab') {
                 return;
             }
             e.preventDefault();
             e.stopPropagation();
-            const y = window.scrollY;
             onDurationChanged();
+            armDurationGuard();
             durationInput.blur();
             requestAnimationFrame(function () {
                 const a = document.activeElement;
                 if (a && a !== document.body && a !== durationInput && a.tagName === 'INPUT') {
                     a.blur();
                 }
-                window.scrollTo(window.scrollX, y);
             });
         });
     }
+    document.addEventListener('focusin', function (e) {
+        if (!durationGuardUntil || Date.now() >= durationGuardUntil) {
+            return;
+        }
+        const t = e.target;
+        if (!t || t === document.body || t === durationInput) {
+            return;
+        }
+        if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') {
+            t.blur();
+            window.scrollTo(window.scrollX, durationGuardY);
+            disarmDurationGuard();
+        }
+    });
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
     render();
