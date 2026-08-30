@@ -1202,8 +1202,9 @@ function renderLegend() {
     }
     function countTile(key, caption, label) {
         const t = byKey[key];
-        const unit = caption ? '<span class="tile-unit"> ' + caption + '</span>' : '';
-        const inner = '<span class="tile-value">' + (counts[key] || 0) + unit + '</span>';
+        const n = counts[key] || 0;
+        const unit = '<span class="tile-unit"> ' + (n === 1 ? 'Tag' : 'Tage') + '</span>';
+        const inner = '<span class="tile-value">' + n + unit + '</span>';
         return tile(t, inner, label);
     }
 
@@ -1279,10 +1280,10 @@ function renderLegend() {
         + pflichtTile + homeofficeTileHtml + urlaubTile
         + '</div>'
         + '<div class="tile-row tile-row-4">'
-        + countTile('BUEROTAG', 'Tage', 'Bürotage') + countTile('HOMEOFFICE', 'Tage') + countTile('DIENSTREISE', 'Tage') + countTile('FEIERTAG', 'Tage')
+        + countTile('BUEROTAG', null, 'Bürotage') + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
         + '</div>'
         + '<div class="tile-row">'
-        + countTile('KRANKHEIT', 'Tage') + countTile('FREIZEITTAG', 'Tage')
+        + countTile('KRANKHEIT') + countTile('FREIZEITTAG')
         + '</div>';
 }
 
