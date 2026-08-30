@@ -1457,10 +1457,10 @@ select:focus-visible {
     .zeitraum-card .duration-block {
         flex: 1;
         align-self: center;
-        text-align: center;
+        text-align: left;
     }
     .duration-control {
-        justify-content: center;
+        justify-content: flex-start;
     }
     .zeitraum-card .reset-btn {
         margin-left: auto;
