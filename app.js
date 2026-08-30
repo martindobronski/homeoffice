@@ -757,8 +757,9 @@ function handleImportFile(file) {
             const data = parseBackupText(reader.result);
             const n = data.days ? Object.keys(data.days).length : 0;
             pendingImport = data;
-            importConfirmText.innerHTML = 'Soll das Backup mit <b>' + n + ' Einträgen</b> wirklich importiert werden?'
-                + '<br>Bestehende Daten werden dabei <b>überschrieben</b>.';
+            importConfirmText.innerHTML = 'Soll das Backup mit <b>'
+                + n + ' Einträgen</b> wirklich importiert werden?'
+                + ' Dabei werden bestehende Daten <b>überschrieben</b>.';
             importConfirmOverlay.classList.remove('hidden');
         } catch (e) {
             alert('Import fehlgeschlagen: ' + e.message);
