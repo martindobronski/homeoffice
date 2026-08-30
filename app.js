@@ -1248,12 +1248,13 @@ function renderLegend() {
     }
     const ungeplant = Math.max(0, urlaubTotal - urlaubGenommen - urlaubGeplant);
     // Resturlaub-Ring: % = frei verfügbare (ungeplante) Tage vom Jahreskontingent.
-    // Ampel "viel Rest = grün"; ist alles genommen/verplant (oder Kontingent 0),
-    // wird der Ring grau dargestellt.
+    // Ampel "viel Rest = grün". Sind 0 Tage frei und das gesamte Kontingent
+    // wurde tatsächlich genommen, wird der Ring rot; sind die Tage nur verplant
+    // (oder kein Kontingent eingestellt), bleibt er grau.
     const urlaubRestPct = urlaubTotal > 0 ? Math.round(ungeplant / urlaubTotal * 100) : 0;
     const urlaubRingColor = ungeplant > 0
         ? (urlaubRestPct >= 50 ? '#16a34a' : urlaubRestPct >= 25 ? '#eab308' : '#dc2626')
-        : '#9ca3af';
+        : (urlaubTotal > 0 && urlaubGenommen >= urlaubTotal ? '#dc2626' : '#9ca3af');
 
     // Quoten über den gesamten gewählten Zeitraum (nur vollständige Monate,
     // damit Büro- und Homeoffice-Quote spiegelbildlich konsistent sind).
