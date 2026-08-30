@@ -756,9 +756,11 @@ function handleImportFile(file) {
         try {
             const data = parseBackupText(reader.result);
             const n = data.days ? Object.keys(data.days).length : 0;
+            const d = new Date(file.lastModified);
+            const dstr = ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear();
             pendingImport = data;
-            importConfirmText.innerHTML = 'Soll das Backup mit <b>'
-                + n + ' Einträgen</b> wirklich importiert werden?<br>'
+            importConfirmText.innerHTML = 'Soll das Backup vom <b>'
+                + dstr + '</b> mit <b>' + n + ' Einträgen</b> wirklich importiert werden?<br>'
                 + 'Dabei werden bestehende Daten <b>überschrieben</b>.';
             importConfirmOverlay.classList.remove('hidden');
         } catch (e) {
