@@ -3,6 +3,19 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.50 vom 30.08.2026
+Änderungen gegenüber V1.49:
+
+- Smartphone: Die Eingabe der Zeitraum-Dauer (Monate) funktioniert jetzt
+  sauber – nach dem Bestätigen über die Tastatur springt der Fokus nicht mehr
+  in das nächste Eingabefeld, und die Seite bleibt in ihrer Scroll-Position.
+- Textkorrekturen: „Enddatum" → „Endedatum" sowie „Endmonat" → „Endemonat"
+  (Beschriftungen und Bedienungsanleitung).
+- Bedienungsanleitung (MD/HTML) aktualisiert; Cache-Name und Cache-Buster
+  erhöht.
+
+--------------------------------------------------------------------------------------
+
 Version 1.49 vom 29.08.2026
 Änderungen gegenüber V1.48:
 

@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.49 vom 29.08.2026)
+## Anwesenheits-Dashboard (Version 1.50 vom 30.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -53,7 +53,7 @@ Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Ze
 - **Zurücksetzen:** Der Pfeil-Button **↻** (auf dem Desktop direkt neben dem Dauer-Badge, auf dem Smartphone rechtsbündig) setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück.
 - **Überschriften:** Die Überschrift oben nennt das Jahr bzw. die Jahreszahlen des Zeitraums (z. B. `Anwesenheits-Dashboard 2026` bei einem Jahr, `Anwesenheits-Dashboard 2026/2027` bei einem Jahreswechsel). Die Monatskarten-Sektion selbst trägt keine separate Überschrift mehr. Jahreswechsel werden von der Monatsdarstellung korrekt berücksichtigt (z. B. Start November 2026, Ende Januar 2027).
 - **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einige Jahre in die Zukunft; sie wird bei Einträgen in späteren Jahren automatisch erweitert.
-- Start- und Endmonat werden gespeichert und beim nächsten Öffnen wiederhergestellt.
+- Start- und Endemonat werden gespeichert und beim nächsten Öffnen wiederhergestellt.
 
 ---
 
@@ -145,7 +145,7 @@ Hinweise:
 | Rot       | Krankheit   | Krank (Krankschreibung)                          |
 | Terrakotta| Urlaub      | Urlaub (siehe Zähler in der Legende)             |
 
-Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endmonat). **Bürotage** und **Homeoffice** stehen als Zahlen-Kacheln direkt nebeneinander, damit die Anwesenheit im Zeitraum auf einen Blick erfassbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
+Die **Legende** unterhalb der Jahresübersicht zeigt für jede Art den Farbklecks, das **Icon** und die Anzahl im gewählten Auswertungszeitraum (Startmonat bis Endemonat). **Bürotage** und **Homeoffice** stehen als Zahlen-Kacheln direkt nebeneinander, damit die Anwesenheit im Zeitraum auf einen Blick erfassbar ist. Zwei Arten sind Sonderfälle: Beim **Urlaub** steht statt der Zeitraumzahl der Jahresstand (genommen/geplant/ungeplant, siehe unten), beim **Krankheitstag** nur die Zahl im gewählten Zeitraum. Die Icons (🏢 🏠 🏃 ✈️ 🎉 🤒 🏖️) ergänzen die Farben, damit die Arten auch bei Farbsehschwäche eindeutig sind.
 
 Die Statistik ist in einer **einzigen Sektion** konsolidiert – jede Kategorie erscheint genau **einmal**. Reine Zahlen-Kategorien (Bürotage, Homeoffice, Dienstreise, Feiertag, Krankheit, Freizeittag) sind schlichte Zahlen-Kacheln; **Bürotage** und **Homeoffice** stehen direkt nebeneinander, um die Anwesenheit im Zeitraum im Blick zu haben. Die beiden **Quoten** (Büropflicht-Quote und Homeoffice-Quote) sind Kacheln, die in einem **Fortschrittsring** zusätzlich die Zahl und den Prozentwert mit **Ampel-Farbe** (grün/gelb/rot) kombinieren; als Text steht dort z. B. `Bürotage: 131 von 143 Solltagen` bzw. `Homeoffice-Tage: 166 von 85 Zieltagen`. Liegt eine Quote über **100 %** (mehr erfasste Tage als Soll), bleibt der Ring grün und **pulsiert** dezent in einem 2-Sekunden-Takt. Beim Überfahren zeigt ein Tooltip die Details. Beim **Urlaub** wird der Jahresstand als genommen/geplant/ungeplant aufgeschlüsselt; das Kontingent bezieht sich **bewusst auf das aktuelle Kalenderjahr** – unabhängig vom gewählten Auswertungszeitraum – und gilt als **verplant**, sobald die Summe aus genommenen und geplanten Tagen das Kontingent erreicht. Zusätzlich zeigt der **Resturlaub-Ring** im Urlaubskopf den Anteil der noch **frei verfügbaren** (ungeplanten) Tage am Jahreskontingent: grün ab 50 %, gelb ab 25 %, rot darunter; sind alle Tage genommen oder verplant, bleibt der Ring **grau**. Die Beschriftung nennt den Rest, z. B. `15 von 30 Urlaubstagen verfügbar`.
 
@@ -375,7 +375,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.49 vom 29.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.50 vom 30.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 
