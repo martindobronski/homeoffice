@@ -114,13 +114,13 @@ Die App passt sich schmalen Displays an: Auf Smartphones werden Statistik-Kachel
 
 Im Dialog kannst du:
 
-- **Startdatum** und **Enddatum** festlegen (das Enddatum ist mit dem Startdatum vorbelegt).
-  - Ist das **Enddatum größer als das Startdatum**, wird beim Speichern der **gesamte Bereich** von Start- bis Enddatum mit der gewählten Art belegt – praktisch für Urlaub, Krankheit oder Dienstreisen über mehrere Tage.
-  - Änderst du das Startdatum nachträglich, wird das Enddatum automatisch angepasst, falls es vor dem Startdatum läge.
+- **Startdatum** und **Endedatum** festlegen (das Endedatum ist mit dem Startdatum vorbelegt).
+  - Ist das **Endedatum größer als das Startdatum**, wird beim Speichern der **gesamte Bereich** von Start- bis Endedatum mit der gewählten Art belegt – praktisch für Urlaub, Krankheit oder Dienstreisen über mehrere Tage.
+  - Änderst du das Startdatum nachträglich, wird das Endedatum automatisch angepasst, falls es vor dem Startdatum läge.
 - **Art** aus der Liste wählen (siehe Farben unten).
 - **Arbeitsplatz und/oder Parkplatz gebucht** anhaken, um den Tag als „gebucht" zu markieren (z. B. bereits reservierter Urlaub). Das Feld **Arbeitsplatz und/oder Parkplatz gebucht** wird nur angezeigt, wenn als Art **Bürotag** gewählt ist; bei anderen Arten verschwindet es und eine bereits gesetzte Markierung wird entfernt. Bei belegten Tagen erscheint ein grüner **Haken** unten rechts.
 - über **OK** speichern,
-- über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen). Bei einem Bereich (Enddatum > Startdatum) wird der **gesamte Bereich** gelöscht; vor dem Löschen erscheint ein Bestätigungsdialog.
+- über **Löschen** den Eintrag entfernen (nur bei vorhandenen Einträgen). Bei einem Bereich (Endedatum > Startdatum) wird der **gesamte Bereich** gelöscht; vor dem Löschen erscheint ein Bestätigungsdialog.
 - über **Abbrechen** den Dialog schließen, ohne etwas zu ändern.
 
 Hinweise:
@@ -164,7 +164,7 @@ Die Legendeneinträge sind **klickbar und fungieren als Filter**:
 
 Im Export-Dialog wählst du:
 
-- **Zeitraum:** aktueller Monat, aktuelles Quartal, aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Enddatum). Bei **Urlaub, Feiertag, Krankheit und Freizeittag** ist „Aktuelles Jahr“ voreingestellt, sonst „Aktueller Monat“.
+- **Zeitraum:** aktueller Monat, aktuelles Quartal, aktuelles Jahr oder ein frei wählbarer Zeitraum (Start-/Endedatum). Bei **Urlaub, Feiertag, Krankheit und Freizeittag** ist „Aktuelles Jahr“ voreingestellt, sonst „Aktueller Monat“.
 - **Datumsformat:** `TT.MM.JJJJ` (lesbar) oder `JJJJ-MM-TT` (ISO, sortierbar). Gilt für das TXT-Format; in CSV und JSON wird immer das ISO-Format verwendet.
 - **Dateiformat:** `TXT` (Kopfzeile + eine Datumszeile je Eintrag), `CSV` (spaltentrennwerte Textdatei) oder `JSON` (strukturierte Daten für die Weiterverarbeitung).
 
@@ -233,7 +233,7 @@ Bei inhaltlichen Änderungen an Tagen (Setzen, Löschen, Zuweisen – auch über
 
 Der Button **„Übersicht drucken / PDF"** in der Fußzeile erzeugt ein aufbereitetes, seitenformatiertes Dokument (A4) für Abrechnungs- oder Nachweiszwecke – z. B. gegenüber dem Arbeitgeber:
 
-1. Klick auf den Button öffnet einen Dialog zur Wahl des **Berichtszeitraums**: Über die **Zeitraum-Auswahl** (Chip-Buttons) lassen sich schnell vordefinierte Zeiträume wählen – **Aktuelles Jahr**, **Aktueller Monat** (Voreinstellung), **Monat** (mit Dropdown für Monat und Jahr, voreingestellt das aktuelle Jahr) oder **Quartal** (mit Dropdown für Quartal und Jahr, voreingestellt das aktuelle Jahr). So lassen sich z. B. schnell „September 2028" oder „Q4 2028" drucken. Die Start- und Enddatum-Felder werden dabei automatisch befüllt, bleiben aber manuell nachjustierbar. Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt; **Abbrechen**, **ESC** oder ein Klick neben den Dialog schließen ihn ohne Aktion.
+1. Klick auf den Button öffnet einen Dialog zur Wahl des **Berichtszeitraums**: Über die **Zeitraum-Auswahl** (Chip-Buttons) lassen sich schnell vordefinierte Zeiträume wählen – **Aktuelles Jahr**, **Aktueller Monat** (Voreinstellung), **Monat** (mit Dropdown für Monat und Jahr, voreingestellt das aktuelle Jahr) oder **Quartal** (mit Dropdown für Quartal und Jahr, voreingestellt das aktuelle Jahr). So lassen sich z. B. schnell „September 2028" oder „Q4 2028" drucken. Die Start- und Endedatum-Felder werden dabei automatisch befüllt, bleiben aber manuell nachjustierbar. Ungültige oder umgekehrte Datumsangaben werden mit Hinweis abgelehnt; **Abbrechen**, **ESC** oder ein Klick neben den Dialog schließen ihn ohne Aktion.
 2. Nach **„Übersicht erstellen"** öffnet sich das Dokument in einem neuen Tab:
    - Am Desktop erscheint direkt der **Druckdialog** des Browsers – dort „Als PDF speichern" wählen ergibt eine PDF-Datei.
    - Auf Touch-Geräten zeigt das Dokument einen kurzen Hinweis; der Druck/PDF-Export erfolgt über das Browser-Menü (**Teilen → Drucken** bzw. **Drucken → Als PDF speichern**).
@@ -400,7 +400,7 @@ Nein, pro Datum ist nur ein Eintrag möglich. Ein Klick auf einen erfassten Tag 
 Innerhalb von 8 Sekunden über den „Rückgängig"-Link im Toast, jederzeit über **Strg+Z** (**Cmd+Z** am Mac); mit **Strg+Shift+Z**/**Strg+Y** wird die Änderung wieder angewendet (Kapitel 6.3). Bis zu 30 Schritte sind möglich.
 
 **Wie erstelle ich einen Nachweis für meinen Arbeitgeber?**
-Über **„Übersicht drucken / PDF"** in der Fußzeile (Kapitel 6.4): Zeitraum per Klick auf eine der Optionen wählen (Voreinstellung: aktueller Monat) oder Start-/Enddatum frei eintragen, dann im Druckdialog „Als PDF speichern" wählen. Das Dokument enthält Zusammenfassung und taggenaue Monatstabellen.
+Über **„Übersicht drucken / PDF"** in der Fußzeile (Kapitel 6.4): Zeitraum per Klick auf eine der Optionen wählen (Voreinstellung: aktueller Monat) oder Start-/Endedatum frei eintragen, dann im Druckdialog „Als PDF speichern" wählen. Das Dokument enthält Zusammenfassung und taggenaue Monatstabellen.
 
 **Funktioniert die App auch ohne Internet?**
 Ja, wenn sie als App installiert wurde (Kapitel 1.1). Nach dem ersten Laden läuft sie vollständig offline; neue Versionen werden automatisch geladen, sobald wieder eine Internetverbindung besteht.
