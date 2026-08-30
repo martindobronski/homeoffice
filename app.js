@@ -74,7 +74,8 @@ const endMonth = document.getElementById('endMonth');
 const endYear = document.getElementById('endYear');
 const endPrev = document.getElementById('endPrev');
 const endNext = document.getElementById('endNext');
-const durationBadge = document.getElementById('durationBadge');
+const durationInput = document.getElementById('durationInput');
+const durationUnit = document.getElementById('durationUnit');
 const resetPeriodButton = document.getElementById('resetPeriodButton');
 const yearGridTitleEl = document.getElementById('yearGridTitle');
 const zeitraumCardEl = document.querySelector('.zeitraum-card');
@@ -194,8 +195,9 @@ function getDauerMonate() {
 // Aktualisiert Dauer-Badge, Zeitraum-Überschrift und die Dropdowns der Zeitraum-Karte.
 function syncZeitraumUi() {
     const monate = getDauerMonate();
-    if (durationBadge) {
-        durationBadge.textContent = 'Zeitraum-Dauer: ' + (monate === 1 ? '1 Monat' : monate + ' Monate');
+    if (durationInput) {
+        durationInput.value = String(monate);
+        durationUnit.textContent = monate === 1 ? 'Monat' : 'Monate';
     }
     if (startMonth) {
         const s = parseISO(periodStart);
@@ -351,6 +353,25 @@ function resetZeitraum() {
         endM = 12;
         endY--;
     }
+    persistZeitraum();
+    applyAuswertung();
+}
+
+// Dauer (Anzahl der Monate) wurde über das Eingabefeld geändert.
+// Start bleibt erhalten, das Ende wird entsprechend neu berechnet.
+function onDurationChanged() {
+    const v = parseInt(durationInput.value, 10);
+    const s = parseISO(periodStart);
+    const sAbs = absMonat(s.getFullYear(), s.getMonth() + 1);
+    const months = Number.isFinite(v) ? Math.max(1, v) : getDauerMonate();
+    const eAbs = sAbs + (months - 1);
+    endM = (((eAbs % 12) + 12) % 12);
+    endY = Math.floor(eAbs / 12);
+    if (endM === 0) {
+        endM = 12;
+        endY--;
+    }
+    endeManuellGesetzt = true;
     persistZeitraum();
     applyAuswertung();
 }
@@ -2428,7 +2449,7 @@ function showDayTip(e) {
     const sonderfrei = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland) ? e.target.closest('.sonderfrei-select') : null;
     const btn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei) ? e.target.closest('#exportButton, #importButton, #printButton') : null;
     const resetBtn = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn) ? e.target.closest('#resetPeriodButton') : null;
-    const durationBadge = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('#durationBadge') : null;
+    const durationBadge = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn) ? e.target.closest('.duration-control') : null;
     const monthArrow = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge) ? e.target.closest('#startPrev, #startNext, #endPrev, #endNext') : null;
     const monthSel = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow) ? e.target.closest('#startMonth, #startYear, #endMonth, #endYear') : null;
     const zeitraum = (!cell && !chip && !urlaubRing && !quota && !bueroAnteil && !bundesland && !sonderfrei && !btn && !resetBtn && !durationBadge && !monthArrow && !monthSel) ? e.target.closest('.zeitraum-card') : null;
@@ -2880,6 +2901,9 @@ function init() {
     endPrev.addEventListener('click', function () { shiftEnd(-1); });
     endNext.addEventListener('click', function () { shiftEnd(1); });
     resetPeriodButton.addEventListener('click', resetZeitraum);
+    if (durationInput) {
+        durationInput.addEventListener('change', onDurationChanged);
+    }
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
     render();
