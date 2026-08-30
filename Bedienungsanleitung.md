@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.53 vom 31.08.2026)
+## Anwesenheits-Dashboard (Version 1.54 vom 31.08.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -56,7 +56,8 @@ Der Kalender (Jahresübersicht) und die Statistik-Auswertung decken denselben Ze
 - **Vor- und zurückblättern:** Die Pfeile **‹**/**›** an jedem Block verschieben den jeweiligen Monat um einen Monat. Über die Pfeile **‹**/**›** des Start-Blocks (oder die Tastatur-Pfeiltasten links/rechts) blätterst du durch den Zeitraum; dabei bleibt ein nicht manuell gesetztes Ende synchron. Beim Überfahren zeigen die Pfeile einen Tooltip („Vorheriger Monat" bzw. „Nächster Monat").
 - **Dauer-Anzeige:** Zwischen beiden Blöcken zeigt ein Badge die **Dauer** des Zeitraums an (z. B. `Zeitraum-Dauer: 12 Monate` bei Start Januar 2026 bis Ende Dezember 2026). Diese Anzeige ist rein informativ und wird automatisch aus Start und Ende berechnet; ein Hovertipp auf den Badge zeigt den Hinweis „Dauer des eingestellten Zeitraums".
 - **Validierung:** Das Ende darf nicht vor dem Start liegen. Wird es vor den Start gesetzt, wird es automatisch auf den Start-Monat korrigiert (Mindestdauer 1 Monat).
-- **Zurücksetzen:** Der Pfeil-Button **↻** (auf dem Desktop direkt neben dem Dauer-Badge, auf dem Smartphone rechtsbündig) setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück.
+- **Zurücksetzen:** Der Pfeil-Button **↻** (auf dem Desktop direkt neben dem Dauer-Badge, auf dem Smartphone rechtsbündig) setzt den Zeitraum auf den **aktuellen Monat** mit einer Dauer von **12 Monaten** zurück. Der Reset-Block besitzt keinen Beschriftungstext; der Kreis erscheint bewusst dezent (kleiner, ohne farbigen Grund), damit er hinter den Auswahlfeldern nicht optisch dominiert.
+- **Darstellung:** Die vier Blöcke **Startmonat**, **Endemonat**, **Dauer** und **Reset** sind je mit einem dünnen Rahmen umgeben und werden so als eigenständige Einheiten der Zeitraum-Leiste dargestellt; der Reset-Kreis ist darin vertikal zentriert.
 - **Überschriften:** Die Überschrift oben nennt das Jahr bzw. die Jahreszahlen des Zeitraums (z. B. `Anwesenheits-Dashboard 2026` bei einem Jahr, `Anwesenheits-Dashboard 2026/2027` bei einem Jahreswechsel). Die Monatskarten-Sektion selbst trägt keine separate Überschrift mehr. Jahreswechsel werden von der Monatsdarstellung korrekt berücksichtigt (z. B. Start November 2026, Ende Januar 2027).
 - **Jahresauswahl:** Die Liste reicht von mehreren Jahren in der Vergangenheit bis einige Jahre in die Zukunft; sie wird bei Einträgen in späteren Jahren automatisch erweitert.
 - Start- und Endemonat werden gespeichert und beim nächsten Öffnen wiederhergestellt.
@@ -381,7 +382,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.53 vom 31.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.54 vom 31.08.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 

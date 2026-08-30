@@ -3,6 +3,21 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.54 vom 31.08.2026
+Änderungen gegenüber V1.53:
+
+- Zeitraum-Karte: Die vier Blöcke Startmonat, Endemonat, Dauer und Reset sind
+  jetzt je mit einem dünnen Rahmen umgeben und wirken als eigenständige
+  Einheiten der Zeitraum-Leiste.
+- Reset: Die Beschriftung "Reset" wurde entfernt; der Reset-Kreis bleibt an
+  seiner Position und ist im Rahmen vertikal zentriert.
+- Reset-Kreis: dezenter gestaltet (kleiner, zarterer Rand, gedämpfte Farbe,
+  transparenter Grund) – er steht damit optisch hinter den Auswahlfeldern
+  zurück, bleibt aber beim Hover wieder deutlich erkennbar.
+- Cache-Name und Cache-Buster erhöht; Bedienungsanleitung aktualisiert.
+
+--------------------------------------------------------------------------------------
+
 Version 1.53 vom 31.08.2026
 Änderungen gegenüber V1.52:
 
