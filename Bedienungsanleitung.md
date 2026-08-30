@@ -41,7 +41,7 @@ Die Darstellung passt sich der Fensterbreite an: Jahresübersicht in 3 Spalten a
 
 ### 2.1 Darstellung (Dark-Mode)
 
-Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt. Im Dark-Mode bleiben die Farben der Anwesenheitsarten erkennbar (dunklere Flächen, hellere Artfarben); Ampel-Farben und Kacheln funktionieren unverändert.
+Die App unterstützt einen **Dark-Mode**. Standardmäßig (**„Automatisch"**) folgt die Darstellung der **Systemeinstellung** des Geräts: Ist dort der dunkle Modus aktiv, zeigt die App dunkle Flächen mit heller Schrift; wechselt das System live, übernimmt die App das sofort. Alternativ lässt sich die Darstellung in den Einstellungen manuell auf **„Hell"** oder **„Dunkel"** umstellen – die Wahl wird gespeichert und beim nächsten Öffnen wiederhergestellt. Die **Farben der Anwesenheitsarten** (z. B. Blau für Bürotage, Grün für Homeoffice) bleiben im Dark-Mode **unverändert** wie im hellen Modus.
 
 ---
 

@@ -1706,35 +1706,10 @@ select:focus-visible {
     --hover: #262D37;
     --ring-track: #39434F;
     --overlay: rgba(0, 0, 0, 0.55);
-    --check-ring: #1B2026;
 
-    --office: #7FB0E8;
-    --office-soft: rgba(24, 95, 165, 0.24);
-    --office-line: #2E6FAE;
-
-    --ho-text: #A9C88E;
-    --ho-soft: rgba(59, 109, 17, 0.26);
-    --ho-line: #4F7F1F;
-
-    --holiday: #B2A9EC;
-    --holiday-soft: rgba(83, 74, 183, 0.28);
-    --holiday-line: #6A60C9;
-
-    --sick: #FF8181;
-    --sick-soft: rgba(255, 26, 26, 0.18);
-    --sick-line: #FF4D4D;
-
-    --vacation: #EDAB70;
-    --vacation-soft: rgba(212, 133, 60, 0.24);
-    --vacation-line: #D4853C;
-
-    --free: #D3C35A;
-    --free-soft: rgba(168, 153, 40, 0.22);
-    --free-line: #A89928;
-
-    --travel: #B8B5AE;
-    --travel-soft: rgba(95, 94, 90, 0.30);
-    --travel-line: #6B6A66;
+    /* Die Farben der Anwesenheitsarten (Tag-Flächen in den Monatskarten)
+       bleiben bewusst identisch zum hellen Modus – nur die Umgebung
+       (Hintergrund, Flächen, Texte) wird abgedunkelt. */
 
     --future: #20262E;
     --future-line: #3A4450;
