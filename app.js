@@ -2920,7 +2920,13 @@ function init() {
             const y = window.scrollY;
             onDurationChanged();
             durationInput.blur();
-            window.scrollTo(window.scrollX, y);
+            requestAnimationFrame(function () {
+                const a = document.activeElement;
+                if (a && a !== document.body && a !== durationInput && a.tagName === 'INPUT') {
+                    a.blur();
+                }
+                window.scrollTo(window.scrollX, y);
+            });
         });
     }
     yearGridEl.addEventListener('click', gridClick);

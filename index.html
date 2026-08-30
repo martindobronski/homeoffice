@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=2.33">
+    <link rel="stylesheet" href="style.css?v=2.34">
 </head>
 <body>
 
@@ -45,7 +45,7 @@
             <div class="zeitraum-block duration-block">
                 <p class="block-label">Zeitraum-Dauer</p>
                 <div class="duration-control">
-                    <input type="number" id="durationInput" min="1" max="120" aria-label="Zeitraum-Dauer in Monaten">
+                    <input type="number" id="durationInput" min="1" max="120" inputmode="numeric" enterkeyhint="done" aria-label="Zeitraum-Dauer in Monaten">
                     <span class="duration-unit" id="durationUnit">Monate</span>
                 </div>
             </div>
@@ -286,6 +286,6 @@
     <div class="toast" id="toast"></div>
 
     <script src="feiertage.js?v=2.0"></script>
-    <script src="app.js?v=1.204"></script>
+    <script src="app.js?v=1.205"></script>
 </body>
 </html>
