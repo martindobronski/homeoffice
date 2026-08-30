@@ -362,6 +362,7 @@ function resetZeitraum() {
     endY = solEndY;
     persistZeitraum();
     applyAuswertung();
+    showToast('Zeitraum auf 12 Monate zurückgesetzt.');
 }
 
 // Dauer (Anzahl der Monate) wurde über das Eingabefeld geändert.
