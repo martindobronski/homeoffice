@@ -385,18 +385,24 @@ function onDurationChanged() {
 }
 
 // Mobiler Schutz: Samsung/Android-Browser springen nach der Tastatur-
-// Bestätigung (IME-Action) gelegentlich selbstständig zum nächsten
-// Eingabefeld (#bueroAnteilInput) und scrollen dorthin. Diese Guard
-// fängt solche Fokus-Sprünge in einem kurzen Zeitfenster nach der
-// Dauer-Eingabe ab und verhindert sie.
-let durationGuardUntil = 0;
+// Bestätigung (IME-Action) selbstständig zum nächsten Eingabefeld
+// (#bueroAnteilInput) und scrollen dorthin. Die Guard wird beim Fokussieren
+// des Dauer-Eingabefelds aktiviert und verhindert solche Fokus-Sprünge,
+// solange es fokussiert ist. Bewusste Klicks (pointerdown) und Tabulator
+// werden durchgelassen.
+let durationGuardActive = false;
 let durationGuardY = 0;
+let durationLastPointer = 0;
+let durationLastTab = 0;
+let durationRestoreTimer = 0;
+
 function armDurationGuard() {
-    durationGuardUntil = Date.now() + 400;
+    durationGuardActive = true;
     durationGuardY = window.scrollY;
 }
+
 function disarmDurationGuard() {
-    durationGuardUntil = 0;
+    durationGuardActive = false;
 }
 
 // ---------- Speicher ----------
@@ -2925,9 +2931,18 @@ function init() {
     endNext.addEventListener('click', function () { shiftEnd(1); });
     resetPeriodButton.addEventListener('click', resetZeitraum);
     if (durationInput) {
+        durationInput.addEventListener('focus', armDurationGuard);
         durationInput.addEventListener('change', function () {
+            const y = window.scrollY;
             onDurationChanged();
             armDurationGuard();
+            // Nach der Tastatur-Bestätigung scrollt der Browser teils selbst
+            // (Viewport-Anpassung). Position kurz danach wiederherstellen.
+            clearTimeout(durationRestoreTimer);
+            durationRestoreTimer = setTimeout(function () {
+                durationRestoreTimer = 0;
+                window.scrollTo(window.scrollX, y);
+            }, 80);
         });
         durationInput.addEventListener('keydown', function (e) {
             if (e.key !== 'Enter' && e.key !== 'Tab') {
@@ -2935,30 +2950,51 @@ function init() {
             }
             e.preventDefault();
             e.stopPropagation();
-            onDurationChanged();
-            armDurationGuard();
-            durationInput.blur();
-            requestAnimationFrame(function () {
-                const a = document.activeElement;
-                if (a && a !== document.body && a !== durationInput && a.tagName === 'INPUT') {
-                    a.blur();
-                }
-            });
+            if (e.key === 'Enter') {
+                onDurationChanged();
+                durationInput.blur();
+            }
         });
     }
+    // Bewusste Klicks (pointerdown) werden überall registriert, um sie von
+    // automatischen Fokus-Sprüngen der Tastatur unterscheiden zu können.
+    document.addEventListener('pointerdown', function () {
+        durationLastPointer = Date.now();
+        durationGuardActive = false;
+    }, true);
+    // Tabulator-Taste wird ebenfalls als bewusste Navigation durchgelassen.
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Tab') {
+            durationLastTab = Date.now();
+            durationGuardActive = false;
+        }
+    });
+    // Fokus-Guard: Greift auch dann, wenn der Fokus-Sprung vor dem blur/change
+    // des Dauer-Feldes auftritt (focus/focusout-Reihenfolge der Browser).
     document.addEventListener('focusin', function (e) {
-        if (!durationGuardUntil || Date.now() >= durationGuardUntil) {
+        if (!durationGuardActive) {
             return;
         }
         const t = e.target;
         if (!t || t === document.body || t === durationInput) {
             return;
         }
-        if (t.tagName === 'INPUT' || t.tagName === 'SELECT' || t.tagName === 'TEXTAREA') {
-            t.blur();
-            window.scrollTo(window.scrollX, durationGuardY);
-            disarmDurationGuard();
+        if (t.tagName !== 'INPUT' && t.tagName !== 'SELECT' && t.tagName !== 'TEXTAREA') {
+            return;
         }
+        const now = Date.now();
+        if (now - durationLastPointer < 400 || now - durationLastTab < 400) {
+            disarmDurationGuard();
+            return;
+        }
+        t.blur();
+        window.scrollTo(window.scrollX, durationGuardY);
+        clearTimeout(durationRestoreTimer);
+        durationRestoreTimer = setTimeout(function () {
+            durationRestoreTimer = 0;
+            window.scrollTo(window.scrollX, durationGuardY);
+        }, 80);
+        disarmDurationGuard();
     });
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
