@@ -755,51 +755,11 @@ function handleImportFile(file) {
     reader.onload = function () {
         try {
             const data = parseBackupText(reader.result);
-            beginChange();
-            days = data.days;
-            gebucht = data.gebucht && typeof data.gebucht === 'object' ? data.gebucht : {};
-            if (data.period && data.period.start && isValidISODate(data.period.start)) {
-                periodStart = data.period.start;
-                periodEnd = add12mMinusDay(periodStart);
-                const impS = parseISO(periodStart);
-                const impAbs = absMonat(impS.getFullYear(), impS.getMonth() + 1) + 11;
-                endM = (((impAbs % 12) + 12) % 12);
-                endY = Math.floor(impAbs / 12);
-                if (endM === 0) {
-                    endM = 12;
-                    endY--;
-                }
-                endeManuellGesetzt = false;
-                savePeriod();
-            }
-            saveDays();
-            saveGebucht();
-            if (data.config && typeof data.config === 'object') {
-                if (Number.isFinite(parseInt(data.config.bueroAnteil, 10))) {
-                    bueroAnteil = Math.max(0, Math.min(100, parseInt(data.config.bueroAnteil, 10)));
-                }
-                if (Number.isFinite(parseInt(data.config.urlaub, 10))) {
-                    urlaubTotal = Math.max(0, parseInt(data.config.urlaub, 10));
-                }
-                if (window.Feiertage && data.config.bundesland) {
-                    try { Feiertage.setBundesland(data.config.bundesland); } catch (e) {}
-                }
-                if (window.Feiertage && typeof data.config.sonderfrei === 'boolean') {
-                    Feiertage.setSonderfrei(data.config.sonderfrei);
-                }
-                saveBueroAnteil();
-                saveUrlaub();
-                var bls = document.getElementById('blSelect');
-                var sf = document.getElementById('sonderfreiCheck');
-                if (window.Feiertage && bls) bls.value = Feiertage.getBundesland();
-                if (sf) sf.checked = window.Feiertage ? Feiertage.getSonderfrei() : false;
-                var bai = document.getElementById('bueroAnteilInput');
-                if (bai) bai.value = bueroAnteil;
-            }
-            populateQuick();
-            render();
-            alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
-            showUndoable('Import durchgeführt');
+            const n = data.days ? Object.keys(data.days).length : 0;
+            pendingImport = data;
+            importConfirmText.innerHTML = 'Soll das Backup mit <b>' + n + ' Einträgen</b> wirklich importiert werden?'
+                + '<br>Bestehende Daten werden dabei <b>überschrieben</b>.';
+            importConfirmOverlay.classList.remove('hidden');
         } catch (e) {
             alert('Import fehlgeschlagen: ' + e.message);
         }
@@ -808,6 +768,58 @@ function handleImportFile(file) {
         alert('Datei konnte nicht gelesen werden.');
     };
     reader.readAsText(file);
+}
+
+function applyImport() {
+    const data = pendingImport;
+    if (!data) {
+        return;
+    }
+    beginChange();
+    days = data.days;
+    gebucht = data.gebucht && typeof data.gebucht === 'object' ? data.gebucht : {};
+    if (data.period && data.period.start && isValidISODate(data.period.start)) {
+        periodStart = data.period.start;
+        periodEnd = add12mMinusDay(periodStart);
+        const impS = parseISO(periodStart);
+        const impAbs = absMonat(impS.getFullYear(), impS.getMonth() + 1) + 11;
+        endM = (((impAbs % 12) + 12) % 12);
+        endY = Math.floor(impAbs / 12);
+        if (endM === 0) {
+            endM = 12;
+            endY--;
+        }
+        endeManuellGesetzt = false;
+        savePeriod();
+    }
+    saveDays();
+    saveGebucht();
+    if (data.config && typeof data.config === 'object') {
+        if (Number.isFinite(parseInt(data.config.bueroAnteil, 10))) {
+            bueroAnteil = Math.max(0, Math.min(100, parseInt(data.config.bueroAnteil, 10)));
+        }
+        if (Number.isFinite(parseInt(data.config.urlaub, 10))) {
+            urlaubTotal = Math.max(0, parseInt(data.config.urlaub, 10));
+        }
+        if (window.Feiertage && data.config.bundesland) {
+            try { Feiertage.setBundesland(data.config.bundesland); } catch (e) {}
+        }
+        if (window.Feiertage && typeof data.config.sonderfrei === 'boolean') {
+            Feiertage.setSonderfrei(data.config.sonderfrei);
+        }
+        saveBueroAnteil();
+        saveUrlaub();
+        var bls = document.getElementById('blSelect');
+        var sf = document.getElementById('sonderfreiCheck');
+        if (window.Feiertage && bls) bls.value = Feiertage.getBundesland();
+        if (sf) sf.checked = window.Feiertage ? Feiertage.getSonderfrei() : false;
+        var bai = document.getElementById('bueroAnteilInput');
+        if (bai) bai.value = bueroAnteil;
+    }
+    populateQuick();
+    render();
+    alert('Backup importiert: ' + Object.keys(days).length + ' Einträge.');
+    showUndoable('Import durchgeführt');
 }
 
 // ---------- Berechnung ----------
@@ -1482,6 +1494,10 @@ document.addEventListener('keydown', function (e) {
         pendingUrlaub = null;
         urlaubConfirmOverlay.classList.add('hidden');
     }
+    if (!importConfirmOverlay.classList.contains('hidden')) {
+        pendingImport = null;
+        importConfirmOverlay.classList.add('hidden');
+    }
 });
 
 document.addEventListener('keydown', function (e) {
@@ -1548,6 +1564,30 @@ document.getElementById('importFile').addEventListener('change', function (e) {
         handleImportFile(file);
     }
     e.target.value = '';
+});
+
+const importConfirmOverlay = document.getElementById('importConfirmOverlay');
+const importConfirmText = document.getElementById('importConfirmText');
+const importConfirmOk = document.getElementById('importConfirmOk');
+const importConfirmCancel = document.getElementById('importConfirmCancel');
+let pendingImport = null;
+
+importConfirmOk.addEventListener('click', function () {
+    importConfirmOverlay.classList.add('hidden');
+    applyImport();
+    pendingImport = null;
+});
+
+importConfirmCancel.addEventListener('click', function () {
+    pendingImport = null;
+    importConfirmOverlay.classList.add('hidden');
+});
+
+importConfirmOverlay.addEventListener('click', function (e) {
+    if (e.target === importConfirmOverlay) {
+        pendingImport = null;
+        importConfirmOverlay.classList.add('hidden');
+    }
 });
 
 const urlaubConfirmOverlay = document.getElementById('urlaubConfirmOverlay');
