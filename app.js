@@ -1397,7 +1397,7 @@ function renderLegend() {
         + countTile('BUEROTAG', null, 'Bürotage') + countTile('HOMEOFFICE') + countTile('DIENSTREISE') + countTile('FEIERTAG')
         + '</div>'
         + '<div class="tile-row">'
-        + countTile('KRANKHEIT') + countTile('FREIZEITTAG')
+        + countTile('FREIZEITTAG') + countTile('KRANKHEIT')
         + '</div>';
 }
 
