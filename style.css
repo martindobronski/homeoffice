@@ -1491,7 +1491,7 @@ select:focus-visible {
         max-width: 100%;
     }
     .month-card .cell-icon {
-        font-size: 15px;
+        font-size: 20px;
         top: 0;
         left: 0;
     }
