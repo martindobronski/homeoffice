@@ -438,17 +438,9 @@ select:focus-visible {
     left: 4px;
     display: flex;
     align-items: center;
-    gap: 3px;
     line-height: 1;
     font-size: 28px;
     pointer-events: none;
-}
-
-.type-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 3px;
-    flex: none;
 }
 
 .cell-empty {

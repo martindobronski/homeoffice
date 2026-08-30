@@ -1161,10 +1161,7 @@ function renderCalGrid(year, month, showEmpty, fullWeekday) {
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
             const icon = cls
-                ? '<span class="cell-icon" style="color:' + TYPE_COLOR[cell.type] + '">'
-                    + '<span class="type-dot" style="background:' + TYPE_COLOR[cell.type] + '"></span>'
-                    + '<i class="ti ' + TYPE_ICONS[cell.type] + '"></i>'
-                + '</span>'
+                ? '<span class="cell-icon" style="color:' + TYPE_COLOR[cell.type] + '"><i class="ti ' + TYPE_ICONS[cell.type] + '"></i></span>'
                 : '';
             const emptyMark = (empty && showEmpty) ? '<span class="cell-empty" title="Diesem Tag sollte eine Anwesenheitsart zugeordnet werden.">?</span>' : '';
             const check = gebucht[cell.iso]
