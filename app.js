@@ -24,14 +24,19 @@ const TYPE_CLASS = {
 };
 
 const TYPE_ICONS = {
-    BUEROTAG: '🏢',
-    HOMEOFFICE: '🏠',
-    FREIZEITTAG: '🏃',
-    DIENSTREISE: '✈️',
-    FEIERTAG: '🎉',
-    KRANKHEIT: '🤒',
-    URLAUB: '🏖️'
+    BUEROTAG: 'ti-building',
+    HOMEOFFICE: 'ti-home',
+    FREIZEITTAG: 'ti-walk',
+    DIENSTREISE: 'ti-plane',
+    FEIERTAG: 'ti-confetti',
+    KRANKHEIT: 'ti-thermometer',
+    URLAUB: 'ti-beach'
 };
+
+const TYPE_COLOR = {};
+WORK_TYPES.forEach(function (t) {
+    TYPE_COLOR[t.key] = t.color;
+});
 
 const EXPORT_LABELS = {
     BUEROTAG: 'Bürotage',
@@ -1155,10 +1160,15 @@ function renderCalGrid(year, month, showEmpty, fullWeekday) {
             const filter = activeFilter
                 ? (cell.type === activeFilter ? ' highlighted' : ' dimmed')
                 : '';
-            const icon = cls ? '<span class="cell-icon">' + TYPE_ICONS[cell.type] + '</span>' : '';
+            const icon = cls
+                ? '<span class="cell-icon" style="color:' + TYPE_COLOR[cell.type] + '">'
+                    + '<span class="type-dot" style="background:' + TYPE_COLOR[cell.type] + '"></span>'
+                    + '<i class="ti ' + TYPE_ICONS[cell.type] + '"></i>'
+                + '</span>'
+                : '';
             const emptyMark = (empty && showEmpty) ? '<span class="cell-empty" title="Diesem Tag sollte eine Anwesenheitsart zugeordnet werden.">?</span>' : '';
             const check = gebucht[cell.iso]
-                ? '<span class="check" aria-label="gebucht">✓</span>'
+                ? '<span class="check" aria-label="gebucht"><i class="ti ti-circle-check-filled"></i></span>'
                 : '';
             const today = cell.iso === todayIso ? ' today' : '';
             const booked = gebucht[cell.iso] ? ' booked' : '';
@@ -1283,7 +1293,7 @@ function renderLegend() {
             + '<span class="tile-head">'
             + (headExtra || '')
             + '<span class="dot" style="background:' + t.color + '"></span>'
-            + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>'
+            + '<span class="chip-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
             + '<span class="tile-label">' + (label || t.label) + '</span>'
             + '</span>'
             + inner
@@ -1885,18 +1895,18 @@ function showChipMenu(key, rect) {
     let html = '<div class="qm-date">' + label + '</div>';
     if (key === 'URLAUB') {
         html += '<button type="button" class="qm-item" data-chipexport="urlaub-genommen">'
-            + '<span class="qm-icon">📄</span>Export → Genommene Urlaubstage…</button>';
+            + '<span class="qm-icon"><i class="ti ti-file"></i></span>Export → Genommene Urlaubstage…</button>';
         html += '<button type="button" class="qm-item" data-chipexport="urlaub-geplant">'
-            + '<span class="qm-icon">📄</span>Export → Geplante Urlaubstage…</button>';
+            + '<span class="qm-icon"><i class="ti ti-file"></i></span>Export → Geplante Urlaubstage…</button>';
         html += '<button type="button" class="qm-item" data-chipexport="urlaub-alle">'
-            + '<span class="qm-icon">📄</span>Export → Alle eingetragenen Urlaubstage…</button>';
+            + '<span class="qm-icon"><i class="ti ti-file"></i></span>Export → Alle eingetragenen Urlaubstage…</button>';
     } else {
         html += '<button type="button" class="qm-item" data-chipexport="list">'
-            + '<span class="qm-icon">📄</span>Export → ' + label + '…</button>';
+            + '<span class="qm-icon"><i class="ti ti-file"></i></span>Export → ' + label + '…</button>';
     }
     if (key === 'BUEROTAG') {
         html += '<button type="button" class="qm-item" data-chipexport="gebucht">'
-            + '<span class="qm-icon">☑</span>Export → gebucht-Tage…</button>';
+            + '<span class="qm-icon"><i class="ti ti-square-check"></i></span>Export → gebucht-Tage…</button>';
     }
     chipMenu.innerHTML = html;
     chipMenu.classList.remove('hidden');
@@ -2641,13 +2651,13 @@ function quickShow(iso, x, y) {
         { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' });
     let html = '<div class="qm-date">' + tipDate + '</div>';
     html += '<button type="button" class="qm-item qm-edit" data-set="__edit__">'
-        + '<span class="qm-icon">⚙️</span>Eintrag bearbeiten</button>';
+        + '<span class="qm-icon"><i class="ti ti-settings"></i></span>Eintrag bearbeiten</button>';
     html += '<button type="button" class="qm-item" data-set="__multiselect__">'
-        + '<span class="qm-icon">🗂️</span>Mehrfachauswahl…</button>';
+        + '<span class="qm-icon"><i class="ti ti-folder"></i></span>Mehrfachauswahl…</button>';
     if (existing === 'BUEROTAG') {
         html += '<button type="button" class="qm-item' + (booked ? ' qm-booked' : '') + '" data-set="__gebucht__">'
-            + '<span class="qm-icon">' + (booked ? '☑' : '☐') + '</span>gebucht'
-            + (booked ? '<span class="qm-active">✓</span>' : '')
+            + '<span class="qm-icon"><i class="ti ' + (booked ? 'ti-square-check' : 'ti-square') + '"></i></span>gebucht'
+            + (booked ? '<span class="qm-active"><i class="ti ti-check"></i></span>' : '')
             + '</button>';
     }
     html += '<div class="qm-divider"></div>';
@@ -2658,14 +2668,14 @@ function quickShow(iso, x, y) {
         }
         html += '<button type="button" class="qm-item" data-set="' + t.key + '">'
             + '<span class="qm-swatch" style="background:' + t.color + '"></span>'
-            + '<span class="qm-icon">' + TYPE_ICONS[t.key] + '</span>'
+            + '<span class="qm-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>'
             + t.label
-            + (resolved === t.key ? '<span class="qm-active">✓</span>' : '')
+            + (resolved === t.key ? '<span class="qm-active"><i class="ti ti-check"></i></span>' : '')
             + '</button>';
     }
     if (existing) {
         html += '<button type="button" class="qm-item qm-del" data-set="__delete__">'
-            + '<span class="qm-icon">🗑</span>Löschen</button>';
+            + '<span class="qm-icon"><i class="ti ti-trash"></i></span>Löschen</button>';
     }
     quickMenu.innerHTML = html;
     if (!alreadyOpen) {
@@ -2775,12 +2785,12 @@ function fillSelectionTypes() {
     WORK_TYPES.forEach(function (t) {
         html += '<button type="button" class="sb-type" data-sbtype="' + t.key + '">'
             + '<span class="sw" style="background:' + t.color + '"></span>'
-            + '<span class="chip-icon">' + TYPE_ICONS[t.key] + '</span>' + t.label
+            + '<span class="chip-icon" style="color:' + t.color + '"><i class="ti ' + TYPE_ICONS[t.key] + '"></i></span>' + t.label
             + '</button>';
         if (t.key === 'BUEROTAG') {
             html += '<button type="button" class="sb-type" data-sbaction="gebucht">'
                 + '<span class="sw" style="background:#2F6B3F;border-radius:50%;"></span>'
-                + '<span class="chip-icon">☑</span> Arbeitsplatz und/oder Parkplatz gebucht'
+                + '<span class="chip-icon"><i class="ti ti-square-check"></i></span> Arbeitsplatz und/oder Parkplatz gebucht'
                 + '</button><span class="sb-break"></span>';
         }
     });

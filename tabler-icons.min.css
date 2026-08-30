@@ -1,0 +1,49 @@
+/* Tabler Icons 3.46.0 – lokale Teilmenge (nur die in der App verwendeten
+   Icons), selbst gehostet und im Service-Worker vorgecacht, damit die Icons
+   auch vollständig offline erscheinen. Komplette Bibliothek: tabler.io/icons
+   (MIT-Lizenz). */
+@font-face {
+    font-family: 'tabler-icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/tabler-icons.woff2?v3.46.0') format('woff2');
+}
+@font-face {
+    font-family: 'tabler-icons-filled';
+    font-style: normal;
+    font-weight: 400;
+    src: url('fonts/tabler-icons-filled.woff2?v3.46.0') format('woff2');
+}
+.ti {
+    font-family: 'tabler-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.ti-building:before { content: "\ea4f"; }
+.ti-home:before { content: "\eac1"; }
+.ti-plane:before { content: "\eb6f"; }
+.ti-beach:before { content: "\ef3d"; }
+.ti-confetti:before { content: "\ee46"; }
+.ti-thermometer:before { content: "\ef67"; }
+.ti-walk:before { content: "\ec87"; }
+.ti-trash:before { content: "\eb41"; }
+.ti-check:before { content: "\ea5e"; }
+.ti-settings:before { content: "\eb20"; }
+.ti-folder:before { content: "\eaad"; }
+.ti-square-check:before { content: "\eb28"; }
+.ti-square:before { content: "\eb2c"; }
+.ti-file:before { content: "\eaa4"; }
+
+/* Gefülltes Kreis-Häkchen (Füllfont) für die "erledigt"/"gebucht"-Kennzeichnung.
+   Im Standard (tabler-icons) gibt es diese Klasse nicht; sie wird deshalb hier
+   gezielt auf den Füllfont samt zugehörigem Zeichen gelegt. */
+.ti-circle-check-filled {
+    font-family: 'tabler-icons-filled' !important;
+}
+.ti-circle-check-filled:before { content: "\f704"; }
