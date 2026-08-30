@@ -3,6 +3,52 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.49 vom 29.08.2026
+Änderungen gegenüber V1.48:
+
+- Druck-Dialog „Übersicht drucken": Das Datumsfeld „Startdatum" heißt jetzt
+  „Von:".
+- Smartphone: Die Icons auf den Kalendertagen werden kleiner dargestellt.
+- Smartphone: Im Kopf der Monatskarten stehen Monat und Jahr allein in einer
+  Zeile; der Stand „X von Y Solltagen erfüllt" steht immer darunter in
+  eigener Zeile, das Prozent-Badge ist rechtsbündig ausgerichtet.
+- Zeitraum-Karte: Rahmen jetzt gut sichtbar (2px); die beiden Blöcke heißen
+  „Zeitraum-Startmonat" und „Zeitraum-Endemonat" (Beschriftung größer,
+  schwarz).
+- Dauer-Badge: Beschriftung „Zeitraum-Dauer: xx Monate". Auf dem Smartphone
+  steht es auf eigener, zentrierter Zeile mit rechtsbündigem Reset-Button;
+  auf dem Desktop sitzt der Reset-Button direkt dahinter. Der Reset-Button
+  hat überall einen dünnen Rahmen.
+- Überschrift: Die Abschnittsüberschrift „Jahresübersicht" wurde entfernt;
+  die Kopf-Überschrift zeigt stattdessen die Jahresangabe des Zeitraums
+  (z. B. „Anwesenheits-Dashboard 2026/2027" – auf dem Smartphone steht die
+  Jahresangabe auf eigener zentrierter Zeile).
+- Bedienungsanleitung (MD/HTML) aktualisiert; Cache-Name und Cache-Buster
+  erhöht.
+
+--------------------------------------------------------------------------------------
+
+Version 1.48 vom 29.08.2026
+Änderungen gegenüber V1.47:
+
+- Statistik: Fortschrittsringe deutlich größer (46 px); die Quoten-Kacheln
+  zeigen beschreibende Werte („Bürotage: X von Y Solltagen",
+  „Homeoffice-Tage: X von Y Zieltagen"); ein Ring über 100 % pulsiert dezent.
+- Resturlaub-Ring im Urlaubskopf: Anteil der frei verfügbaren (ungeplanten)
+  Tage am Jahreskontingent mit Ampel-Farben (grün ab 50 %, gelb ab 25 %,
+  rot darunter); sind alle Tage genommen oder verplant, bleibt der Ring grau.
+  Beschriftung „X von Y Urlaubstagen verfügbar".
+- Monatskarten: Jahreszahl hervorgehoben, Stand „X von Y Solltagen erfüllt"
+  mit Prozent-Badge, besser abgesetzter Fortschrittsbalken sowie
+  transparente leere Füllzellen am Monatsrand.
+- Aktiver Monat: blaues „Aktiv"-Label im Monatskopf statt grünem Punkt;
+  Kontrast der Überschriften und Beschriftungen verbessert.
+- Tooltips für das Dauer-Badge und die Blätter-Pfeile der Zeitraum-Karte;
+  die Überschrift „Anwesenheit · Jahresansicht" wurde entfernt.
+- Bedienungsanleitung (MD/HTML) umfassend aktualisiert; Cache aktualisiert.
+
+--------------------------------------------------------------------------------------
+
 Version 1.47 vom 28.08.2026
 Änderungen gegenüber V1.46:
 

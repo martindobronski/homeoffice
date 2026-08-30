@@ -62,7 +62,7 @@ Header-Fragment mit App-Look anlegen (falls noch nicht vorhanden unter
 
     pandoc Bedienungsanleitung.md -o Bedienungsanleitung.html --standalone \
       --include-in-header=/tmp/opencode_pdfbuild/html-header.html \
-      --metadata title="Bedienungsanleitung Anwesenheits-Dashboard"
+      --metadata title="Anwesenheits-Dashboard"
 
 Die HTML-Fassung ist die EINZIGE verteilte Form der Bedienungsanleitung und
 die PRIMÄRE Anzeige in der App (Footer-Link in index.html). Sie wird vom
