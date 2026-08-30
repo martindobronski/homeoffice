@@ -395,6 +395,7 @@ let durationGuardY = 0;
 let durationLastPointer = 0;
 let durationLastTab = 0;
 let durationRestoreTimer = 0;
+let durationRestoreTries = 0;
 
 function armDurationGuard() {
     durationGuardActive = true;
@@ -403,6 +404,28 @@ function armDurationGuard() {
 
 function disarmDurationGuard() {
     durationGuardActive = false;
+}
+
+// Hält die Scroll-Position, nachdem die mobile Tastatur-Bestätigung die
+// Seite verschoben hat (Browser blenden das Layout-Viewport wieder ein und
+// scrollen nach). Läuft einige Einträge nach und stoppt, sobald die Position
+// stimmt oder der Nutzer selbst interagiert (pointerdown/Tab → Guard aus).
+function restoreDurationScroll() {
+    clearTimeout(durationRestoreTimer);
+    durationRestoreTries = 0;
+    const y = durationGuardY;
+    const tick = function () {
+        if (++durationRestoreTries > 25) {
+            return;
+        }
+        const diff = Math.abs(window.scrollY - y);
+        if (diff > 1) {
+            window.scrollTo(window.scrollX, y);
+            durationRestoreTimer = setTimeout(tick, 100);
+        }
+    };
+    window.scrollTo(window.scrollX, y);
+    durationRestoreTimer = setTimeout(tick, 100);
 }
 
 // ---------- Speicher ----------
@@ -2933,16 +2956,8 @@ function init() {
     if (durationInput) {
         durationInput.addEventListener('focus', armDurationGuard);
         durationInput.addEventListener('change', function () {
-            const y = window.scrollY;
             onDurationChanged();
-            armDurationGuard();
-            // Nach der Tastatur-Bestätigung scrollt der Browser teils selbst
-            // (Viewport-Anpassung). Position kurz danach wiederherstellen.
-            clearTimeout(durationRestoreTimer);
-            durationRestoreTimer = setTimeout(function () {
-                durationRestoreTimer = 0;
-                window.scrollTo(window.scrollX, y);
-            }, 80);
+            restoreDurationScroll();
         });
         durationInput.addEventListener('keydown', function (e) {
             if (e.key !== 'Enter' && e.key !== 'Tab') {
@@ -2953,6 +2968,7 @@ function init() {
             if (e.key === 'Enter') {
                 onDurationChanged();
                 durationInput.blur();
+                restoreDurationScroll();
             }
         });
     }
@@ -2961,6 +2977,7 @@ function init() {
     document.addEventListener('pointerdown', function () {
         durationLastPointer = Date.now();
         durationGuardActive = false;
+        clearTimeout(durationRestoreTimer);
     }, true);
     // Tabulator-Taste wird ebenfalls als bewusste Navigation durchgelassen.
     document.addEventListener('keydown', function (e) {
@@ -2989,13 +3006,22 @@ function init() {
         }
         t.blur();
         window.scrollTo(window.scrollX, durationGuardY);
-        clearTimeout(durationRestoreTimer);
-        durationRestoreTimer = setTimeout(function () {
-            durationRestoreTimer = 0;
-            window.scrollTo(window.scrollX, durationGuardY);
-        }, 80);
+        restoreDurationScroll();
         disarmDurationGuard();
     });
+    // Tastatur-Schließen erkennen (visualViewport wächst), falls weder
+    // change noch Enter ausgelöst wurden (unveränderter Wert): dann trotzdem
+    // Scroll-Position wiederherstellen, solange das Feld fokussiert war.
+    if (window.visualViewport) {
+        let lastVvh = window.visualViewport.height;
+        window.visualViewport.addEventListener('resize', function () {
+            const h = window.visualViewport.height;
+            if (durationGuardActive && h - lastVvh > 120) {
+                restoreDurationScroll();
+            }
+            lastVvh = h;
+        });
+    }
     yearGridEl.addEventListener('click', gridClick);
     yearGridEl.addEventListener('contextmenu', gridContext);
     render();
