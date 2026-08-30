@@ -758,8 +758,8 @@ function handleImportFile(file) {
             const n = data.days ? Object.keys(data.days).length : 0;
             pendingImport = data;
             importConfirmText.innerHTML = 'Soll das Backup mit <b>'
-                + n + ' Einträgen</b> wirklich importiert werden?'
-                + ' Dabei werden bestehende Daten <b>überschrieben</b>.';
+                + n + ' Einträgen</b> wirklich importiert werden?<br>'
+                + 'Dabei werden bestehende Daten <b>überschrieben</b>.';
             importConfirmOverlay.classList.remove('hidden');
         } catch (e) {
             alert('Import fehlgeschlagen: ' + e.message);

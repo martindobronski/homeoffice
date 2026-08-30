@@ -1295,6 +1295,12 @@ select:focus-visible {
     flex-wrap: wrap;
 }
 
+/* Reiner Text (keine Formularfelder): normaler Textfluss ohne Flex-Abstände */
+.dialog-text {
+    display: block;
+    line-height: 1.5;
+}
+
 .field-group {
     display: flex;
     flex-direction: column;
