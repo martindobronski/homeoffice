@@ -574,13 +574,17 @@ function syncFeiertagDays() {
         const istFT = window.Feiertage && Feiertage.istFeiertag(iso);
         if (istFT && days[iso] !== 'FEIERTAG') {
             days[iso] = 'FEIERTAG';
+            delete gebucht[iso];
             count++;
         } else if (!istFT && days[iso] === 'FEIERTAG') {
             delete days[iso];
             count++;
         }
     }
-    if (count) saveDays();
+    if (count) {
+        saveDays();
+        saveGebucht();
+    }
     return count;
 }
 
@@ -2737,7 +2741,11 @@ quickMenu.addEventListener('click', function (e) {
     } else {
         beginChange();
         days[iso] = set;
+        if (set !== 'BUEROTAG') {
+            delete gebucht[iso];
+        }
         saveDays();
+        saveGebucht();
         quickHide();
         render();
         showUndoable('Gespeichert ✓');
