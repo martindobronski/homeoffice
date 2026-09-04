@@ -574,12 +574,13 @@ select:focus-visible {
 .day.today .day-num::after {
     content: '';
     display: inline-block;
-    width: 5px;
-    height: 5px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: var(--accent);
-    margin-left: 2px;
-    vertical-align: middle;
+    border: 2px solid #fff;
+    margin-left: 6px;
+    vertical-align: super;
 }
 
 .day.selected {
