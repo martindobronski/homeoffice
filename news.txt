@@ -3,6 +3,15 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.58 vom 05.09.2026
+Änderungen gegenüber V1.57:
+
+- Mobile Mehrfachauswahl: Long-Press auf Tag → Schnellmenü → „Mehrfachauswahl…“ → danach toggelt jeder Tap einzelne Tage (kein Shift/Range auf Touch-Geräten). Abbrechen-Button beendet Modus.
+- Desktop: Shift+Klick (Start→Ende Bereich), Cmd/Ctrl+Klick (Einzeltag), Normaler Klick im Modus = Abbrechen.
+- Cache-Buster für Bedienungsanleitung (`?v=1.58`), Service Worker `v2.70`.
+
+--------------------------------------------------------------------------------------
+
 Version 1.57 vom 05.09.2026
 Änderungen gegenüber V1.56:
 
