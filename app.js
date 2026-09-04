@@ -86,6 +86,7 @@ let exportMode = 'all';
 let selectionMode = false;
 let pendingSelectionDelete = false;
 const selection = new Set();
+let selectionAnchor = null;
 
 const startMonth = document.getElementById('startMonth');
 const startYear = document.getElementById('startYear');
@@ -159,6 +160,10 @@ function pad(n) {
 
 function fmt(d) {
     return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+}
+
+function fmtDateDe(d) {
+    return pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear();
 }
 
 function parseISO(s) {
@@ -2759,6 +2764,7 @@ const selectionCancelButton = document.getElementById('selectionCancel');
 
 function startSelectionMode() {
     selectionMode = true;
+    selectionAnchor = null;
     hideDayTip();
     quickHide();
     chipMenu.classList.add('hidden');
@@ -2767,11 +2773,32 @@ function startSelectionMode() {
 
 function exitSelectionMode() {
     selectionMode = false;
+    selectionAnchor = null;
     selection.clear();
     document.querySelectorAll('.day.selected').forEach(function (el) {
         el.classList.remove('selected');
     });
     selectionBar.classList.add('hidden');
+}
+
+function selectRange(startIso, endIso) {
+    const start = new Date(startIso + 'T00:00:00');
+    const end = new Date(endIso + 'T00:00:00');
+    const min = start < end ? start : end;
+    const max = start < end ? end : start;
+    const current = new Date(min);
+    while (current <= max) {
+        const wd = current.getDay();
+        if (wd >= 1 && wd <= 5) {
+            const iso = fmt(current);
+            selection.add(iso);
+            const cellEl = document.querySelector('.day[data-date="' + iso + '"]');
+            if (cellEl) {
+                cellEl.classList.add('selected');
+            }
+        }
+        current.setDate(current.getDate() + 1);
+    }
 }
 
 function toggleSelection(iso, cellEl) {
@@ -2780,11 +2807,18 @@ function toggleSelection(iso, cellEl) {
         if (cellEl) {
             cellEl.classList.remove('selected');
         }
-    } else {
+        if (selection.size === 0) {
+            selectionAnchor = null;
+        }
+    } else if (selectionAnchor === null) {
         selection.add(iso);
         if (cellEl) {
             cellEl.classList.add('selected');
         }
+        selectionAnchor = iso;
+    } else {
+        selectRange(selectionAnchor, iso);
+        selectionAnchor = iso;
     }
     updateSelectionBar();
 }
@@ -2795,9 +2829,13 @@ function updateSelectionBar() {
         return;
     }
     selectionBar.classList.remove('hidden');
-    selectionInfo.textContent = selection.size === 0
-        ? 'Mehrfachauswahl: Tage antippen'
-        : selection.size + ' Tag' + (selection.size > 1 ? 'e' : '') + ' ausgewählt';
+    if (selection.size === 0) {
+        selectionInfo.textContent = 'Mehrfachauswahl: Tage antippen';
+    } else if (selectionAnchor !== null && selection.size === 1) {
+        selectionInfo.textContent = 'Start: ' + fmtDateDe(selectionAnchor) + ' – Endtag antippen (1 Tag ausgewählt)';
+    } else {
+        selectionInfo.textContent = selection.size + ' Tag' + (selection.size > 1 ? 'e' : '') + ' ausgewählt';
+    }
     selectionDeleteButton.classList.toggle('hidden', selection.size === 0);
 }
 
