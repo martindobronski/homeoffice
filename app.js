@@ -2818,7 +2818,7 @@ function toggleSelection(iso, cellEl) {
         selectionAnchor = iso;
     } else {
         selectRange(selectionAnchor, iso);
-        selectionAnchor = iso;
+        selectionAnchor = null;
     }
     updateSelectionBar();
 }
