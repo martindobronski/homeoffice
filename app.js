@@ -1188,12 +1188,11 @@ function renderCalGrid(year, month, showEmpty, fullWeekday) {
                 ? '<span class="check" aria-label="gebucht"><i class="ti ti-circle-check-filled"></i></span>'
                 : '';
             const today = cell.iso === todayIso ? ' today' : '';
-            const todayLabel = cell.iso === todayIso ? '<span class="today-label">Heute</span>' : '';
             const booked = gebucht[cell.iso] ? ' booked' : '';
             const sel = selection.has(cell.iso) ? ' selected' : '';
             html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + sel + '"'
                 + ' data-date="' + cell.iso + '">'
-                + '<span class="day-num">' + cell.day + '</span>' + icon + emptyMark + check + todayLabel + '</div>';
+                + '<span class="day-num">' + cell.day + '</span>' + icon + emptyMark + check + '</div>';
         }
     }
     html += '</div>';

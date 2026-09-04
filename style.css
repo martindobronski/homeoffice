@@ -571,23 +571,15 @@ select:focus-visible {
     box-shadow: inset 0 0 0 1.5px #1E9F3E, 0 0 0 3px var(--accent), 0 0 0 6px rgba(24, 95, 165, 0.25);
 }
 
-.today-label {
-    position: absolute;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-family: 'Inter', -apple-system, sans-serif;
-    font-size: 7px;
-    font-weight: 700;
-    line-height: 1;
-    padding: 1px 4px;
-    border-radius: 3px;
+.day.today .day-num::after {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
     background: var(--accent);
-    color: #fff;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-    pointer-events: none;
+    margin-left: 2px;
+    vertical-align: middle;
 }
 
 .day.selected {
