@@ -1809,8 +1809,7 @@ function gridClick(e) {
         return;
     }
     if (selectionMode) {
-        toggleRangeSelection(iso, cell);
-        return;
+        exitSelectionMode();
     }
     hideDayTip();
     openDialog(iso);
