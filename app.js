@@ -1793,15 +1793,27 @@ function gridClick(e) {
     if (!cell) {
         return;
     }
-    if (selectionMode || e.shiftKey || e.ctrlKey || e.metaKey) {
+    const iso = cell.getAttribute('data-date');
+    if (e.shiftKey) {
         if (!selectionMode) {
             startSelectionMode();
         }
-        toggleSelection(cell.getAttribute('data-date'), cell);
+        toggleRangeSelection(iso, cell);
+        return;
+    }
+    if (e.ctrlKey || e.metaKey) {
+        if (!selectionMode) {
+            startSelectionMode();
+        }
+        toggleSingleSelection(iso, cell);
+        return;
+    }
+    if (selectionMode) {
+        toggleRangeSelection(iso, cell);
         return;
     }
     hideDayTip();
-    openDialog(cell.getAttribute('data-date'));
+    openDialog(iso);
 }
 
 function gridContext(e) {
@@ -2801,7 +2813,7 @@ function selectRange(startIso, endIso) {
     }
 }
 
-function toggleSelection(iso, cellEl) {
+function toggleRangeSelection(iso, cellEl) {
     if (selection.has(iso)) {
         selection.delete(iso);
         if (cellEl) {
@@ -2820,6 +2832,22 @@ function toggleSelection(iso, cellEl) {
         selectRange(selectionAnchor, iso);
         selectionAnchor = null;
     }
+    updateSelectionBar();
+}
+
+function toggleSingleSelection(iso, cellEl) {
+    if (selection.has(iso)) {
+        selection.delete(iso);
+        if (cellEl) {
+            cellEl.classList.remove('selected');
+        }
+    } else {
+        selection.add(iso);
+        if (cellEl) {
+            cellEl.classList.add('selected');
+        }
+    }
+    selectionAnchor = null;
     updateSelectionBar();
 }
 
