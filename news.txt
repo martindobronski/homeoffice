@@ -3,6 +3,19 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.55 vom 04.09.2026
+Änderungen gegenüber V1.54:
+
+- Heute-Indikator komplett überarbeitet: Statt magentafarbenem Ring nur um die Zahl
+  nun blauer Rahmen (3px) + sanfter Glow (6px) in der UI-Akzentfarbe (#185FA5) um
+  die gesamte Tageskachel. Ergänzt durch einen 8px-Punkt rechts neben der Zahl
+  (blau mit 2px weißem Rand, vertikal `super` gestellt), der als bewusstes Symbol
+  erkennbar ist. Text-Badge "Heute" entfällt → mehr Platz auf Smartphones.
+- Service-Worker & Cache-Buster aktualisiert (v2.67, style.css?v=2.56, app.js?v=1.224).
+- Bedienungsanleitung (HTML/MD) auf Version 1.55 aktualisiert.
+
+--------------------------------------------------------------------------------------
+
 Version 1.54 vom 31.08.2026
 Änderungen gegenüber V1.53:
 
