@@ -559,23 +559,35 @@ select:focus-visible {
 }
 
 .day.today {
-    box-shadow: 0 0 0 2px var(--today), 0 0 0 5px var(--today-glow);
+    box-shadow: 0 0 0 3px var(--accent), 0 0 0 6px rgba(24, 95, 165, 0.25);
     z-index: 1;
 }
 
-.day.today .day-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.6em;
-    height: 1.6em;
-    border-radius: 50%;
-    border: 2px solid var(--today);
-    font-weight: 800;
+.day.today.highlighted {
+    box-shadow: 0 0 0 2px var(--text) inset, 0 0 0 3px var(--accent), 0 0 0 6px rgba(24, 95, 165, 0.25);
 }
 
-.day.today.highlighted {
-    box-shadow: 0 0 0 2px var(--text) inset, 0 0 0 2px var(--today), 0 0 0 5px var(--today-glow);
+.day.today.booked {
+    box-shadow: inset 0 0 0 1.5px #1E9F3E, 0 0 0 3px var(--accent), 0 0 0 6px rgba(24, 95, 165, 0.25);
+}
+
+.today-label {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 7px;
+    font-weight: 700;
+    line-height: 1;
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: var(--accent);
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+    pointer-events: none;
 }
 
 .day.selected {
