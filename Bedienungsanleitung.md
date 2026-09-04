@@ -1,6 +1,6 @@
 # Bedienungsanleitung
 
-## Anwesenheits-Dashboard (Version 1.56 vom 05.09.2026)
+## Anwesenheits-Dashboard (Version 1.57 vom 05.09.2026)
 
 Die App erfasst für jeden Werktag, ob du im **Büro** oder im **Homeoffice** gearbeitet hast. Urlaub, Krankheit und andere Sonderformen sind zwar keine Arbeit, sollen aber ebenfalls erfasst werden, damit jeder Werktag dokumentiert ist. Daraus werden eine Übersicht über alle Monate, die Anzahl der Büropflichttage sowie das Verhältnis Büro/Homeoffice berechnet.
 
@@ -382,7 +382,7 @@ Die gespeicherte **Konfiguration** (Büro-Anteil, Urlaubskontingent, Bundesland,
 
 ## 9. Versionsinfo
 
-Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.56 vom 05.09.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
+Unten in der Fußzeile wird rechts die aktuelle Version mit Copyright angezeigt, z. B. `Version 1.57 vom 05.09.2026 · © 2026`. Links steht der Link zur Bedienungsanleitung (HTML).
 
 ---
 
