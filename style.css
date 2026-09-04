@@ -563,6 +563,17 @@ select:focus-visible {
     z-index: 1;
 }
 
+.day.today .day-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6em;
+    height: 1.6em;
+    border-radius: 50%;
+    border: 2px solid var(--today);
+    font-weight: 800;
+}
+
 .day.today.highlighted {
     box-shadow: 0 0 0 2px var(--text) inset, 0 0 0 2px var(--today), 0 0 0 5px var(--today-glow);
 }

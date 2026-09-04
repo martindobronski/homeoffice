@@ -1192,7 +1192,7 @@ function renderCalGrid(year, month, showEmpty, fullWeekday) {
             const sel = selection.has(cell.iso) ? ' selected' : '';
             html += '<div class="day ' + (cls || (future ? 'future' : '')) + filter + today + booked + sel + '"'
                 + ' data-date="' + cell.iso + '">'
-                + cell.day + icon + emptyMark + check + '</div>';
+                + '<span class="day-num">' + cell.day + '</span>' + icon + emptyMark + check + '</div>';
         }
     }
     html += '</div>';
