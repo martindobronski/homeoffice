@@ -87,6 +87,7 @@ let selectionMode = false;
 let pendingSelectionDelete = false;
 const selection = new Set();
 let selectionAnchor = null;
+let mobileMultiSelectMode = false;
 
 const startMonth = document.getElementById('startMonth');
 const startYear = document.getElementById('startYear');
@@ -1794,6 +1795,10 @@ function gridClick(e) {
         return;
     }
     const iso = cell.getAttribute('data-date');
+    if (mobileMultiSelectMode && IS_TOUCH) {
+        toggleSingleSelection(iso, cell);
+        return;
+    }
     if (e.shiftKey) {
         if (!selectionMode) {
             startSelectionMode();
@@ -2740,6 +2745,9 @@ quickMenu.addEventListener('click', function (e) {
     } else if (set === '__multiselect__') {
         quickHide();
         startSelectionMode();
+        if (IS_TOUCH) {
+            mobileMultiSelectMode = true;
+        }
         selection.add(iso);
         updateSelectionBar();
         renderMonths();
@@ -2784,6 +2792,7 @@ function startSelectionMode() {
 
 function exitSelectionMode() {
     selectionMode = false;
+    mobileMultiSelectMode = false;
     selectionAnchor = null;
     selection.clear();
     document.querySelectorAll('.day.selected').forEach(function (el) {
