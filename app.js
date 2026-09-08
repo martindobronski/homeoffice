@@ -601,7 +601,7 @@ function updateExportHint() {
     if (!raw) { el.textContent = ''; el.style.color = ''; return; }
     const d = new Date(raw);
     const pad = function (n) { return n < 10 ? '0' + n : '' + n; };
-    el.textContent = '(zuletzt exportiert: ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + String(d.getFullYear()).slice(2) + ')';
+    el.textContent = '(zuletzt: ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + String(d.getFullYear()).slice(2) + ')';
     const daysSince = (Date.now() - d.getTime()) / 86400000;
     el.style.color = daysSince > 30 ? '#FF1A1A' : daysSince > 7 ? '#D4853C' : '';
 }
