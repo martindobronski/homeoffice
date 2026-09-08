@@ -598,10 +598,10 @@ function updateExportHint() {
     const el = document.getElementById('exportHint');
     if (!el) return;
     const raw = storeGet('lastExport');
-    if (!raw) { el.textContent = ''; return; }
+    if (!raw) { el.textContent = ''; el.style.color = ''; return; }
     const d = new Date(raw);
     const pad = function (n) { return n < 10 ? '0' + n : '' + n; };
-    el.textContent = 'Zuletzt exportiert: ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + d.getFullYear() + ', ' + pad(d.getHours()) + ':' + pad(d.getMinutes());
+    el.textContent = '(zuletzt exportiert: ' + pad(d.getDate()) + '.' + pad(d.getMonth() + 1) + '.' + String(d.getFullYear()).slice(2) + ')';
     const daysSince = (Date.now() - d.getTime()) / 86400000;
     el.style.color = daysSince > 30 ? '#FF1A1A' : daysSince > 7 ? '#D4853C' : '';
 }
@@ -1747,8 +1747,15 @@ function applyUrlaub(value) {
     }
 }
 
-document.getElementById('urlaubOk').addEventListener('click', function () {
+urlaubInputEl.addEventListener('change', function () {
     applyUrlaub(urlaubInputEl.value);
+});
+urlaubInputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        applyUrlaub(urlaubInputEl.value);
+        urlaubInputEl.blur();
+    }
 });
 
 urlaubConfirmOverlay.addEventListener('click', function (e) {
@@ -1774,14 +1781,22 @@ document.getElementById('urlaubConfirmCancel').addEventListener('click', functio
     urlaubConfirmOverlay.classList.add('hidden');
 });
 
-// Büro-Anteil (%) – Übernahme erst über den OK-Button, nicht bei Tastendruck
+// Büro-Anteil (%) – Auto-Save beim Verlassen des Felds (change/blur) oder Enter
 const bueroAnteilInputEl = document.getElementById('bueroAnteilInput');
-document.getElementById('bueroAnteilOk').addEventListener('click', function () {
+function commitBueroAnteil() {
     const v = parseInt(bueroAnteilInputEl.value, 10);
     bueroAnteil = Number.isFinite(v) ? Math.max(0, Math.min(100, v)) : 60;
     bueroAnteilInputEl.value = bueroAnteil;
     saveBueroAnteil();
     render();
+}
+bueroAnteilInputEl.addEventListener('change', commitBueroAnteil);
+bueroAnteilInputEl.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        commitBueroAnteil();
+        bueroAnteilInputEl.blur();
+    }
 });
 
 // ---------- Ereignis-Delegation ----------
