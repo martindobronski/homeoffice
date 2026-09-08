@@ -95,14 +95,12 @@
                 <label for="bueroAnteilInput">Büro-Anteil (%)</label>
                 <div class="field-inline">
                     <input type="number" id="bueroAnteilInput" min="0" max="100" step="1">
-                    <button type="button" id="bueroAnteilOk" class="btn-ok">OK</button>
                 </div>
             </div>
             <div class="setting-row quota-input">
-                <label for="urlaubInput">Urlaubskontingent</label>
+                <label for="urlaubInput">Urlaubskontingent (Tage)</label>
                 <div class="field-inline">
                     <input type="number" id="urlaubInput" min="0" max="365" step="1">
-                    <button type="button" id="urlaubOk" class="btn-ok">OK</button>
                 </div>
             </div>
             <p class="setting-group-label">Anzeige</p>
@@ -119,16 +117,14 @@
         <div class="card footer-actions">
             <p class="card-label">Daten</p>
             <button class="btn-action" id="printButton">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 9h1"/><path d="M9 13h6"/><path d="M9 17h6"/></svg>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/></svg>
                 Übersicht drucken / PDF
             </button>
-            <span class="export-wrap">
-                <button class="btn-action" id="exportButton">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
-                    Backup exportieren
-                </button>
-                <p class="export-meta" id="exportHint"></p>
-            </span>
+            <button class="btn-action" id="exportButton">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="m7 10 5 5 5-5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                <span class="export-label">Backup exportieren</span>
+                <span class="export-meta" id="exportHint"></span>
+            </button>
             <button class="btn-action" id="importButton">
                 <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
                 Backup importieren

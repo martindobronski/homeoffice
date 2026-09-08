@@ -933,7 +933,7 @@ select:focus-visible {
 .settings-wrapper {
     margin-top: 8px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1.15fr 0.85fr;
     gap: 16px;
 }
 
@@ -967,12 +967,10 @@ select:focus-visible {
 }
 
 .setting-group-label {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--text-soft);
-    margin: 4px 0 8px;
+    color: var(--text-strong);
+    margin: 16px 0 8px;
     padding-bottom: 4px;
     border-bottom: 1px solid var(--border);
 }
@@ -1039,6 +1037,7 @@ select:focus-visible {
 
 .field-inline {
     display: flex;
+    align-items: center;
     gap: 8px;
 }
 
@@ -1068,6 +1067,7 @@ select:focus-visible {
     background: var(--surface);
     color: var(--text);
     box-sizing: border-box;
+    transition: border-color 0.15s ease;
 }
 
 .setting-row input[type="checkbox"] {
@@ -1088,6 +1088,7 @@ select:focus-visible {
     border: 1px solid var(--text-soft);
     border-radius: 4px;
     cursor: pointer;
+    transition: border-color 0.15s ease;
 }
 
 .setting-row.sonderfrei-select input[type="checkbox"]:checked::after {
@@ -1100,6 +1101,26 @@ select:focus-visible {
     border: solid var(--text);
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+}
+
+.setting-row.sonderfrei-select input[type="checkbox"]:hover {
+    border-color: var(--text);
+}
+
+.setting-row.sonderfrei-select input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--accent, var(--text));
+    outline-offset: 2px;
+}
+
+.setting-row select:hover,
+.setting-row input[type="number"]:hover {
+    border-color: var(--text);
+}
+
+.setting-row select:focus-visible,
+.setting-row input[type="number"]:focus-visible {
+    outline: 2px solid var(--accent, var(--text));
+    outline-offset: 2px;
 }
 
 .footer-actions {
@@ -1140,24 +1161,16 @@ select:focus-visible {
     stroke: currentColor;
 }
 
-.export-wrap {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-}
-
-.export-wrap .btn-action {
-    margin-bottom: 4px;
-    flex: 0 1 auto;
-    min-width: 0;
-    width: auto;
+.export-label {
+    flex-shrink: 0;
 }
 
 .export-meta {
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 400;
     color: var(--text-soft);
-    margin: 0 0 4px 12px;
+    margin-left: 4px;
+    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1536,11 +1549,6 @@ select:focus-visible {
     }
     .setting-row input[type="number"] {
         max-width: 100%;
-    }
-    .export-meta {
-        margin-left: 0;
-        white-space: normal;
-        overflow-wrap: anywhere;
     }
     .legend {
         max-width: 100%;
