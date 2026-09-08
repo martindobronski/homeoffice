@@ -3,6 +3,17 @@ Neueste Version oben; je Abschnitt die Neuerungen gegenüber der Vorversion.
 
 ======================================================================================
 
+Version 1.59 vom 08.09.2026
+Änderungen gegenüber V1.58:
+
+- Einstellungen thematisch gruppiert: Zwischenüberschriften „Kalender“ (Bundesland + 24./31.12.), „Arbeitszeit“ (Büro-Anteil + Urlaubskontingent), „Anzeige“ (Darstellung). Gruppen-Labels fett, Trennlinie.
+- Auto-Save statt OK-Buttons: Büro-Anteil (%) und Urlaubskontingent (Tage) werden beim Verlassen des Felds (change/blur) oder mit Enter übernommen. Einheit „(Tage)“ steht jetzt direkt im Label.
+- Daten-Karte schmaler (Spaltenverhältnis 1.15/0.85), Export-Status direkt hinter „Backup exportieren“ (Format: `(zuletzt exportiert: TT.MM.JJ)`), Drucker-Icon für „Übersicht drucken / PDF“.
+- Hover-/Focus-Zustände für Auswahlfelder, Nummernfelder und Checkbox (Akzent-Outline, Rand-, Border-Feedback).
+- Cache-Buster: style.css v2.63, app.js v1.228, Service Worker v2.76 (Bedienungsanleitung `?v=1.59`).
+
+--------------------------------------------------------------------------------------
+
 Version 1.58 vom 05.09.2026
 Änderungen gegenüber V1.57:
 
