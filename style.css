@@ -966,6 +966,21 @@ select:focus-visible {
     margin: 0 0 12px;
 }
 
+.setting-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+    margin: 4px 0 8px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border);
+}
+
+.setting-group-label:first-of-type {
+    margin-top: 0;
+}
+
 .setting-row {
     display: flex;
     align-items: center;

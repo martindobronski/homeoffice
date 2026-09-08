@@ -28,7 +28,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="tabler-icons.min.css?v=3">
-    <link rel="stylesheet" href="style.css?v=2.61">
+    <link rel="stylesheet" href="style.css?v=2.62">
 </head>
 <body>
 
@@ -81,6 +81,16 @@
     <div class="settings-wrapper">
         <div class="card">
             <p class="card-label">Einstellungen</p>
+            <p class="setting-group-label">Kalender</p>
+            <div class="setting-row bundesland-select">
+                <label for="blSelect">Bundesland (Feiertage)</label>
+                <select id="blSelect"></select>
+            </div>
+            <div class="setting-row sonderfrei-select">
+                <label for="sonderfreiCheck">24./31.12. (arbeitsfreie Tage)</label>
+                <input type="checkbox" id="sonderfreiCheck">
+            </div>
+            <p class="setting-group-label">Arbeitszeit</p>
             <div class="setting-row buero-anteil">
                 <label for="bueroAnteilInput">Büro-Anteil (%)</label>
                 <div class="field-inline">
@@ -95,14 +105,7 @@
                     <button type="button" id="urlaubOk" class="btn-ok">OK</button>
                 </div>
             </div>
-            <div class="setting-row bundesland-select">
-                <label for="blSelect">Bundesland (Feiertage)</label>
-                <select id="blSelect"></select>
-            </div>
-            <div class="setting-row sonderfrei-select">
-                <label for="sonderfreiCheck">24./31.12. (arbeitsfreie Tage)</label>
-                <input type="checkbox" id="sonderfreiCheck">
-            </div>
+            <p class="setting-group-label">Anzeige</p>
             <div class="setting-row theme-select">
                 <label for="themeSelect">Darstellung</label>
                 <select id="themeSelect">
