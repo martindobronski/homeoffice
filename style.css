@@ -1002,6 +1002,12 @@ select:focus-visible {
     padding: 0;
 }
 
+.setting-row.bundesland-select select,
+.setting-row.theme-select select {
+    width: 124px;
+    max-width: 100%;
+}
+
 /* .sonderfrei-select bleibt als Tooltip-Hook erhalten (nur Detektion, kein Lock) */
 .setting-row.sonderfrei-select {
     background: transparent;
